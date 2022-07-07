@@ -1,0 +1,21 @@
+# ninja log v5
+881	998	6789033791440279	src/examples/sandbox/Sandbox.exe	321166322c0bfee0
+20	881	6789033790300264	src/examples/sandbox/CMakeFiles/Sandbox.dir/main.cpp.obj	f4f4f04b6c742e7b
+16	629	6789023559244501	src/raytracer/CMakeFiles/raytracer.dir/raytracer/ray.cpp.obj	4fb3940dc413baec
+727	788	6789033789390273	src/raytracer/libraytracer.a	f44acc056401a09f
+4	727	6789033788770271	src/raytracer/CMakeFiles/raytracer.dir/raytracer/renderer.cpp.obj	8cd76836938f9034
+14	607	6789033787580280	src/raytracer/CMakeFiles/raytracer.dir/hittable/sphere.cpp.obj	f063fb659b377d7a
+4	607	6789032301275034	src/raytracer/CMakeFiles/raytracer.dir/raytracer/image.cpp.obj	3f47dcff9f77eb17
+17	726	6789033788760275	src/raytracer/CMakeFiles/raytracer.dir/hittable/hittablelist.cpp.obj	565c9ea9fc9b1656
+16	632	6789028054930357	src/raytracer/CMakeFiles/raytracer.dir/cameras/camera.cpp.obj	ba58b6cc6105f991
+20	675	6789028419160560	src/raytracer/CMakeFiles/raytracer.dir/hittable/hittable.cpp.obj	d0ae4d7f4fb2ae62
+17	657	6789033580009146	src/raytracer/CMakeFiles/raytracer.dir/hittable/hit_record.cpp.obj	8a437811e9035313
+1	274	6789037383746207	build.ninja	2c0cfcc9618fd453
+23	73	6789037385066394	src/raytracer/CMakeFiles/raytracer.dir/materials/lambertian.cpp.obj	bddd4bfe0b6ffbb3
+4	623	6789037390546415	src/raytracer/CMakeFiles/raytracer.dir/raytracer/ray.cpp.obj	4fb3940dc413baec
+19	627	6789037390586387	src/raytracer/CMakeFiles/raytracer.dir/cameras/camera.cpp.obj	ba58b6cc6105f991
+16	692	6789037391236803	src/raytracer/CMakeFiles/raytracer.dir/hittable/hit_record.cpp.obj	8a437811e9035313
+13	693	6789037391236803	src/raytracer/CMakeFiles/raytracer.dir/hittable/sphere.cpp.obj	f063fb659b377d7a
+7	751	6789037391806851	src/raytracer/CMakeFiles/raytracer.dir/raytracer/renderer.cpp.obj	8cd76836938f9034
+10	762	6789037391946809	src/raytracer/CMakeFiles/raytracer.dir/hittable/hittablelist.cpp.obj	565c9ea9fc9b1656
+762	825	6789037392586815	src/raytracer/libraytracer.a	7fa01603ca28863b
