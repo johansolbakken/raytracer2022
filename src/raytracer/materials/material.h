@@ -1,12 +1,12 @@
 #pragma once
 
+#include "utils/glmutils.h"
+
 namespace raytracer
 {
 	class Ray;
 
 	struct hit_record;
-
-	class color;
 
 	class Material
 	{
