@@ -6,9 +6,16 @@
 raytracer::ref<raytracer::Hittable> createWorld() {
 	using namespace raytracer;
 
+	auto material_ground = createRef<Lambertian>(color(0.8, 0.8, 0.0));
+	auto material_center = createRef<Lambertian>(color(0.7, 0.3, 0.3));
+	auto material_left   = createRef<Metal>(color(0.8, 0.8, 0.8));
+	auto material_right  = createRef<Metal>(color(0.8, 0.6, 0.2));
+
 	auto world = createRef<HittableList>();
-	world->add<Sphere>(point3{0,0,-1}, 0.5);
-	world->add<Sphere>(point3{0,-100.5,-1}, 100);
+	world->add<Sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground);
+	world->add<Sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center);
+	world->add<Sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left);
+	world->add<Sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right);
 
 	return world;
 }
