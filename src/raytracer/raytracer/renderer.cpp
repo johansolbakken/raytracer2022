@@ -10,6 +10,8 @@
 
 #include "utils/mathutils.h"
 
+#include "materials/material.h"
+
 #include <iostream>
 
 
@@ -88,8 +90,11 @@ namespace raytracer
 
 		if (world->hit(ray, 0.001, infinity, rec))
 		{
-			point3 target = rec.p + randomInHemisphere(rec.normal);
-			return 0.5 * rayColor(Ray(rec.p, target - rec.p), world, depth - 1);
+			Ray scattered;
+			color attenuation;
+			if (rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
+				return attenuation * rayColor(scattered, world, depth-1);
+			return {0,0,0};
 		}
 
 		vec3 unit_direction = glm::normalize(ray.direction());

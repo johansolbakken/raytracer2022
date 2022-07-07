@@ -8,4 +8,7 @@
 #include "hittable/hittablelist.h"
 #include "hittable/sphere.h"
 
+#include "materials/lambertian.h"
+#include "materials/metal.h"
+
 #include "cameras/camera.h"
