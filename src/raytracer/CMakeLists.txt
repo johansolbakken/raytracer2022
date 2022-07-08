@@ -16,7 +16,7 @@ add_library(raytracer
         hittable/hit_record.h hittable/hit_record.cpp
 
         materials/material.h
-        materials/lambertian.cpp materials/lambertian.h materials/metal.cpp materials/metal.h materials/dielectric.cpp materials/dielectric.h accelerator/aabb.cpp accelerator/aabb.h hittable/bvh.cpp hittable/bvh.h hittable/movingsphere.cpp hittable/movingsphere.h)
+        materials/lambertian.cpp materials/lambertian.h materials/metal.cpp materials/metal.h materials/dielectric.cpp materials/dielectric.h accelerator/aabb.cpp accelerator/aabb.h hittable/bvh.cpp hittable/bvh.h hittable/movingsphere.cpp hittable/movingsphere.h textures/texture.h)
 
 target_include_directories(raytracer
         PRIVATE .
