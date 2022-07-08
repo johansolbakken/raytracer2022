@@ -10,8 +10,8 @@ namespace raytracer
 	{
 		double vfov=90.0;
 		double aspect_ratio = 16.0 / 9.0;
-		double aperture = 0.01;
-		double focusDistance = 1.0;
+		double aperture = 0.0;
+		double focusDistance = 10.0;
 
 		point3 lookFrom={0,0,0};
 		point3 lookAt={0,0,-1};
