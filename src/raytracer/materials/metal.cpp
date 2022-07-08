@@ -10,15 +10,16 @@
 
 namespace raytracer
 {
+	Metal::Metal(const color& a, double f) : m_albedo(a), m_fuzz(f)
+	{
+	}
+
 	bool Metal::scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const
 	{
 		vec3 reflected = reflect(glm::normalize(r_in.direction()), rec.normal);
-		scattered = Ray(rec.p, reflected);
-		attenuation = albedo;
+		scattered = Ray(rec.p, reflected + m_fuzz * randomInUnitSpace());
+		attenuation = m_albedo;
 		return (glm::dot(scattered.direction(), rec.normal) > 0);
 	}
 
-	Metal::Metal(const color& a) : albedo(a)
-	{
-	}
 } // raytracer
