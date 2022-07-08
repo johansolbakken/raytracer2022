@@ -44,6 +44,10 @@ namespace raytracer
 		rec.setFaceNormal(r, outward_normal);
 		rec.mat_ptr = m_material;
 
+		auto [u, v] = getSphereUv(outward_normal);
+		rec.u = u;
+		rec.v = v;
+
 		return true;
 	}
 
@@ -54,6 +58,23 @@ namespace raytracer
 				m_center + vec3(m_radius, m_radius, m_radius)
 		);
 		return true;
+	}
+
+	std::pair<double, double> Sphere::getSphereUv(const point3& p)
+	{
+		// p: a given point on the sphere of radius one, centered at the origin.
+		// u: returned value [0,1] of angle around the Y axis from X=-1.
+		// v: returned value [0,1] of angle from Y=-1 to Y=+1.
+		//     <1 0 0> yields <0.50 0.50>       <-1  0  0> yields <0.00 0.50>
+		//     <0 1 0> yields <0.50 1.00>       < 0 -1  0> yields <0.50 0.00>
+		//     <0 0 1> yields <0.25 0.50>       < 0  0 -1> yields <0.75 0.50>
+
+		auto theta = std::acos(-p.y);
+		auto phi = atan2(-p.z, p.x) + M_PI;
+
+		auto u = phi / (2*M_PI);
+		auto v = theta / M_PI;
+		return { u, v };
 	}
 
 
