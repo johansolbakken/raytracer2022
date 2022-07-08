@@ -19,9 +19,13 @@ namespace raytracer
 
 		static void permute(int* p, int n);
 
+		static double trilinear_interp(double c[2][2][2], double u, double v, double w);
+
+		static double perlin_interp(vec3 c[2][2][2], double u, double v, double w);
+
 	private:
 		static const int m_pointCount = 256;
-		double* m_ranfloat;
+		vec3* m_ranvec;
 		int* m_permX;
 		int* m_permY;
 		int* m_permZ;

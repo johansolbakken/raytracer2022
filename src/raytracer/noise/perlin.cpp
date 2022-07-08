@@ -8,9 +8,9 @@ namespace raytracer
 {
 	Perlin::Perlin()
 	{
-		m_ranfloat = new double[m_pointCount];
+		m_ranvec = new vec3[m_pointCount];
 		for (int i = 0; i < m_pointCount; ++i) {
-			m_ranfloat[i] = randomDouble();
+			m_ranvec[i] = glm::normalize(randomVec3(-1,1));
 		}
 
 		m_permX = perlin_generate_perm();
@@ -20,7 +20,7 @@ namespace raytracer
 
 	Perlin::~Perlin()
 	{
-		delete[] m_ranfloat;
+		delete[] m_ranvec;
 		delete[] m_permX;
 		delete[] m_permY;
 		delete[] m_permZ;
@@ -28,11 +28,25 @@ namespace raytracer
 
 	double Perlin::noise(const point3& p) const
 	{
-		auto i = static_cast<int>(4*p.x) & 255;
-		auto j = static_cast<int>(4*p.y) & 255;
-		auto k = static_cast<int>(4*p.z) & 255;
+		auto u = p.x - std::floor(p.x);
+		auto v = p.y - std::floor(p.y);
+		auto w = p.z - std::floor(p.z);
 
-		return m_ranfloat[m_permX[i] ^ m_permY[j] ^ m_permZ[k]];
+		auto i = static_cast<int>(std::floor(p.x));
+		auto j = static_cast<int>(std::floor(p.y));
+		auto k = static_cast<int>(std::floor(p.z));
+		vec3 c[2][2][2];
+
+		for (int di=0; di < 2; di++)
+			for (int dj=0; dj < 2; dj++)
+				for (int dk=0; dk < 2; dk++)
+					c[di][dj][dk] = m_ranvec[
+							m_permX[(i+di) & 255] ^
+							m_permY[(j+dj) & 255] ^
+							m_permZ[(k+dk) & 255]
+					];
+
+		return perlin_interp(c, u, v, w);
 	}
 
 	int* Perlin::perlin_generate_perm()
@@ -55,5 +69,38 @@ namespace raytracer
 			p[i] = p[target];
 			p[target] = tmp;
 		}
+	}
+
+	double Perlin::trilinear_interp(double (* c)[2][2], double u, double v, double w)
+	{
+		auto accum = 0.0;
+		for (int i=0; i < 2; i++)
+			for (int j=0; j < 2; j++)
+				for (int k=0; k < 2; k++)
+					accum += (i*u + (1-i)*(1-u))*
+							 (j*v + (1-j)*(1-v))*
+							 (k*w + (1-k)*(1-w))*c[i][j][k];
+
+		return accum;
+	}
+
+	double Perlin::perlin_interp(vec3 (* c)[2][2], double u, double v, double w)
+	{
+		auto uu = u*u*(3-2*u);
+		auto vv = v*v*(3-2*v);
+		auto ww = w*w*(3-2*w);
+		auto accum = 0.0;
+
+		for (int i=0; i < 2; i++)
+			for (int j=0; j < 2; j++)
+				for (int k=0; k < 2; k++) {
+					vec3 weight_v(u-i, v-j, w-k);
+					accum += (i*uu + (1-i)*(1-uu))
+							 * (j*vv + (1-j)*(1-vv))
+							 * (k*ww + (1-k)*(1-ww))
+							 * glm::dot(c[i][j][k], weight_v);
+				}
+
+		return accum;
 	}
 } // raytracer

@@ -17,3 +17,4 @@
 
 #include "textures/checkertexture.h"
 #include "textures/solidcolor.h"
+#include "textures/noisetexture.h"
