@@ -11,6 +11,7 @@ namespace raytracer
 	class Material
 	{
 	public:
+		virtual ~Material() = default;
 		virtual bool scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const = 0;
 	};
 

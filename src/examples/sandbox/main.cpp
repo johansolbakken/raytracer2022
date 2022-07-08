@@ -6,17 +6,48 @@
 raytracer::ref<raytracer::Hittable> createWorld() {
 	using namespace raytracer;
 
-	auto material_ground = createRef<Lambertian>(color(0.8, 0.8, 0.0));
-	auto material_center = createRef<Lambertian>(color(0.1, 0.2, 0.5));
-	auto material_left   = createRef<Dielectric>(1.5);
-	auto material_right  = createRef<Metal>(color(0.8, 0.6, 0.2), 0.0);
-
 	auto world = createRef<HittableList>();
-	world->add<Sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground);
-	world->add<Sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center);
-	world->add<Sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left);
-	world->add<Sphere>(point3(-1.0,    0.0, -1.0), -0.45, material_left);
-	world->add<Sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right);
+
+	auto ground_material = createRef<Lambertian>(color(0.5, 0.5, 0.5));
+	world->add<Sphere>(point3(0,-1000,0), 1000, ground_material);
+
+	for (int a = -11; a < 11; a++) {
+		for (int b = -11; b < 11; b++) {
+			auto choose_mat = randomDouble();
+			point3 center(a + 0.9*randomDouble(), 0.2, b + 0.9*randomDouble());
+
+			if ((center - point3(4, 0.2, 0)).length() > 0.9) {
+				ref<Material> sphere_material;
+
+				if (choose_mat < 0.8) {
+					// diffuse
+					auto albedo = randomVec3() * randomVec3();
+					sphere_material = createRef<Lambertian>(albedo);
+					auto center2 = center + vec3(0, randomDouble(0, .5), 0);
+					world->add<MovingSphere>(center, center2, 0.0, 1.0, 0.2, sphere_material);
+				} else if (choose_mat < 0.95) {
+					// metal
+					auto albedo = randomVec3(0.5, 1);
+					auto fuzz = randomDouble(0, 0.5);
+					sphere_material = createRef<Metal>(albedo, fuzz);
+					world->add<Sphere>(center, 0.2, sphere_material);
+				} else {
+					// glass
+					sphere_material = createRef<Dielectric>(1.5);
+					world->add<Sphere>(center, 0.2, sphere_material);
+				}
+			}
+		}
+	}
+
+	auto material1 = createRef<Dielectric>(1.5);
+	world->add<Sphere>(point3(0, 1, 0), 1.0, material1);
+
+	auto material2 = createRef<Lambertian>(color(0.4, 0.2, 0.1));
+	world->add<Sphere>(point3(-4, 1, 0), 1.0, material2);
+
+	auto material3 = createRef<Metal>(color(0.7, 0.6, 0.5), 0.0);
+	world->add<Sphere>(point3(4, 1, 0), 1.0, material3);
 
 	return world;
 }
@@ -33,9 +64,11 @@ int main(int argc, char** argv)
 	std::ofstream file(filename, std::ios::out);
 	file.clear();
 
+	constexpr auto aspect_ratio = 16.0 / 9.0;
+
 	// Image
 	raytracer::Image image{};
-	image.aspect_ratio = 16.0 / 9.0;
+	image.aspect_ratio = aspect_ratio;
 	image.image_width = 400;
 
 	// World
@@ -43,11 +76,14 @@ int main(int argc, char** argv)
 
 	// Camera
 	raytracer::CameraSpecification cameraSpec;
-	cameraSpec.vfov = 90.0f;
-	// uncomment this to zoom in
-	//cameraSpec.vfov = 20.0f;
-	cameraSpec.aspect_ratio = image.aspect_ratio;
-	cameraSpec.lookFrom = {-2,2,1};
+	cameraSpec.vfov = 20.0f;
+	cameraSpec.aspect_ratio = aspect_ratio;
+	cameraSpec.lookFrom = {13,2,3};
+	cameraSpec.lookAt = {0,0,0};
+	cameraSpec.focusDistance = 10.0;
+	cameraSpec.aperture = 0.1;
+	cameraSpec.time0 = 0.0;
+	cameraSpec.time1 = 1.0;
 
 	auto camera = raytracer::createRef<raytracer::Camera>(cameraSpec);
 

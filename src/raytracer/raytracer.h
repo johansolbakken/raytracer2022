@@ -7,6 +7,7 @@
 #include "hittable/hittable.h"
 #include "hittable/hittablelist.h"
 #include "hittable/sphere.h"
+#include "hittable/movingsphere.h"
 
 #include "materials/lambertian.h"
 #include "materials/metal.h"

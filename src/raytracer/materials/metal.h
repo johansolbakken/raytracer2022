@@ -9,6 +9,7 @@ namespace raytracer
 	{
 	public:
 		explicit Metal(const color& a, double f=0.0f);
+		~Metal() override = default;
 
 		bool scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const override;
 

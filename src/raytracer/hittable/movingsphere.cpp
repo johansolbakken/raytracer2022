@@ -2,6 +2,7 @@
 
 #include "raytracer/ray.h"
 #include "hittable/hit_record.h"
+#include "accelerator/aabb.h"
 
 namespace raytracer
 {
@@ -42,5 +43,17 @@ namespace raytracer
 	{
 		// Linear interpolate?
 		return m_center0 + ((time - m_time0) / (m_time1 - m_time0))*(m_center1 - m_center0);
+	}
+
+	bool MovingSphere::boundingBox(double time0, double time1, Aabb& output_box) const
+	{
+		Aabb box0(
+				center(time0) - vec3(m_radius, m_radius, m_radius),
+				center(time0) + vec3(m_radius, m_radius, m_radius));
+		Aabb box1(
+				center(time1) - vec3(m_radius, m_radius, m_radius),
+				center(time1) + vec3(m_radius, m_radius, m_radius));
+		output_box = Aabb::surroundingBox(box0, box1);
+		return true;
 	}
 }

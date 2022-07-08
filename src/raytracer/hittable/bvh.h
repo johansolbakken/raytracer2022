@@ -19,6 +19,8 @@ namespace raytracer
 		BvhNode(const std::vector<ref<Hittable>>& src_objects,
 				size_t start, size_t end, double time0, double time1);
 
+		~BvhNode() override = default;
+
 		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
 		bool boundingBox(double time0, double time1, Aabb& output_box) const override;

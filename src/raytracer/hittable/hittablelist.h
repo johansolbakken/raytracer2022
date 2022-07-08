@@ -22,6 +22,8 @@ namespace raytracer
 
 		explicit HittableList(const ref<Hittable>& object);
 
+		~HittableList() override = default;
+
 		void clear();
 
 		void add(const ref<Hittable>& object);

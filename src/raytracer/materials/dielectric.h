@@ -9,6 +9,7 @@ namespace raytracer
 	{
 	public:
 		explicit Dielectric(double index_of_refraction);
+		~Dielectric() override = default;
 
 		bool scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const override;
 
