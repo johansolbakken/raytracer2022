@@ -7,6 +7,7 @@
 #include "raytracer/ray.h"
 
 #include "hittable/hit_record.h"
+#include "textures/solidcolor.h"
 
 namespace raytracer
 {
@@ -19,11 +20,16 @@ namespace raytracer
 			scatter_direction = rec.normal;
 
 		scattered = Ray(rec.p, scatter_direction, r_in.time());
-		attenuation = m_albedo;
+		attenuation = m_albedo->value(rec.u, rec.v, rec.p);
 		return true;
 	}
 
-	Lambertian::Lambertian(const color& a) : m_albedo(a)
+	Lambertian::Lambertian(const color& a) : m_albedo(createRef<SolidColor>(a))
 	{
+	}
+
+	Lambertian::Lambertian(const ref<Texture>& a) : m_albedo(a)
+	{
+
 	}
 } // raytracer
