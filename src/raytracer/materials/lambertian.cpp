@@ -18,7 +18,7 @@ namespace raytracer
 		if (nearZero(scatter_direction))
 			scatter_direction = rec.normal;
 
-		scattered = Ray(rec.p, scatter_direction);
+		scattered = Ray(rec.p, scatter_direction, r_in.time());
 		attenuation = m_albedo;
 		return true;
 	}

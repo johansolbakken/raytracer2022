@@ -31,7 +31,7 @@ namespace raytracer
 		else
 			direction = refract(unit_direction, rec.normal, refraction_ratio);
 
-		scattered = Ray(rec.p, direction);
+		scattered = Ray(rec.p, direction, r_in.time());
 		return true;
 	}
 
