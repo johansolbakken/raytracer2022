@@ -1,0 +1,27 @@
+#pragma once
+
+#include "texture.h"
+
+namespace raytracer
+{
+
+	class ImageTexture : public Texture
+	{
+	public:
+		const static int bytes_per_pixel = 3;
+
+		ImageTexture();
+
+		explicit ImageTexture(const std::string& filename);
+
+		~ImageTexture() override;
+
+		[[nodiscard]] color value(double u, double v, const vec3& p) const override;
+
+	private:
+		unsigned char *m_data;
+		int m_width, m_height;
+		int m_bytesPerScanline;
+	};
+
+} // raytracer
