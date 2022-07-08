@@ -16,6 +16,9 @@ namespace raytracer
 		point3 lookFrom={0,0,0};
 		point3 lookAt={0,0,-1};
 		vec3 vup={0,1,0};
+
+		double time0 = 0; // shutter opens
+		double time1 = 0; // shutter closes
 	};
 
 	class Camera

@@ -15,8 +15,9 @@ namespace raytracer
 
 		auto origin = m_origin + offset;
 		auto direction = m_lowerLeftCorner + s * m_horizontal + t * m_vertical - m_origin - offset;
+		auto time = randomDouble(m_specification.time0, m_specification.time1);
 
-		return { origin, direction };
+		return { origin, direction, time};
 	}
 
 	Camera::Camera(const raytracer::CameraSpecification& spec)
