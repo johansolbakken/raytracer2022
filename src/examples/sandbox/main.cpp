@@ -8,9 +8,12 @@ raytracer::ref<raytracer::Hittable> createWorld() {
 
 	auto world = createRef<HittableList>();
 
-	auto ground_material = createRef<Lambertian>(color(0.5, 0.5, 0.5));
+	// Checker ground
+	auto checker = createRef<CheckerTexture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+	auto ground_material = createRef<Lambertian>(checker);
 	world->add<Sphere>(point3(0,-1000,0), 1000, ground_material);
 
+	// Add balls
 	for (int a = -11; a < 11; a++) {
 		for (int b = -11; b < 11; b++) {
 			auto choose_mat = randomDouble();

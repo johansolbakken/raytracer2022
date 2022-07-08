@@ -12,6 +12,7 @@ namespace raytracer
 
 	class SolidColor : public Texture
 	{
+	public:
 		SolidColor() = default;
 
 		explicit SolidColor(color c);

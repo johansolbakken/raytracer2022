@@ -14,3 +14,6 @@
 #include "materials/dielectric.h"
 
 #include "cameras/camera.h"
+
+#include "textures/checkertexture.h"
+#include "textures/solidcolor.h"
