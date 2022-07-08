@@ -1,20 +1,39 @@
 #pragma once
 
-#include <ostream>
-
-#include "utils/glmutils.h"
+#include <cstdlib>
+#include <string>
 
 namespace raytracer
 {
-	struct Image
+	class Image
 	{
-		int image_width;
-		double aspect_ratio;
+	public:
+		explicit Image(uint32_t width, uint32_t height, uint32_t channels=4, std::string  filename="image.png");
+		~Image();
 
-		[[nodiscard]] int calculateImageHeight() const
-		{
-			return static_cast<int>(image_width / aspect_ratio);
-		}
+		void setFilename(const std::string& filename);
+		void setData(const uint32_t* data);
 
+		void flipHorizontal();
+
+		void resize(uint32_t width, uint32_t height);
+		void allocate();
+		void release();
+
+		[[nodiscard]] uint32_t width() const { return m_width; }
+		[[nodiscard]] uint32_t height() const { return m_height; }
+		[[nodiscard]] uint32_t comp() const { return m_channels; }
+		[[nodiscard]] uint32_t stride() const { return m_width * m_channels; }
+
+		uint32_t* data() { return m_data; }
+
+		void save() const;
+
+	private:
+		std::string m_filename;
+		uint32_t m_width;
+		uint32_t m_height;
+		uint32_t m_channels;
+		uint32_t* m_data{};
 	};
 }

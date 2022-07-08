@@ -17,76 +17,40 @@
 
 namespace raytracer
 {
-	void Renderer::render(Image& image, const ref<Hittable>& world, const ref<Camera>& camera)
+	void Renderer::render(const ref<Hittable>& world, const ref<Camera>& camera)
 	{
-		auto& buffer = m_Specification.buffer;
+		m_camera = camera;
+		m_world = world;
 
-		const auto aspect_ratio = image.aspect_ratio;
-		const int image_width = image.image_width;
-		const int image_height = image.calculateImageHeight();
-		const int samplesPerPixel = m_Specification.samplesPerPixel;
-		const int recursionDepth = m_Specification.recursionDepth;
-
-		// Camera
-		auto viewport_height = 2.0;
-		auto viewport_width = aspect_ratio * viewport_height;
-		auto focal_length = 1.0;
-
-		auto origin = point3(0, 0, 0);
-		auto horizontal = vec3(viewport_width, 0, 0);
-		auto vertical = vec3(0, viewport_height, 0);
-		auto lower_left_corner = origin - horizontal / 2.0 - vertical / 2.0 - vec3(0, 0, focal_length);
-
-		// Render
-
-		buffer << "P3\n" << image_width << ' ' << image_height << "\n255\n";
-
-		for (int j = image_height - 1; j >= 0; --j)
+		for (int y = 0; y < m_finalImage->height(); y++)
 		{
-			std::cout << "\rScanlines remaining: " << j << std::flush;
-
-			for (int i = 0; i < image_width; ++i)
+			for (int x = 0; x < m_finalImage->width(); x++)
 			{
-				color pixel_color(0, 0, 0);
-				for (int s = 0; s < samplesPerPixel; ++s)
-				{
-					auto u = (i + randomDouble()) / (image_width - 1);
-					auto v = (j + randomDouble()) / (image_height - 1);
-					Ray r = camera->getRay(u, v);
-					pixel_color += rayColor(r, world, recursionDepth);
-				}
-				writeColor(buffer, pixel_color, samplesPerPixel);
+				// Normalize coordinate
+				glm::vec2 coord = {
+						(float)x / (float)m_finalImage->width(),
+						(float)y / (float)m_finalImage->height()
+				};
+				coord = coord * 2.0f - 1.0f;
+				m_imageData[x + y * m_finalImage->width()] =  perPixel(coord);;
 			}
 		}
 
-		std::cout << "\nDone.\n";
-	}
-
-	void Renderer::writeColor(std::ostream& out, color pixelColor, int samplesPerPixel)
-	{
-		auto r = pixelColor.x;
-		auto g = pixelColor.y;
-		auto b = pixelColor.z;
-
-		// Divide the color by the number of samples and gamma-correct for gamma=2.0.
-		auto scale = 1.0 / samplesPerPixel;
-		r = std::sqrt(scale * r);
-		g = std::sqrt(scale * g);
-		b = std::sqrt(scale * b);
-
-		// Write the translated [0,255] value of each color component.
-		out << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
-			<< static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
-			<< static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
+		m_finalImage->setData(m_imageData);
 	}
 
 	color Renderer::rayColor(const Ray& ray, const ref<Hittable>& world, int depth)
 	{
 		hit_record rec{};
 
+		//
+		//	TODO: solve rest of the quadratic formula to get hit distances
+		//	TODO: get coordinate of each hit
+		// 	TODO: figure out the normal of each hit
+
 		// If we've exceeded the ray bounce limit, no more light is gathered.
 		if (depth <= 0)
-			return {0, 0, 0};
+			return { 0, 0, 0 };
 
 		// If the ray hits nothing, return the background color.
 		if (!world->hit(ray, 0.001, infinity, rec))
@@ -99,12 +63,83 @@ namespace raytracer
 		if (!rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
 			return emitted;
 
-		return emitted + attenuation * rayColor(scattered, world, depth-1);
+		return emitted + attenuation * rayColor(scattered, world, depth - 1);
 	}
 
 	Renderer::Renderer(const RendererSpecification& spec)
-	: m_Specification(spec)
+			: m_Specification(spec)
 	{
 
+	}
+
+	uint32_t Renderer::perPixel(glm::vec2 coord)
+	{
+		auto r = (uint8_t)(coord.x*255.0f);
+		auto g = (uint8_t(coord.y * 255.0f));
+
+		glm::vec3 rayOrigin(0,0,2.0f);
+		glm::vec3 rayDirection(coord.x, coord.y, -1.0f);
+		rayDirection = glm::normalize(rayDirection);
+		float radius = 0.5f;
+
+		float a = glm::dot(rayDirection, rayDirection);
+		float b = 2.0f * glm::dot(rayOrigin, rayDirection);
+		float c = glm::dot(rayOrigin, rayOrigin) - radius * radius;
+
+		float descriminant = b * b - 4.0f * a * c;
+		if (descriminant >= 0) {
+			return 0xffff00ff;
+		}
+
+		return 0xff000000;
+/*
+		color pixel_color(0, 0, 0);
+		for (int s = 0; s < m_Specification.samplesPerPixel; ++s)
+		{
+			auto u = (coord.x + randomDouble()) / (m_finalImage->width() - 1);
+			auto v = (coord.y + randomDouble()) / (m_finalImage->height() - 1);
+			Ray r = m_camera->getRay(u, v);
+			pixel_color += rayColor(r, m_world, m_Specification.recursionDepth);
+		}
+
+		uint32_t outColor = 0xff000000;
+
+		auto r = pixel_color.x;
+		auto g = pixel_color.y;
+		auto b = pixel_color.z;
+
+		// Divide the color by the number of samples and gamma-correct for gamma=2.0.
+		auto scale = 1.0 / m_Specification.samplesPerPixel;
+		r = std::sqrt(scale * r);
+		g = std::sqrt(scale * g);
+		b = std::sqrt(scale * b);
+
+		// Write the translated [0,255] value of each color component.
+		outColor |= static_cast<uint32_t>(256 * clamp(r, 0.0, 0.999));
+		outColor |= static_cast<uint32_t>(256 * clamp(g, 0.0, 0.999)) << 8;
+		outColor |= static_cast<uint32_t>(256 * clamp(b, 0.0, 0.999)) << 16;
+
+		return outColor;*/
+	}
+
+	void Renderer::onResize(uint32_t width, uint32_t height)
+	{
+		if (m_finalImage)
+		{
+			if (m_finalImage->width() == width && m_finalImage->height() == height) return;
+			m_finalImage->resize(width, height);
+		}
+		else
+		{
+			m_finalImage = createRef<Image>(width, height);
+		}
+
+		delete[] m_imageData;
+		m_imageData = new uint32_t[m_finalImage->width() * m_finalImage->height()];
+	}
+
+	ref<Image> Renderer::getFinalImage()
+	{
+		return m_finalImage;
 	}
 }

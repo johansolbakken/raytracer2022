@@ -25,22 +25,8 @@ raytracer::ref<raytracer::Hittable> createWorld() {
 
 int main(int argc, char** argv)
 {
-	std::string filename = "image.ppm";
-
-	if (argc != 1)
-	{
-		filename = argv[1];
-	}
-
-	std::ofstream file(filename, std::ios::out);
-	file.clear();
-
+	constexpr auto image_width = 400;
 	constexpr auto aspect_ratio = 16.0 / 9.0;
-
-	// Image
-	raytracer::Image image{};
-	image.aspect_ratio = aspect_ratio;
-	image.image_width = 400;
 
 	// World
 	auto world = createWorld();
@@ -59,15 +45,15 @@ int main(int argc, char** argv)
 	auto camera = raytracer::createRef<raytracer::Camera>(cameraSpec);
 
 	// render
-	raytracer::RendererSpecification rendererSpecification{.buffer = file};
+	raytracer::RendererSpecification rendererSpecification;
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
 	rendererSpecification.backgroundColor = { 0.70, 0.80, 1.00};
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.render(image, world, camera);
-
-	file.close();
+	renderer.onResize(image_width, image_width / aspect_ratio);
+	renderer.render(world, camera);
+	renderer.getFinalImage()->save();
 
 	return 0;
 }
