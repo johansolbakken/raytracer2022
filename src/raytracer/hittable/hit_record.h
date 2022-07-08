@@ -16,6 +16,7 @@ namespace raytracer
 		double t;
 		bool front_face;
 		ref<Material> mat_ptr;
+		double u, v;
 
 		void setFaceNormal(const Ray& r, const vec3& outward_normal);
 
