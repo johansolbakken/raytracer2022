@@ -6,16 +6,14 @@
 raytracer::ref<raytracer::Hittable> createWorld() {
 	using namespace raytracer;
 
-	auto material_ground = createRef<Lambertian>(color(0.8, 0.8, 0.0));
-	auto material_center = createRef<Lambertian>(color(0.7, 0.3, 0.3));
-	auto material_left   = createRef<Metal>(color(0.8, 0.8, 0.8), 0.3);
-	auto material_right  = createRef<Metal>(color(0.8, 0.6, 0.2), 1.0);
+	auto material_left = createRef<Lambertian>(color(1, 0, 0));
+	auto material_right = createRef<Lambertian>(color(0, 0, 1));
+
+	auto R = std::cos(M_PI/4.0);
 
 	auto world = createRef<HittableList>();
-	world->add<Sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground);
-	world->add<Sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center);
-	world->add<Sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left);
-	world->add<Sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right);
+	world->add<Sphere>(point3(-R, 0, -1), R, material_left);
+	world->add<Sphere>(point3(R,0, -1), R, material_right);
 
 	return world;
 }
@@ -42,9 +40,8 @@ int main(int argc, char** argv)
 
 	// Camera
 	raytracer::CameraSpecification cameraSpec;
+	cameraSpec.vfov = 90.0f;
 	cameraSpec.aspect_ratio = image.aspect_ratio;
-	cameraSpec.vfov = 90.0;
-	cameraSpec.aperture = 0.01;
 
 	auto camera = raytracer::createRef<raytracer::Camera>(cameraSpec);
 
