@@ -33,9 +33,12 @@ namespace raytracer
 		}
 
 		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
+		bool boundingBox(double time0, double time1, Aabb &output_box) const override;
 
-	public:
-		std::vector<ref<Hittable>> objects;
+		[[nodiscard]] std::vector<ref<Hittable>> objects() const { return m_objects; }
+
+	private:
+		std::vector<ref<Hittable>> m_objects;
 	};
 
 }

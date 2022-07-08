@@ -8,6 +8,8 @@
 
 #include "raytracer/ray.h"
 
+#include "accelerator/aabb.h"
+
 namespace raytracer
 {
 	Sphere::Sphere(raytracer::point3 cen, double r, raytracer::ref<raytracer::Material> material)
@@ -42,6 +44,15 @@ namespace raytracer
 		rec.setFaceNormal(r, outward_normal);
 		rec.mat_ptr = m_material;
 
+		return true;
+	}
+
+	bool Sphere::boundingBox(double time0, double time1, Aabb& output_box) const
+	{
+		output_box = Aabb(
+				m_center - vec3(m_radius, m_radius, m_radius),
+				m_center + vec3(m_radius, m_radius, m_radius)
+		);
 		return true;
 	}
 

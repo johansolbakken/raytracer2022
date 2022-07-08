@@ -4,6 +4,8 @@
 
 #include "hittablelist.h"
 
+#include "accelerator/aabb.h"
+
 namespace raytracer
 {
 
@@ -13,7 +15,7 @@ namespace raytracer
 		bool hit_anything = false;
 		auto closest_so_far = t_max;
 
-		for (const auto& object : objects) {
+		for (const auto& object : m_objects) {
 			if (object->hit(r, t_min, closest_so_far, temp_rec)) {
 				hit_anything = true;
 				closest_so_far = temp_rec.t;
@@ -26,17 +28,33 @@ namespace raytracer
 
 	void HittableList::add(const ref<Hittable>& object)
 	{
-		objects.push_back(object);
+		m_objects.push_back(object);
 	}
 
 	void HittableList::clear()
 	{
-		objects.clear();
+		m_objects.clear();
 	}
 
 	HittableList::HittableList(const ref<Hittable>& object)
 	{
 		add(object);
+	}
+
+	bool HittableList::boundingBox(double time0, double time1, Aabb& output_box) const
+	{
+		if (m_objects.empty()) return false;
+
+		Aabb temp_box;
+		bool first_box = true;
+
+		for (const auto& object : m_objects) {
+			if (!object->boundingBox(time0, time1, temp_box)) return false;
+			output_box = first_box ? temp_box : Aabb::surroundingBox(output_box, temp_box);
+			first_box = false;
+		}
+
+		return true;
 	}
 
 }
