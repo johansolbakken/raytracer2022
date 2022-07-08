@@ -8,8 +8,8 @@ namespace raytracer
 		return m_origin;
 	}
 
-	Ray::Ray(const point3& origin, const vec3& direction)
-			: m_origin(origin), m_direction(direction)
+	Ray::Ray(const point3& origin, const vec3& direction, double time)
+			: m_origin(origin), m_direction(direction), m_time(time)
 	{
 	}
 
