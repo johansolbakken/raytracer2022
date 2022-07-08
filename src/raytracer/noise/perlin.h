@@ -14,6 +14,9 @@ namespace raytracer
 
 		[[nodiscard]] double noise(const point3& p) const;
 
+		double turb(const point3& p, int depth=7) const;
+
+
 	private:
 		static int* perlin_generate_perm();
 
