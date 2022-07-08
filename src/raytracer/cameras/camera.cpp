@@ -8,19 +8,34 @@
 
 namespace raytracer
 {
-	Ray raytracer::Camera::getRay(double u, double v) const
+	Ray raytracer::Camera::getRay(double s, double t) const
 	{
-		return { m_origin, m_lowerLeftCorner + u * m_horizontal + v * m_vertical - m_origin };
+		vec3 rd = m_lensRadius * randomInUnitDisk();
+		vec3 offset = m_u * rd.x + m_v * rd.y;
+
+		auto origin = m_origin + offset;
+		auto direction = m_lowerLeftCorner + s * m_horizontal + t * m_vertical - m_origin - offset;
+
+		return { origin, direction };
 	}
 
 	Camera::Camera(const raytracer::CameraSpecification& spec)
 			: m_specification(spec)
 	{
-		auto viewport_width = spec.aspect_ratio * spec.viewport_height;
+		auto theta = glm::radians(spec.vfov);
+		auto h = std::tan(theta / 2);
+		auto viewport_height = 2.0 * h;
+		auto viewport_width = spec.aspect_ratio * viewport_height;
 
-		m_origin = point3(0, 0, 0);
-		m_horizontal = vec3(viewport_width, 0.0, 0.0);
-		m_vertical = vec3(0.0, spec.viewport_height, 0.0);
-		m_lowerLeftCorner = m_origin - m_horizontal / 2.0 - m_vertical / 2.0 - vec3(0, 0, spec.focal_length);
+		m_w = glm::normalize(spec.lookFrom - spec.lookAt);
+		m_u = glm::normalize(glm::cross(spec.vup, m_w));
+		m_v = glm::cross(m_w, m_u);
+
+		m_origin = spec.lookFrom;
+		m_horizontal = spec.focusDistance * viewport_width * m_u;
+		m_vertical = spec.focusDistance * viewport_height * m_v;
+		m_lowerLeftCorner = m_origin - m_horizontal / 2.0 - m_vertical / 2.0 - spec.focusDistance * m_w;
+
+		m_lensRadius = spec.aperture / 2.0;
 	}
 }

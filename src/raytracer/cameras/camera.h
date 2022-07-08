@@ -8,9 +8,14 @@ namespace raytracer
 
 	struct CameraSpecification
 	{
+		double vfov=90.0;
 		double aspect_ratio = 16.0 / 9.0;
-		double viewport_height = 2.0;
-		double focal_length = 1.0;
+		double aperture = 0.01;
+		double focusDistance = 1.0;
+
+		point3 lookFrom={0,0,0};
+		point3 lookAt={0,0,-1};
+		vec3 vup={0,1,0};
 	};
 
 	class Camera
@@ -25,6 +30,9 @@ namespace raytracer
 		point3 m_lowerLeftCorner{};
 		vec3 m_horizontal{};
 		vec3 m_vertical{};
+		vec3 m_u{}, m_v{}, m_w{};
+
+		double m_lensRadius;
 
 		CameraSpecification m_specification;
 	};
