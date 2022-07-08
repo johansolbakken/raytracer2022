@@ -25,22 +25,8 @@ raytracer::ref<raytracer::Hittable> createWorld() {
 
 int main(int argc, char** argv)
 {
-	std::string filename = "image.ppm";
-
-	if (argc != 1)
-	{
-		filename = argv[1];
-	}
-
-	std::ofstream file(filename, std::ios::out);
-	file.clear();
-
+	constexpr auto window_width = 400;
 	constexpr auto aspect_ratio = 1.0;
-
-	// Image
-	raytracer::Image image{};
-	image.aspect_ratio = aspect_ratio;
-	image.image_width = 600;
 
 	// World
 	auto world = createWorld();
@@ -49,7 +35,7 @@ int main(int argc, char** argv)
 	raytracer::CameraSpecification cameraSpec;
 	cameraSpec.vfov = 40.0f;
 	cameraSpec.aspect_ratio = aspect_ratio;
-	cameraSpec.lookFrom = {278, 278, -800};
+	cameraSpec.lookFrom = {278, 278, 800};
 	cameraSpec.lookAt = {278, 278, 0};
 	cameraSpec.focusDistance = 10.0;
 	cameraSpec.aperture = 0.0;
@@ -59,15 +45,18 @@ int main(int argc, char** argv)
 	auto camera = raytracer::createRef<raytracer::Camera>(cameraSpec);
 
 	// render
-	raytracer::RendererSpecification rendererSpecification{.buffer = file};
+	raytracer::RendererSpecification rendererSpecification;
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
-	rendererSpecification.backgroundColor = { 0.0, 0.0, 0.0};
+	rendererSpecification.backgroundColor = { 0, 0, 0};
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.render(image, world, camera);
+	renderer.onResize(window_width, window_width/aspect_ratio);
+	renderer.render( world, camera);
 
-	file.close();
+	auto image = renderer.getFinalImage();
+	image->flipHorizontal();
+	image->save();
 
 	return 0;
 }

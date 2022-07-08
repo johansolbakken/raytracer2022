@@ -7,6 +7,8 @@
 
 #include "hittable.h"
 
+// TODO: Continue https://raytracing.github.io/books/RayTracingTheNextWeek.html#motionblur
+
 namespace raytracer
 {
 	class HittableList;

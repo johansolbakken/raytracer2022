@@ -43,10 +43,7 @@ namespace raytracer
 	{
 		hit_record rec{};
 
-		//
-		//	TODO: solve rest of the quadratic formula to get hit distances
-		//	TODO: get coordinate of each hit
-		// 	TODO: figure out the normal of each hit
+
 
 		// If we've exceeded the ray bounce limit, no more light is gathered.
 		if (depth <= 0)
@@ -74,6 +71,13 @@ namespace raytracer
 
 	uint32_t Renderer::perPixel(glm::vec2 coord)
 	{
+#if 0 // Cherno tutorial
+
+		//
+		//	TODO: solve rest of the quadratic formula to get hit distances
+		//	TODO: get coordinate of each hit
+		// 	TODO: figure out the normal of each hit
+
 		auto r = (uint8_t)(coord.x*255.0f);
 		auto g = (uint8_t(coord.y * 255.0f));
 
@@ -92,7 +96,7 @@ namespace raytracer
 		}
 
 		return 0xff000000;
-/*
+#else
 		color pixel_color(0, 0, 0);
 		for (int s = 0; s < m_Specification.samplesPerPixel; ++s)
 		{
@@ -119,7 +123,8 @@ namespace raytracer
 		outColor |= static_cast<uint32_t>(256 * clamp(g, 0.0, 0.999)) << 8;
 		outColor |= static_cast<uint32_t>(256 * clamp(b, 0.0, 0.999)) << 16;
 
-		return outColor;*/
+		return outColor;
+#endif
 	}
 
 	void Renderer::onResize(uint32_t width, uint32_t height)

@@ -8,45 +8,26 @@ raytracer::ref<raytracer::Hittable> createWorld() {
 
 	ref<HittableList> objects = createRef<HittableList>();
 
-	auto red   = createRef<Lambertian>(color(.65, .05, .05));
-	auto white = createRef<Lambertian>(color(.73, .73, .73));
-	auto green = createRef<Lambertian>(color(.12, .45, .15));
-	auto light = createRef<DiffuseLight>(color(15, 15, 15));
-
-	objects->add<yz_rect>(0, 555, 0, 555, 555, green);
-	objects->add<yz_rect>(0, 555, 0, 555, 0, red);
-	objects->add<xz_rect>(213, 343, 227, 332, 554, light);
-	objects->add<xz_rect>(0, 555, 0, 555, 0, white);
-	objects->add<xz_rect>(0, 555, 0, 555, 555, white);
-	objects->add<xy_rect>(0, 555, 0, 555, 555, white);
-
-	objects->add<Box>(point3(130, 0, 65), point3(295, 165, 230), white);
-	objects->add<Box>(point3(265, 0, 295), point3(430, 330, 460), white);
+	auto material = createRef<Metal>(color(1,0,0));
+	objects->add<Sphere>(point3(0,0,-2), 0.5, material);
 
 	return objects;
 }
 
 int main(int argc, char** argv)
 {
-
+	constexpr auto image_width = 400;
 	constexpr auto aspect_ratio = 1.0;
-
-	// Image
-	raytracer::Image image{};
-	image.width = 600;
-	image.height = (int) (image.width / aspect_ratio);
-	image.filename = "image.png";
-	image.data = new uint32_t[image.width * image.height];
 
 	// World
 	auto world = createWorld();
 
 	// Camera
 	raytracer::CameraSpecification cameraSpec;
-	cameraSpec.vfov = 40.0f;
+	cameraSpec.vfov = 90.0f;
 	cameraSpec.aspect_ratio = aspect_ratio;
-	cameraSpec.lookFrom = {278, 278, -800};
-	cameraSpec.lookAt = {278, 278, 0};
+	cameraSpec.lookFrom = {0, 0, -2};
+	cameraSpec.lookAt = {0, 0, -1};
 	cameraSpec.focusDistance = 10.0;
 	cameraSpec.aperture = 0.0;
 	cameraSpec.time0 = 0.0;
@@ -61,11 +42,12 @@ int main(int argc, char** argv)
 	rendererSpecification.backgroundColor = { 0.2, 0.2, 0.2};
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.render(image, world, camera);
+	renderer.onResize(image_width, image_width/aspect_ratio);
+	renderer.render(world, camera);
 
-	// Export
-	image.save();
-	delete[] image.data;
+	auto image = renderer.getFinalImage();
+	image->flipHorizontal();
+	image->save();
 
 	return 0;
 }

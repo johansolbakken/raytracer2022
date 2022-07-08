@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 
 	// Camera
 	raytracer::CameraSpecification cameraSpec;
-	cameraSpec.vfov = 20.0f;
+	cameraSpec.vfov = 90.0f;
 	cameraSpec.aspect_ratio = aspect_ratio;
 	cameraSpec.lookFrom = {-2,2,1};
 
