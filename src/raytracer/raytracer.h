@@ -9,6 +9,7 @@
 #include "hittable/sphere.h"
 #include "hittable/movingsphere.h"
 #include "hittable/aarect.h"
+#include "hittable/box.h"
 
 #include "materials/lambertian.h"
 #include "materials/metal.h"

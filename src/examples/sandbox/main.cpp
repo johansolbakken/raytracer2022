@@ -20,6 +20,9 @@ raytracer::ref<raytracer::Hittable> createWorld() {
 	objects->add<xz_rect>(0, 555, 0, 555, 555, white);
 	objects->add<xy_rect>(0, 555, 0, 555, 555, white);
 
+	objects->add<Box>(point3(130, 0, 65), point3(295, 165, 230), white);
+	objects->add<Box>(point3(265, 0, 295), point3(430, 330, 460), white);
+
 	return objects;
 }
 
