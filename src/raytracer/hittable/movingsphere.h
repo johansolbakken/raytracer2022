@@ -1,0 +1,25 @@
+#pragma once
+
+#include "hittable.h"
+#include "utils/glmutils.h"
+
+namespace raytracer
+{
+	class MovingSphere : public Hittable
+	{
+	public:
+		MovingSphere() = default;
+		MovingSphere(point3 cen0, point3 cen1, double _time0, double _time1, double r, const ref<Material>& m);
+
+		virtual bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
+
+		point3 center(double time) const;
+
+	private:
+		point3 m_center0, m_center1;
+		double m_time0, m_time1;
+		double m_radius;
+		ref<Material> m_material;
+	};
+
+}
