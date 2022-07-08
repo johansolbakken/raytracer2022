@@ -8,10 +8,12 @@
 #include "hittable/hittablelist.h"
 #include "hittable/sphere.h"
 #include "hittable/movingsphere.h"
+#include "hittable/aarect.h"
 
 #include "materials/lambertian.h"
 #include "materials/metal.h"
 #include "materials/dielectric.h"
+#include "materials/diffuselight.h"
 
 #include "cameras/camera.h"
 

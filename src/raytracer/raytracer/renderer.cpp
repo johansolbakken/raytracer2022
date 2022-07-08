@@ -88,18 +88,18 @@ namespace raytracer
 		if (depth <= 0)
 			return {0, 0, 0};
 
-		if (world->hit(ray, 0.001, infinity, rec))
-		{
-			Ray scattered;
-			color attenuation;
-			if (rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
-				return attenuation * rayColor(scattered, world, depth-1);
-			return {0,0,0};
-		}
+		// If the ray hits nothing, return the background color.
+		if (!world->hit(ray, 0.001, infinity, rec))
+			return m_Specification.backgroundColor;
 
-		vec3 unit_direction = glm::normalize(ray.direction());
-		auto t = 0.5 * (unit_direction.y + 1.0);
-		return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+		Ray scattered;
+		color attenuation;
+		color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+
+		if (!rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
+			return emitted;
+
+		return emitted + attenuation * rayColor(scattered, world, depth-1);
 	}
 
 	Renderer::Renderer(const RendererSpecification& spec)

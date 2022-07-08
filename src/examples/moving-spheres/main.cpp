@@ -91,6 +91,7 @@ int main(int argc, char** argv)
 	raytracer::RendererSpecification rendererSpecification{.buffer = file};
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
+	rendererSpecification.backgroundColor = { 0.70, 0.80, 1.00};
 
 	raytracer::Renderer renderer(rendererSpecification);
 	renderer.render(image, world, camera);

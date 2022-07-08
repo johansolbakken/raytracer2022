@@ -16,6 +16,7 @@ namespace raytracer
 		std::ostream& buffer;
 		int samplesPerPixel;
 		int recursionDepth;
+		color backgroundColor={0,0,0};
 	};
 
 	class Renderer
