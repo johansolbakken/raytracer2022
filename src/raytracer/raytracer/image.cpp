@@ -8,11 +8,12 @@
 
 namespace raytracer
 {
-	Image::Image(uint32_t width, uint32_t height, uint32_t channels, std::string  filename)
+	Image::Image(uint32_t width, uint32_t height, uint32_t channels, std::string filename)
 			: m_width(width), m_height(height), m_channels(channels), m_filename(std::move(filename))
 	{
 		allocate();
-		for (int i = 0; i < m_width * m_height; i++) {
+		for (int i = 0; i < m_width * m_height; i++)
+		{
 			m_data[i] = 0;
 		}
 	}
@@ -38,7 +39,6 @@ namespace raytracer
 	}
 
 
-
 	void Image::save() const
 	{
 		stbi_write_png(
@@ -53,7 +53,8 @@ namespace raytracer
 
 	void Image::setData(const uint32_t* data)
 	{
-		for (uint32_t i = 0; i < m_width * m_height; i++) {
+		for (uint32_t i = 0; i < m_width * m_height; i++)
+		{
 			m_data[i] = data[i];
 		}
 	}
@@ -75,10 +76,12 @@ namespace raytracer
 		uint32_t* old = m_data;
 		m_data = new uint32_t[m_width * m_height];
 
-		for (int y = 0; y < m_height; y++){
-			for (int x = 0; x < m_width; x++) {
+		for (int y = 0; y < m_height; y++)
+		{
+			for (int x = 0; x < m_width; x++)
+			{
 				int oldY = m_height - y - 1;
-				m_data[x + y * width()] = old[x + oldY* m_width];
+				m_data[x + y * width()] = old[x + oldY * m_width];
 			}
 		}
 
