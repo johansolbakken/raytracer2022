@@ -1,15 +1,13 @@
-#include <iostream>
-#include <fstream>
-
 #include <raytracer.h>
 
-raytracer::ref<raytracer::Hittable> createWorld() {
+raytracer::ref<raytracer::Hittable> createWorld()
+{
 	using namespace raytracer;
 
 	ref<HittableList> objects = createRef<HittableList>();
 
-	auto material = createRef<Metal>(color(1,0,0));
-	objects->add<Sphere>(point3(0,0,-2), 0.5, material);
+	auto material = createRef<Lambertian>(color(1, 0, 0));
+	objects->add<Sphere>(point3(0, 0, 0), 0.5, material);
 
 	return objects;
 }
@@ -26,8 +24,8 @@ int main(int argc, char** argv)
 	raytracer::CameraSpecification cameraSpec;
 	cameraSpec.vfov = 90.0f;
 	cameraSpec.aspect_ratio = aspect_ratio;
-	cameraSpec.lookFrom = {0, 0, -2};
-	cameraSpec.lookAt = {0, 0, -1};
+	cameraSpec.lookFrom = { 0, 0, -2 };
+	cameraSpec.lookAt = { 0, 0, 0 };
 	cameraSpec.focusDistance = 10.0;
 	cameraSpec.aperture = 0.0;
 	cameraSpec.time0 = 0.0;
@@ -39,10 +37,10 @@ int main(int argc, char** argv)
 	raytracer::RendererSpecification rendererSpecification;
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
-	rendererSpecification.backgroundColor = { 0.2, 0.2, 0.2};
+	rendererSpecification.backgroundColor = { 0.1, 0.1, 0.1 };
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.onResize(image_width, image_width/aspect_ratio);
+	renderer.onResize(image_width, image_width / aspect_ratio);
 	renderer.render(world, camera);
 
 	auto image = renderer.getFinalImage();

@@ -3,7 +3,8 @@
 
 #include <raytracer.h>
 
-raytracer::ref<raytracer::Hittable> createWorld() {
+raytracer::ref<raytracer::Hittable> createWorld()
+{
 	using namespace raytracer;
 
 	auto world = createRef<HittableList>();
@@ -11,8 +12,8 @@ raytracer::ref<raytracer::Hittable> createWorld() {
 	auto pertex = createRef<NoiseTexture>(4);
 	auto material = createRef<Lambertian>(pertex);
 
-	world->add<Sphere>(point3(0,-1000, 0), 1000, material);
-	world->add<Sphere>(point3(0,2,0), 2, material);
+	world->add<Sphere>(point3(0, -1000, 0), 1000, material);
+	world->add<Sphere>(point3(0, 2, 0), 2, material);
 
 	return world;
 }
@@ -43,8 +44,8 @@ int main(int argc, char** argv)
 	raytracer::CameraSpecification cameraSpec;
 	cameraSpec.vfov = 20.0f;
 	cameraSpec.aspect_ratio = aspect_ratio;
-	cameraSpec.lookFrom = {13,2,3};
-	cameraSpec.lookAt = {0,0,0};
+	cameraSpec.lookFrom = { 13, 2, 3 };
+	cameraSpec.lookAt = { 0, 0, 0 };
 	cameraSpec.focusDistance = 10.0;
 	cameraSpec.aperture = 0.0;
 	cameraSpec.time0 = 0.0;
@@ -53,10 +54,10 @@ int main(int argc, char** argv)
 	auto camera = raytracer::createRef<raytracer::Camera>(cameraSpec);
 
 	// render
-	raytracer::RendererSpecification rendererSpecification{.buffer = file};
+	raytracer::RendererSpecification rendererSpecification{ .buffer = file };
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
-	rendererSpecification.backgroundColor = { 0.70, 0.80, 1.00};
+	rendererSpecification.backgroundColor = { 0.70, 0.80, 1.00 };
 
 	raytracer::Renderer renderer(rendererSpecification);
 	renderer.render(image, world, camera);

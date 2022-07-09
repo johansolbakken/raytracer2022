@@ -16,11 +16,9 @@ add_library(raytracer
         hittable/hit_record.h hittable/hit_record.cpp
 
         materials/material.h
-        materials/lambertian.cpp materials/lambertian.h materials/metal.cpp materials/metal.h materials/dielectric.cpp materials/dielectric.h accelerator/aabb.cpp accelerator/aabb.h hittable/bvh.cpp hittable/bvh.h hittable/movingsphere.cpp hittable/movingsphere.h textures/texture.h textures/solidcolor.cpp textures/solidcolor.h textures/checkertexture.cpp textures/checkertexture.h noise/perlin.cpp noise/perlin.h textures/noisetexture.cpp textures/noisetexture.h textures/imagetexture.cpp textures/imagetexture.h materials/diffuselight.cpp materials/diffuselight.h hittable/aarect.h hittable/aarect.cpp hittable/box.cpp hittable/box.h)
+        materials/lambertian.cpp materials/lambertian.h materials/metal.cpp materials/metal.h materials/dielectric.cpp materials/dielectric.h accelerator/aabb.cpp accelerator/aabb.h hittable/bvh.cpp hittable/bvh.h hittable/movingsphere.cpp hittable/movingsphere.h textures/texture.h textures/solidcolor.cpp textures/solidcolor.h textures/checkertexture.cpp textures/checkertexture.h noise/perlin.cpp noise/perlin.h textures/noisetexture.cpp textures/noisetexture.h textures/imagetexture.cpp textures/imagetexture.h materials/diffuselight.cpp materials/diffuselight.h hittable/aarect.h hittable/aarect.cpp hittable/box.cpp hittable/box.h
+        image/stb_image.cpp shapes/shape.cpp shapes/shape.h transformations/transformation.cpp transformations/transformation.h utils/timer.cpp utils/timer.h)
 
-target_link_libraries(raytracer
-        PRIVATE stb_image
-        )
 
 target_include_directories(raytracer
         PRIVATE . ${CMAKE_SOURCE_DIR}/src/3rdparty/stb

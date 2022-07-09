@@ -3,12 +3,13 @@
 
 #include <raytracer.h>
 
-raytracer::ref<raytracer::Hittable> createWorld() {
+raytracer::ref<raytracer::Hittable> createWorld()
+{
 	using namespace raytracer;
 
 	ref<HittableList> objects = createRef<HittableList>();
 
-	auto red   = createRef<Lambertian>(color(.65, .05, .05));
+	auto red = createRef<Lambertian>(color(.65, .05, .05));
 	auto white = createRef<Lambertian>(color(.73, .73, .73));
 	auto green = createRef<Lambertian>(color(.12, .45, .15));
 	auto light = createRef<DiffuseLight>(color(15, 15, 15));
@@ -35,8 +36,8 @@ int main(int argc, char** argv)
 	raytracer::CameraSpecification cameraSpec;
 	cameraSpec.vfov = 40.0f;
 	cameraSpec.aspect_ratio = aspect_ratio;
-	cameraSpec.lookFrom = {278, 278, 800};
-	cameraSpec.lookAt = {278, 278, 0};
+	cameraSpec.lookFrom = { 278, 278, 800 };
+	cameraSpec.lookAt = { 278, 278, 0 };
 	cameraSpec.focusDistance = 10.0;
 	cameraSpec.aperture = 0.0;
 	cameraSpec.time0 = 0.0;
@@ -48,11 +49,11 @@ int main(int argc, char** argv)
 	raytracer::RendererSpecification rendererSpecification;
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
-	rendererSpecification.backgroundColor = { 0, 0, 0};
+	rendererSpecification.backgroundColor = { 0, 0, 0 };
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.onResize(window_width, window_width/aspect_ratio);
-	renderer.render( world, camera);
+	renderer.onResize(window_width, window_width / aspect_ratio);
+	renderer.render(world, camera);
 
 	auto image = renderer.getFinalImage();
 	image->flipHorizontal();

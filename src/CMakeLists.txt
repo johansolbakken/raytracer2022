@@ -1,15 +1,15 @@
 # 3rd party
 add_subdirectory(3rdparty/glm)
-add_subdirectory(3rdparty/stb)
 
 # raytracer
 add_subdirectory(raytracer)
+add_subdirectory(editor)
 
 # working area
 add_subdirectory(examples/sandbox)
 
 # examples
-set(BUILD_EXAMPLES YES)
+option(BUILD_EXAMPLES "Build examples" NO)
 if (BUILD_EXAMPLES)
     add_subdirectory(examples/shiny-metal)
     add_subdirectory(examples/hollow-glass)
