@@ -8,16 +8,20 @@
 
 namespace raytracer
 {
-	DiffuseLight::DiffuseLight(const ref<Texture>& a) : m_emit(a) {}
+	DiffuseLight::DiffuseLight(const ref<Texture>& a) : m_emit(a)
+	{
+	}
 
-	DiffuseLight::DiffuseLight(color c) : m_emit(createRef<SolidColor>(c)) {}
+	DiffuseLight::DiffuseLight(color c) : m_emit(createRef<SolidColor>(c))
+	{
+	}
 
 	bool DiffuseLight::scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const
 	{
 		return false;
 	}
 
-	color DiffuseLight::emitted(double u, double v, const point3& p) const
+	color DiffuseLight::emitted(float u, float v, const point3& p) const
 	{
 		return m_emit->value(u, v, p);
 	}

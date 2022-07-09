@@ -9,13 +9,15 @@ namespace raytracer
 	class CheckerTexture : public Texture
 	{
 	public:
-		CheckerTexture() {}
+		CheckerTexture()
+		{
+		}
 
 		CheckerTexture(ref<Texture> _even, ref<Texture> _odd);
 
 		CheckerTexture(color c1, color c2);
 
-		color value(double u, double v, const point3& p) const override;
+		color value(float u, float v, const point3& p) const override;
 
 	public:
 		ref<Texture> odd;

@@ -16,10 +16,10 @@ namespace raytracer
 
 		~ImageTexture() override;
 
-		[[nodiscard]] color value(double u, double v, const vec3& p) const override;
+		[[nodiscard]] color value(float u, float v, const vec3& p) const override;
 
 	private:
-		unsigned char *m_data;
+		unsigned char* m_data;
 		int m_width, m_height;
 		int m_bytesPerScanline;
 	};

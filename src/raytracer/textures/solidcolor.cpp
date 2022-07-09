@@ -6,7 +6,7 @@
 
 namespace raytracer
 {
-	color SolidColor::value(double u, double v, const vec3& p) const
+	color SolidColor::value(float u, float v, const vec3& p) const
 	{
 		return m_colorValue;
 	}
@@ -15,7 +15,7 @@ namespace raytracer
 	{
 	}
 
-	SolidColor::SolidColor(double red, double green, double blue)
+	SolidColor::SolidColor(float red, float green, float blue)
 			: SolidColor(color(red, green, blue))
 	{
 	}

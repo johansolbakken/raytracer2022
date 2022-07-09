@@ -10,13 +10,14 @@ namespace raytracer
 	{
 	public:
 		NoiseTexture() = default;
-		explicit NoiseTexture(double sc);
 
-		[[nodiscard]] color value(double u, double v, const point3& p) const override;
+		explicit NoiseTexture(float sc);
+
+		[[nodiscard]] color value(float u, float v, const point3& p) const override;
 
 	public:
 		Perlin m_noise;
-		double m_scale{};
+		float m_scale{};
 	};
 
 } // raytracer

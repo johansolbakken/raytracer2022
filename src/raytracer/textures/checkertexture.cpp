@@ -20,7 +20,7 @@ namespace raytracer
 	{
 	}
 
-	color CheckerTexture::value(double u, double v, const point3& p) const
+	color CheckerTexture::value(float u, float v, const point3& p) const
 	{
 		auto sines = std::sin(10 * p.x) * std::sin(10 * p.y) * std::sin(10 * p.z);
 		if (sines < 0)

@@ -12,6 +12,7 @@ namespace raytracer
 	{
 	public:
 		explicit DiffuseLight(const ref<Texture>& a);
+
 		explicit DiffuseLight(color c);
 
 		~DiffuseLight() override = default;
@@ -20,7 +21,7 @@ namespace raytracer
 				const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered
 		) const override;
 
-		[[nodiscard]] color emitted(double u, double v, const point3& p) const override;
+		[[nodiscard]] color emitted(float u, float v, const point3& p) const override;
 
 	public:
 		ref<Texture> m_emit;

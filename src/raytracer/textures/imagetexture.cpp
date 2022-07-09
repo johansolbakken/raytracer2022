@@ -10,7 +10,9 @@
 namespace raytracer
 {
 	ImageTexture::ImageTexture()
-			: m_data(nullptr), m_width(0), m_height(0), m_bytesPerScanline(0) {}
+			: m_data(nullptr), m_width(0), m_height(0), m_bytesPerScanline(0)
+	{
+	}
 
 	ImageTexture::ImageTexture(const std::string& filename)
 	{
@@ -18,7 +20,8 @@ namespace raytracer
 
 		m_data = stbi_load(filename.c_str(), &m_width, &m_height, &components_per_pixel, components_per_pixel);
 
-		if (!m_data) {
+		if (!m_data)
+		{
 			std::cerr << "ERROR: Could not load texture image file '" << filename << "'.\n";
 			m_width = m_height = 0;
 		}
@@ -26,15 +29,15 @@ namespace raytracer
 		m_bytesPerScanline = bytes_per_pixel * m_width;
 	}
 
-	color ImageTexture::value(double u, double v, const vec3& p) const
+	color ImageTexture::value(float u, float v, const vec3& p) const
 	{
 		// If we have no texture data, then return solid cyan as a debugging aid.
 		if (m_data == nullptr)
-			return {0,1,1};
+			return { 0, 1, 1 };
 
 		// Clamp input texture coordinates to [0,1] x [1,0]
-		u = clamp(u, 0.0, 1.0);
-		v = 1.0 - clamp(v, 0.0, 1.0);  // Flip V to image coordinates
+		u = clamp(u, 0.0f, 1.0f);
+		v = 1.0f - clamp(v, 0.0f, 1.0f);  // Flip V to image coordinates
 
 		auto i = static_cast<int>(u * m_width);
 		auto j = static_cast<int>(v * m_height);
@@ -46,7 +49,7 @@ namespace raytracer
 		const auto color_scale = 1.0 / 255.0;
 		auto pixel = m_data + j * m_bytesPerScanline + i * bytes_per_pixel;
 
-		return {color_scale*pixel[0], color_scale*pixel[1], color_scale*pixel[2]};
+		return { color_scale * pixel[0], color_scale * pixel[1], color_scale * pixel[2] };
 	}
 
 	ImageTexture::~ImageTexture()

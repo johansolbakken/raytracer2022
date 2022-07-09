@@ -3,10 +3,12 @@
 #include <memory>
 #include <limits>
 
-namespace raytracer {
+namespace raytracer
+{
 
 	template<typename T>
 	using scope = std::unique_ptr<T>;
+
 	template<typename T, typename ... Args>
 	constexpr scope<T> createScope(Args&& ... args)
 	{
@@ -15,6 +17,7 @@ namespace raytracer {
 
 	template<typename T>
 	using ref = std::shared_ptr<T>;
+
 	template<typename T, typename ... Args>
 	constexpr ref<T> createRef(Args&& ... args)
 	{

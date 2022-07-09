@@ -17,9 +17,9 @@ namespace raytracer
 
 		explicit SolidColor(color c);
 
-		SolidColor(double red, double green, double blue);
+		SolidColor(float red, float green, float blue);
 
-		[[nodiscard]] color value(double u, double v, const vec3& p) const override;
+		[[nodiscard]] color value(float u, float v, const vec3& p) const override;
 
 	private:
 		color m_colorValue{};

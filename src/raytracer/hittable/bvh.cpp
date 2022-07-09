@@ -13,13 +13,13 @@
 namespace raytracer
 {
 
-	BvhNode::BvhNode(const HittableList& list, double time0, double time1)
+	BvhNode::BvhNode(const HittableList& list, float time0, float time1)
 			: BvhNode(list.objects(), 0, list.objects().size(), time0, time1)
 	{
 	}
 
 	BvhNode::BvhNode(const std::vector<ref<Hittable>>& src_objects,
-			size_t start, size_t end, double time0, double time1)
+			size_t start, size_t end, float time0, float time1)
 	{
 		auto objects = src_objects; // Create a modifiable array of the source scene objects
 
@@ -66,13 +66,13 @@ namespace raytracer
 		m_box = Aabb::surroundingBox(box_left, box_right);
 	}
 
-	bool BvhNode::boundingBox(double time0, double time1, Aabb& output_box) const
+	bool BvhNode::boundingBox(float time0, float time1, Aabb& output_box) const
 	{
 		output_box = m_box;
 		return true;
 	}
 
-	bool BvhNode::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
+	bool BvhNode::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
 	{
 		if (!m_box.hit(r, t_min, t_max))
 			return false;

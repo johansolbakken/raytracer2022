@@ -4,7 +4,7 @@
 
 namespace raytracer
 {
-	bool Aabb::hit(const Ray& r, double t_min, double t_max) const
+	bool Aabb::hit(const Ray& r, float t_min, float t_max) const
 	{
 		for (int a = 0; a < 3; a++)
 		{

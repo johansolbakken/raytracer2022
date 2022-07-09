@@ -12,12 +12,12 @@
 
 namespace raytracer
 {
-	Sphere::Sphere(raytracer::point3 cen, double r, raytracer::ref<raytracer::Material> material)
+	Sphere::Sphere(raytracer::point3 cen, float r, raytracer::ref<raytracer::Material> material)
 			: m_center(cen), m_radius(r), m_material(std::move(material))
 	{
 	}
 
-	bool Sphere::hit(const raytracer::Ray& r, double t_min, double t_max, raytracer::hit_record& rec) const
+	bool Sphere::hit(const raytracer::Ray& r, float t_min, float t_max, raytracer::hit_record& rec) const
 	{
 		vec3 oc = r.origin() - m_center;
 		auto a = lengthSquared(r.direction());
@@ -44,14 +44,14 @@ namespace raytracer
 		rec.setFaceNormal(r, outward_normal);
 		rec.mat_ptr = m_material;
 
-		auto [u, v] = getSphereUv(outward_normal);
+		auto[u, v] = getSphereUv(outward_normal);
 		rec.u = u;
 		rec.v = v;
 
 		return true;
 	}
 
-	bool Sphere::boundingBox(double time0, double time1, Aabb& output_box) const
+	bool Sphere::boundingBox(float time0, float time1, Aabb& output_box) const
 	{
 		output_box = Aabb(
 				m_center - vec3(m_radius, m_radius, m_radius),
@@ -60,7 +60,7 @@ namespace raytracer
 		return true;
 	}
 
-	std::pair<double, double> Sphere::getSphereUv(const point3& p)
+	std::pair<float, float> Sphere::getSphereUv(const point3& p)
 	{
 		// p: a given point on the sphere of radius one, centered at the origin.
 		// u: returned value [0,1] of angle around the Y axis from X=-1.
@@ -72,7 +72,7 @@ namespace raytracer
 		auto theta = std::acos(-p.y);
 		auto phi = atan2(-p.z, p.x) + M_PI;
 
-		auto u = phi / (2*M_PI);
+		auto u = phi / (2 * M_PI);
 		auto v = theta / M_PI;
 		return { u, v };
 	}

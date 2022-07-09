@@ -9,8 +9,9 @@ namespace raytracer
 	Perlin::Perlin()
 	{
 		m_ranvec = new vec3[m_pointCount];
-		for (int i = 0; i < m_pointCount; ++i) {
-			m_ranvec[i] = glm::normalize(randomVec3(-1,1));
+		for (int i = 0; i < m_pointCount; ++i)
+		{
+			m_ranvec[i] = glm::normalize(randomVec3(-1, 1));
 		}
 
 		m_permX = perlin_generate_perm();
@@ -26,7 +27,7 @@ namespace raytracer
 		delete[] m_permZ;
 	}
 
-	double Perlin::noise(const point3& p) const
+	float Perlin::noise(const point3& p) const
 	{
 		auto u = p.x - std::floor(p.x);
 		auto v = p.y - std::floor(p.y);
@@ -37,13 +38,13 @@ namespace raytracer
 		auto k = static_cast<int>(std::floor(p.z));
 		vec3 c[2][2][2];
 
-		for (int di=0; di < 2; di++)
-			for (int dj=0; dj < 2; dj++)
-				for (int dk=0; dk < 2; dk++)
+		for (int di = 0; di < 2; di++)
+			for (int dj = 0; dj < 2; dj++)
+				for (int dk = 0; dk < 2; dk++)
 					c[di][dj][dk] = m_ranvec[
-							m_permX[(i+di) & 255] ^
-							m_permY[(j+dj) & 255] ^
-							m_permZ[(k+dk) & 255]
+							m_permX[(i + di) & 255] ^
+							m_permY[(j + dj) & 255] ^
+							m_permZ[(k + dk) & 255]
 					];
 
 		return perlin_interp(c, u, v, w);
@@ -63,7 +64,8 @@ namespace raytracer
 
 	void Perlin::permute(int* p, int n)
 	{
-		for (int i = n-1; i > 0; i--) {
+		for (int i = n - 1; i > 0; i--)
+		{
 			int target = randomInt(0, i);
 			int tmp = p[i];
 			p[i] = p[target];
@@ -71,47 +73,49 @@ namespace raytracer
 		}
 	}
 
-	double Perlin::trilinear_interp(double (* c)[2][2], double u, double v, double w)
+	float Perlin::trilinear_interp(float (* c)[2][2], float u, float v, float w)
 	{
 		auto accum = 0.0;
-		for (int i=0; i < 2; i++)
-			for (int j=0; j < 2; j++)
-				for (int k=0; k < 2; k++)
-					accum += (i*u + (1-i)*(1-u))*
-							 (j*v + (1-j)*(1-v))*
-							 (k*w + (1-k)*(1-w))*c[i][j][k];
+		for (int i = 0; i < 2; i++)
+			for (int j = 0; j < 2; j++)
+				for (int k = 0; k < 2; k++)
+					accum += (i * u + (1 - i) * (1 - u)) *
+							 (j * v + (1 - j) * (1 - v)) *
+							 (k * w + (1 - k) * (1 - w)) * c[i][j][k];
 
 		return accum;
 	}
 
-	double Perlin::perlin_interp(vec3 (* c)[2][2], double u, double v, double w)
+	float Perlin::perlin_interp(vec3 (* c)[2][2], float u, float v, float w)
 	{
-		auto uu = u*u*(3-2*u);
-		auto vv = v*v*(3-2*v);
-		auto ww = w*w*(3-2*w);
+		auto uu = u * u * (3 - 2 * u);
+		auto vv = v * v * (3 - 2 * v);
+		auto ww = w * w * (3 - 2 * w);
 		auto accum = 0.0;
 
-		for (int i=0; i < 2; i++)
-			for (int j=0; j < 2; j++)
-				for (int k=0; k < 2; k++) {
-					vec3 weight_v(u-i, v-j, w-k);
-					accum += (i*uu + (1-i)*(1-uu))
-							 * (j*vv + (1-j)*(1-vv))
-							 * (k*ww + (1-k)*(1-ww))
+		for (int i = 0; i < 2; i++)
+			for (int j = 0; j < 2; j++)
+				for (int k = 0; k < 2; k++)
+				{
+					vec3 weight_v(u - i, v - j, w - k);
+					accum += (i * uu + (1 - i) * (1 - uu))
+							 * (j * vv + (1 - j) * (1 - vv))
+							 * (k * ww + (1 - k) * (1 - ww))
 							 * glm::dot(c[i][j][k], weight_v);
 				}
 
 		return accum;
 	}
 
-	double Perlin::turb(const point3& p, int depth) const
+	float Perlin::turb(const point3& p, int depth) const
 	{
 		auto accum = 0.0;
 		auto temp_p = p;
 		auto weight = 1.0;
 
-		for (int i = 0; i < depth; i++) {
-			accum += weight*noise(temp_p);
+		for (int i = 0; i < depth; i++)
+		{
+			accum += weight * noise(temp_p);
 			weight *= 0.5;
 			temp_p *= 2;
 		}

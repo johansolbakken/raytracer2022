@@ -9,21 +9,22 @@ namespace raytracer
 	{
 	public:
 		MovingSphere() = default;
-		MovingSphere(point3 cen0, point3 cen1, double _time0, double _time1, double r, const ref<Material>& m);
+
+		MovingSphere(point3 cen0, point3 cen1, float _time0, float _time1, float r, const ref<Material>& m);
 
 
 		~MovingSphere() override = default;
 
-		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
 
-		bool boundingBox(double time0, double time1, Aabb &output_box) const override;
+		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
 
-		[[nodiscard]] point3 center(double time) const;
+		[[nodiscard]] point3 center(float time) const;
 
 	private:
 		point3 m_center0{}, m_center1{};
-		double m_time0{}, m_time1{};
-		double m_radius{};
+		float m_time0{}, m_time1{};
+		float m_radius{};
 		ref<Material> m_material;
 	};
 

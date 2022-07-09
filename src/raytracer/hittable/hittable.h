@@ -6,14 +6,17 @@
 namespace raytracer
 {
 	class Ray;
+
 	class Aabb;
 
 	class Hittable
 	{
 	public:
-		virtual ~Hittable()=default;
-		virtual bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const = 0;
-		virtual bool boundingBox(double time0, double time1, Aabb& output_box) const = 0;
+		virtual ~Hittable() = default;
+
+		virtual bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const = 0;
+
+		virtual bool boundingBox(float time0, float time1, Aabb& output_box) const = 0;
 	};
 
 }

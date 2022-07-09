@@ -10,7 +10,7 @@
 
 namespace raytracer
 {
-	Metal::Metal(const color& a, double f) : m_albedo(a), m_fuzz(f)
+	Metal::Metal(const color& a, float f) : m_albedo(a), m_fuzz(f)
 	{
 	}
 

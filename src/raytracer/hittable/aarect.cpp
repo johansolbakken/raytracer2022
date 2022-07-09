@@ -11,12 +11,12 @@ namespace raytracer
 	 * XY
 	 *
 	 */
-	xy_rect::xy_rect(double _x0, double _x1, double _y0, double _y1, double _k, ref<Material> mat)
+	xy_rect::xy_rect(float _x0, float _x1, float _y0, float _y1, float _k, ref<Material> mat)
 			: x0(_x0), x1(_x1), y0(_y0), y1(_y1), k(_k), mp(std::move(mat))
 	{
 	}
 
-	bool xy_rect::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
+	bool xy_rect::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
 	{
 		auto t = (k - r.origin().z) / r.direction().z;
 		if (t < t_min || t > t_max)
@@ -35,7 +35,7 @@ namespace raytracer
 		return true;
 	}
 
-	bool xy_rect::boundingBox(double time0, double time1, Aabb& output_box) const
+	bool xy_rect::boundingBox(float time0, float time1, Aabb& output_box) const
 	{
 		// The bounding box must have non-zero width in each dimension, so pad the Z
 		// dimension a small amount.
@@ -48,7 +48,7 @@ namespace raytracer
 	 * XZ
 	 *
 	 */
-	bool xz_rect::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
+	bool xz_rect::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
 	{
 		auto t = (k - r.origin().y) / r.direction().y;
 		if (t < t_min || t > t_max)
@@ -67,7 +67,7 @@ namespace raytracer
 		return true;
 	}
 
-	bool xz_rect::boundingBox(double time0, double time1, Aabb& output_box) const
+	bool xz_rect::boundingBox(float time0, float time1, Aabb& output_box) const
 	{
 		// The bounding box must have non-zero width in each dimension, so pad the Y
 		// dimension a small amount.
@@ -75,7 +75,7 @@ namespace raytracer
 		return true;
 	}
 
-	xz_rect::xz_rect(double _x0, double _x1, double _z0, double _z1, double _k, const ref<Material>& mat)
+	xz_rect::xz_rect(float _x0, float _x1, float _z0, float _z1, float _k, const ref<Material>& mat)
 			: x0(_x0), x1(_x1), z0(_z0), z1(_z1), k(_k), mp(mat)
 	{
 	}
@@ -85,12 +85,12 @@ namespace raytracer
 	* YZ
 	*
 	*/
-	yz_rect::yz_rect(double _y0, double _y1, double _z0, double _z1, double _k, const ref<Material>& mat)
+	yz_rect::yz_rect(float _y0, float _y1, float _z0, float _z1, float _k, const ref<Material>& mat)
 			: y0(_y0), y1(_y1), z0(_z0), z1(_z1), k(_k), mp(mat)
 	{
 	}
 
-	bool yz_rect::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
+	bool yz_rect::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
 	{
 		auto t = (k - r.origin().x) / r.direction().x;
 		if (t < t_min || t > t_max)
@@ -109,7 +109,7 @@ namespace raytracer
 		return true;
 	}
 
-	bool yz_rect::boundingBox(double time0, double time1, Aabb& output_box) const
+	bool yz_rect::boundingBox(float time0, float time1, Aabb& output_box) const
 	{
 		// The bounding box must have non-zero width in each dimension, so pad the X
 		// dimension a small amount.

@@ -14,16 +14,16 @@ namespace raytracer
 	public:
 		BvhNode() = default;
 
-		BvhNode(const HittableList& list, double time0, double time1);
+		BvhNode(const HittableList& list, float time0, float time1);
 
 		BvhNode(const std::vector<ref<Hittable>>& src_objects,
-				size_t start, size_t end, double time0, double time1);
+				size_t start, size_t end, float time0, float time1);
 
 		~BvhNode() override = default;
 
-		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
 
-		bool boundingBox(double time0, double time1, Aabb& output_box) const override;
+		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
 
 	public:
 		ref<Hittable> m_left;
