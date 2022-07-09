@@ -10,14 +10,18 @@
 namespace raytracer
 {
 	class Image;
+
 	class Hittable;
+
 	class Ray;
+
 	class Camera;
 
-	struct RendererSpecification {
+	struct RendererSpecification
+	{
 		int samplesPerPixel;
 		int recursionDepth;
-		color backgroundColor={0,0,0};
+		color backgroundColor = { 0, 0, 0 };
 
 	};
 
@@ -25,11 +29,37 @@ namespace raytracer
 	{
 	public:
 		explicit Renderer(const RendererSpecification& spec);
+
 		void render(const ref<Hittable>& world, const ref<Camera>& camera);
+
 		void onResize(uint32_t width, uint32_t height);
+
 		uint32_t perPixel(glm::vec2 coord);
 
 		raytracer::ref<raytracer::Image> getFinalImage();
+
+		RendererSpecification specification() const
+		{
+			return m_Specification;
+		}
+
+		int samplesPerPixel() const
+		{
+			return m_Specification.samplesPerPixel;
+		}
+
+		int maximumRecursionDepth() const
+		{
+			return m_Specification.recursionDepth;
+		}
+
+		void init(const RendererSpecification& spec);
+
+		void resetScanlines();
+
+		void incrementScanlines();
+
+		int scanlines();
 
 	private:
 		color rayColor(const Ray& ray, const ref<Hittable>& world, int depth);
@@ -45,6 +75,9 @@ namespace raytracer
 
 		ref<Camera> m_camera;
 		ref<Hittable> m_world;
+
+		std::mutex m_scanline_mutex;
+		int m_scanlines = 0;
 	};
 
 }

@@ -22,6 +22,8 @@ namespace raytracer
 		m_camera = camera;
 		m_world = world;
 
+		resetScanlines();
+
 		for (int y = 0; y < m_finalImage->height(); y++)
 		{
 			for (int x = 0; x < m_finalImage->width(); x++)
@@ -32,8 +34,9 @@ namespace raytracer
 						(float)y / (float)m_finalImage->height()
 				};
 				coord = coord * 2.0f - 1.0f;
-				m_imageData[x + y * m_finalImage->width()] =  perPixel(coord);;
+				m_imageData[x + y * m_finalImage->width()] = perPixel(coord);
 			}
+			incrementScanlines();
 		}
 
 		m_finalImage->setData(m_imageData);
@@ -42,8 +45,6 @@ namespace raytracer
 	color Renderer::rayColor(const Ray& ray, const ref<Hittable>& world, int depth)
 	{
 		hit_record rec{};
-
-
 
 		// If we've exceeded the ray bounce limit, no more light is gathered.
 		if (depth <= 0)
@@ -64,9 +65,8 @@ namespace raytracer
 	}
 
 	Renderer::Renderer(const RendererSpecification& spec)
-			: m_Specification(spec)
 	{
-
+		init(spec);
 	}
 
 	uint32_t Renderer::perPixel(glm::vec2 coord)
@@ -91,7 +91,19 @@ namespace raytracer
 		float c = glm::dot(rayOrigin, rayOrigin) - radius * radius;
 
 		float descriminant = b * b - 4.0f * a * c;
+
 		if (descriminant >= 0) {
+
+			float t0 = -b - std::sqrt(descriminant) / (2.0f * a);
+			float t1 = -b + std::sqrt(descriminant) / (2.0f * a);
+
+			{
+				point3 hitPosition = rayOrigin + rayDirection * t0;
+			}
+			{
+				point3 hitPosition = rayOrigin + rayDirection * t1;
+			}
+
 			return 0xffff00ff;
 		}
 
@@ -100,13 +112,9 @@ namespace raytracer
 		color pixel_color(0, 0, 0);
 		for (int s = 0; s < m_Specification.samplesPerPixel; ++s)
 		{
-			auto u = (coord.x + randomDouble()) / (m_finalImage->width() - 1);
-			auto v = (coord.y + randomDouble()) / (m_finalImage->height() - 1);
-			Ray r = m_camera->getRay(u, v);
+			Ray r = m_camera->getRay(coord.x, coord.y);
 			pixel_color += rayColor(r, m_world, m_Specification.recursionDepth);
 		}
-
-		uint32_t outColor = 0xff000000;
 
 		auto r = pixel_color.x;
 		auto g = pixel_color.y;
@@ -119,11 +127,11 @@ namespace raytracer
 		b = std::sqrt(scale * b);
 
 		// Write the translated [0,255] value of each color component.
-		outColor |= static_cast<uint32_t>(256 * clamp(r, 0.0, 0.999));
-		outColor |= static_cast<uint32_t>(256 * clamp(g, 0.0, 0.999)) << 8;
-		outColor |= static_cast<uint32_t>(256 * clamp(b, 0.0, 0.999)) << 16;
+		auto ri = static_cast<uint32_t>(256 * clamp(r, 0.0f, 0.999f));
+		auto gi = static_cast<uint32_t>(256 * clamp(g, 0.0f, 0.999f));
+		auto bi = static_cast<uint32_t>(256 * clamp(b, 0.0f, 0.999f));
 
-		return outColor;
+		return 0xff000000 | (bi << 16) | (gi << 8) | ri;
 #endif
 	}
 
@@ -132,6 +140,7 @@ namespace raytracer
 		if (m_finalImage)
 		{
 			if (m_finalImage->width() == width && m_finalImage->height() == height) return;
+			std::lock_guard<std::mutex> guard(m_finalImage->mutex());
 			m_finalImage->resize(width, height);
 		}
 		else
@@ -146,5 +155,29 @@ namespace raytracer
 	ref<Image> Renderer::getFinalImage()
 	{
 		return m_finalImage;
+	}
+
+	void Renderer::init(const RendererSpecification& spec)
+	{
+		m_Specification = spec;
+	}
+
+	void Renderer::resetScanlines()
+	{
+		std::lock_guard<std::mutex> guard(m_scanline_mutex);
+		m_scanlines = 0;
+	}
+
+	void Renderer::incrementScanlines()
+	{
+		std::lock_guard<std::mutex> guard(m_scanline_mutex);
+		m_scanlines++;
+	}
+
+	int Renderer::scanlines()
+	{
+		std::lock_guard<std::mutex> guard(m_scanline_mutex);
+		int scanline = m_scanlines;
+		return scanline;
 	}
 }
