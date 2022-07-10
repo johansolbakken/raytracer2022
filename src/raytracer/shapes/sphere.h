@@ -3,10 +3,16 @@
 #include "hittable/hittable.h"
 #include "shape.h"
 
+#define pbrt 0
+
 namespace raytracer
 {
 
-	class Sphere : public Shape, public Hittable
+    class Sphere :
+        #if pbrt
+            public Shape,
+        #endif
+            public Hittable
 	{
 	public:
 		Sphere(Point3 cen, float r, ref<Material> material);;
@@ -19,6 +25,7 @@ namespace raytracer
 
 		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
 
+#if pbrt
 		[[nodiscard]] Aabb objectBound() const override;
 
 		bool intersect(const Ray &ray, float *tHit, float *rayEpsilon, ref<DifferentialGeometry> &dg) const override;
@@ -26,6 +33,7 @@ namespace raytracer
 		bool intersectP(const Ray &ray) const override;
 
 		float area() const override;
+#endif
 
 	private:
 		static std::pair<float, float> getSphereUv(const Point3& p);

@@ -17,7 +17,12 @@
 namespace raytracer
 {
 	Sphere::Sphere(raytracer::Point3 cen, float r, raytracer::ref<raytracer::Material> material)
-			: Shape(nullptr, nullptr, false), m_center(cen), m_radius(r), m_material(std::move(material))
+            :
+          #if pbrt
+              Shape(nullptr, nullptr, false),
+          #endif
+
+              m_center(cen), m_radius(r), m_material(std::move(material))
 	{
 	}
 
@@ -83,6 +88,7 @@ namespace raytracer
 		return { u, v };
 	}
 
+#if pbrt
 	Sphere::Sphere(const ref<Transform>& o2w, const ref<Transform>& w2o, bool ro, float rad, float z0, float z1,
 			float pm) : Shape(o2w, w2o, ro)
 	{
@@ -293,5 +299,5 @@ namespace raytracer
 	// TODO: Cylinders, disks, quadrics
 	// TODO: Triangles and meshes
 	// TODO: Implement subdivision surfaces
-
+#endif
 }
