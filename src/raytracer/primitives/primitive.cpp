@@ -19,9 +19,9 @@ namespace raytracer
 	void Primitive::fullyRefine(std::vector<ref<Primitive>>& refined) const
 	{
 		std::vector<ref<Primitive>> todo;
-		ref<Primitive> thisRef = createRef<Primitive>(this);
+		//ref<Primitive> thisRef = createRef<Primitive>(this);
 
-		todo.push_back(thisRef);
+		//todo.push_back(thisRef);
 		while (!todo.empty())
 		{
 			ref<Primitive> prim = todo.back();
