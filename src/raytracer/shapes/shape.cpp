@@ -1,12 +1,8 @@
-//
-// Created by Johan Solbakken on 09/07/2022.
-//
-
-#include <cstdint>
 #include "shape.h"
 
 #include "transformations/transformation.h"
 #include "accelerator/aabb.h"
+#include "geometry/differentialgeometry.h"
 
 namespace raytracer
 {
@@ -38,7 +34,7 @@ namespace raytracer
 		assert(0 && "Unimplemented Shape::Refine() method called");
 	}
 
-	bool Shape::intersect(const Ray& ray, hit_record* rec) const
+	bool Shape::intersect(const Ray& ray, float* tHit, float* rayEpsilon, ref<DifferentialGeometry>& dg) const
 	{
 		assert(0 && "Unimplemented Shape::intersect() method called");
 		return false;
@@ -48,6 +44,43 @@ namespace raytracer
 	{
 		assert(0 && "Unimplemented Shape::intersectP() method called");
 		return false;
+	}
+
+	void Shape::getShadingGeometry(const Transform& obj2world, const DifferentialGeometry& dg,
+			ref<DifferentialGeometry>& dgShading) const
+	{
+		*dgShading = dg;
+	}
+
+	ref<Transform> Shape::objectToWorld() const
+	{
+		return m_objectToWorld;
+	}
+
+	ref<Transform> Shape::worldToObject() const
+	{
+		return m_worldToObject;
+	}
+
+	bool Shape::reverseOrientation() const
+	{
+		return m_reverseOrientation;
+	}
+
+	bool Shape::transformSwapHandedness() const
+	{
+		return m_transformSwapHandedness;
+	}
+
+	uint32_t Shape::id() const
+	{
+		return m_shapeId;
+	}
+
+	float Shape::area() const
+	{
+		assert(0 && "Not implemented Shape::area() called");
+		return 0;
 	}
 
 }

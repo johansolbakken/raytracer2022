@@ -14,6 +14,8 @@ namespace raytracer
 
 	struct hit_record;
 
+	class DifferentialGeometry;
+
 	class Shape
 	{
 	public:
@@ -21,44 +23,33 @@ namespace raytracer
 
 		// Interface
 	public:
-		virtual Aabb objectBound() const = 0;
+		[[nodiscard]] virtual Aabb objectBound() const = 0;
 
-		virtual Aabb worldBound() const;
+		[[nodiscard]] virtual Aabb worldBound() const;
 
-		virtual bool canIntersect() const;
+		[[nodiscard]] virtual bool canIntersect() const;
 
 		virtual void refine(std::vector<ref<Shape>>& refinement) const;
 
-		virtual bool intersect(const Ray& ray, hit_record* rec) const;
+		virtual bool intersect(const Ray& ray, float *tHit, float *rayEpsilon, ref<DifferentialGeometry>& dg) const;
 
-		virtual bool intersectP(const Ray& ray) const;
+		[[nodiscard]] virtual bool intersectP(const Ray& ray) const;
 
+		virtual void getShadingGeometry(const Transform& obj2world, const DifferentialGeometry& dg,
+				ref<DifferentialGeometry>& dgShading) const;
+
+		[[nodiscard]] virtual float area() const;
 
 	public:
-		const ref<Transform> objectToWorld() const
-		{
-			return m_objectToWorld;
-		}
+		[[nodiscard]] ref<Transform> objectToWorld() const;
 
-		const ref<Transform> worldToObject() const
-		{
-			return m_worldToObject;
-		}
+		[[nodiscard]] ref<Transform> worldToObject() const;
 
-		bool reverseOrientation() const
-		{
-			return m_reverseOrientation;
-		}
+		[[nodiscard]] bool reverseOrientation() const;
 
-		bool transformSwapHandedness() const
-		{
-			return m_transformSwapHandedness;
-		}
+		[[nodiscard]] bool transformSwapHandedness() const;
 
-		uint32_t id() const
-		{
-			return m_shapeId;
-		}
+		[[nodiscard]] uint32_t id() const;
 
 	private:
 		const ref<Transform> m_objectToWorld, m_worldToObject;
