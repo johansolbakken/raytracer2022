@@ -2,28 +2,25 @@
 
 #include "utils/glmutils.h"
 
-#include <glm/gtx/transform.hpp>
-
 // TODO: rename file to transform
 
 namespace raytracer
 {
 	class Aabb;
-
-	using matrix4x4 = glm::mat4;
+	class Ray;
 
 	class Transform
 	{
 	public:
 		Transform();
 
-		Transform(const matrix4x4& matrix);
+		explicit Transform(const Matrix4& matrix);
 
-		Transform(const matrix4x4& matrix, const matrix4x4& inv);
+		Transform(const Matrix4& matrix, const Matrix4& inv);
 
 		static Transform inverse(const Transform& t);
 
-		static Transform translate(const vec3& delta);
+		static Transform translate(const Vector3& delta);
 
 		static Transform scale(float x, float y, float z);
 
@@ -33,19 +30,27 @@ namespace raytracer
 
 		static Transform rotateZ(float angle);
 
-		static Transform rotate(float angle, const vec3& axis);
+		static Transform rotate(float angle, const Vector3& axis);
 
-		static Transform LookAt(const point3& pos, const point3& look, const vec3& up);
+		static Transform LookAt(const Point3& pos, const Point3& look, const Vector3& up);
 
 		Transform operator+(const Transform& other);
 
 		Transform operator*(const Transform& other);
 
+		Point3 operator()(const Vector3& point) const;
+
+		Ray operator()(const Ray& ray) const;
+
 		Aabb operator()(const Aabb& b) const;
 
-		bool swapsHandedness() const;
+		bool operator!=(const Transform& other) const;
+
+		[[nodiscard]] bool swapsHandedness() const;
+
+		[[nodiscard]] Matrix4 matrix() const { return m_matrix; }
 
 	private:
-		matrix4x4 m_matrix, m_inverse;
+		Matrix4 m_matrix, m_inverse;
 	};
 }
