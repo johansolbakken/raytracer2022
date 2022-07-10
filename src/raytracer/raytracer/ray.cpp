@@ -3,36 +3,36 @@
 namespace raytracer
 {
 
-	point3 Ray::origin() const
+	Point3 Ray::origin() const
 	{
 		return m_origin;
 	}
 
-	Ray::Ray(const point3& origin, const vec3& direction, float start, float end, float t, int d)
+	Ray::Ray(const Point3& origin, const Vector3& direction, float start, float end, float t, int d)
 			: m_origin(origin), m_direction(direction), m_mint(start), m_maxt(end), m_time(t), m_depth(d)
 	{
 
 	}
 
-	Ray::Ray(const point3& origin, const vec3& direction, const Ray& parent, float start, float end)
+	Ray::Ray(const Point3& origin, const Vector3& direction, const Ray& parent, float start, float end)
 			: m_origin(origin), m_direction(direction), m_mint(start), m_maxt(end), m_time(parent.time()),
 			  m_depth(parent.depth() + 1)
 	{
 
 	}
 
-	vec3 Ray::direction() const
+	Vector3 Ray::direction() const
 	{
 		return m_direction;
 	}
 
-	point3 Ray::at(float t) const
+	Point3 Ray::at(float t) const
 	{
 		return m_origin + t * m_direction;
 	}
 
 	// Ray of t r(t)
-	point3 Ray::operator()(float t) const
+	Point3 Ray::operator()(float t) const
 	{
 		return at(t);
 	}
@@ -69,14 +69,14 @@ namespace raytracer
 		m_hasDifferential = false;
 	}
 
-	RayDifferential::RayDifferential(const point3& origin, const vec3& direction, float start, float end, float t,
+	RayDifferential::RayDifferential(const Point3& origin, const Vector3& direction, float start, float end, float t,
 			int d)
 			: Ray(origin, direction, start, end, t, d)
 	{
 		m_hasDifferential = false;
 	}
 
-	RayDifferential::RayDifferential(const point3& origin, const vec3& direction, const Ray& parent, float start,
+	RayDifferential::RayDifferential(const Point3& origin, const Vector3& direction, const Ray& parent, float start,
 			float end)
 			: Ray(origin, direction, parent, start, end)
 	{

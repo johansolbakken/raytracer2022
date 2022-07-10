@@ -15,18 +15,18 @@ namespace raytracer
 	public:
 		Ray() = default;
 
-		Ray(const point3& origin, const vec3& direction, float start, float end = infinity, float t = 0.f,
+		Ray(const Point3& origin, const Vector3& direction, float start, float end = infinity, float t = 0.f,
 				int d = 0);
 
-		Ray(const point3& origin, const vec3& direction, const Ray& parent, float start, float end = infinity);
+		Ray(const Point3& origin, const Vector3& direction, const Ray& parent, float start, float end = infinity);
 
-		[[nodiscard]] point3 at(float t) const;
+		[[nodiscard]] Point3 at(float t) const;
 
-		[[nodiscard]] point3 operator()(float t) const;
+		[[nodiscard]] Point3 operator()(float t) const;
 
-		[[nodiscard]] point3 origin() const;
+		[[nodiscard]] Point3 origin() const;
 
-		[[nodiscard]] vec3 direction() const;
+		[[nodiscard]] Vector3 direction() const;
 
 		[[nodiscard]] float time() const;
 
@@ -40,8 +40,8 @@ namespace raytracer
 
 
 	private:
-		point3 m_origin{};
-		vec3 m_direction{};
+		Point3 m_origin{};
+		Vector3 m_direction{};
 		float m_time{};
 		mutable float m_mint{}, m_maxt{};
 		int m_depth{};
@@ -52,10 +52,10 @@ namespace raytracer
 	public:
 		explicit RayDifferential();
 
-		explicit RayDifferential(const point3& origin, const vec3& direction, float start, float end = infinity,
+		explicit RayDifferential(const Point3& origin, const Vector3& direction, float start, float end = infinity,
 				float t = 0.f, int d = 0);
 
-		explicit RayDifferential(const point3& origin, const vec3& direction, const Ray& parent, float start,
+		explicit RayDifferential(const Point3& origin, const Vector3& direction, const Ray& parent, float start,
 				float end = infinity);
 
 		explicit RayDifferential(const Ray& ray);
@@ -66,8 +66,8 @@ namespace raytracer
 
 	private:
 		bool m_hasDifferential;
-		point3 m_rxOrigin{}, m_ryOrigin{};
-		vec3 m_rxDirection{}, m_ryDirection{};
+		Point3 m_rxOrigin{}, m_ryOrigin{};
+		Vector3 m_rxDirection{}, m_ryDirection{};
 	};
 
 }
