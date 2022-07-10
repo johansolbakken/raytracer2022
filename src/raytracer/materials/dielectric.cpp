@@ -14,17 +14,17 @@ namespace raytracer
 	{
 	}
 
-	bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const
+	bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
 	{
-		attenuation = color(1.0, 1.0, 1.0);
+		attenuation = Color(1.0, 1.0, 1.0);
 		float refraction_ratio = rec.front_face ? (1.0 / m_ir) : m_ir;
 
-		vec3 unit_direction = glm::normalize(r_in.direction());
+		Vector3 unit_direction = glm::normalize(r_in.direction());
 		float cos_theta = std::fmin(glm::dot(-unit_direction, rec.normal), 1.0);
 		float sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
 
 		bool cannot_refract = refraction_ratio * sin_theta > 1.0;
-		vec3 direction;
+		Vector3 direction;
 
 		if (cannot_refract || reflectance(cos_theta, refraction_ratio) > randomfloat())
 			direction = reflect(unit_direction, rec.normal);

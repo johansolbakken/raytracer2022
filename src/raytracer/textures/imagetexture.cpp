@@ -29,7 +29,7 @@ namespace raytracer
 		m_bytesPerScanline = bytes_per_pixel * m_width;
 	}
 
-	color ImageTexture::value(float u, float v, const vec3& p) const
+	Color ImageTexture::value(float u, float v, const Vector3& p) const
 	{
 		// If we have no texture data, then return solid cyan as a debugging aid.
 		if (m_data == nullptr)

@@ -28,7 +28,7 @@ namespace raytracer
 		rec.u = (x - x0) / (x1 - x0);
 		rec.v = (y - y0) / (y1 - y0);
 		rec.t = t;
-		auto outward_normal = vec3(0, 0, 1);
+		auto outward_normal = Vector3(0, 0, 1);
 		rec.setFaceNormal(r, outward_normal);
 		rec.mat_ptr = mp;
 		rec.p = r.at(t);
@@ -39,7 +39,7 @@ namespace raytracer
 	{
 		// The bounding box must have non-zero width in each dimension, so pad the Z
 		// dimension a small amount.
-		output_box = Aabb(point3(x0, y0, k - 0.0001), point3(x1, y1, k + 0.0001));
+		output_box = Aabb(Point3(x0, y0, k - 0.0001), Point3(x1, y1, k + 0.0001));
 		return true;
 	}
 
@@ -60,7 +60,7 @@ namespace raytracer
 		rec.u = (x - x0) / (x1 - x0);
 		rec.v = (z - z0) / (z1 - z0);
 		rec.t = t;
-		auto outward_normal = vec3(0, 1, 0);
+		auto outward_normal = Vector3(0, 1, 0);
 		rec.setFaceNormal(r, outward_normal);
 		rec.mat_ptr = mp;
 		rec.p = r.at(t);
@@ -71,7 +71,7 @@ namespace raytracer
 	{
 		// The bounding box must have non-zero width in each dimension, so pad the Y
 		// dimension a small amount.
-		output_box = Aabb(point3(x0, k - 0.0001, z0), point3(x1, k + 0.0001, z1));
+		output_box = Aabb(Point3(x0, k - 0.0001, z0), Point3(x1, k + 0.0001, z1));
 		return true;
 	}
 
@@ -102,7 +102,7 @@ namespace raytracer
 		rec.u = (y - y0) / (y1 - y0);
 		rec.v = (z - z0) / (z1 - z0);
 		rec.t = t;
-		auto outward_normal = vec3(1, 0, 0);
+		auto outward_normal = Vector3(1, 0, 0);
 		rec.setFaceNormal(r, outward_normal);
 		rec.mat_ptr = mp;
 		rec.p = r.at(t);
@@ -113,7 +113,7 @@ namespace raytracer
 	{
 		// The bounding box must have non-zero width in each dimension, so pad the X
 		// dimension a small amount.
-		output_box = Aabb(point3(k - 0.0001, y0, z0), point3(k + 0.0001, y1, z1));
+		output_box = Aabb(Point3(k - 0.0001, y0, z0), Point3(k + 0.0001, y1, z1));
 		return true;
 	}
 }

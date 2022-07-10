@@ -11,7 +11,7 @@
 
 namespace raytracer
 {
-	bool Lambertian::scatter(const Ray& r_in, const hit_record& rec, color& attenuation, Ray& scattered) const
+	bool Lambertian::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
 	{
 		auto scatter_direction = rec.normal + randomUnitVector();
 
@@ -24,7 +24,7 @@ namespace raytracer
 		return true;
 	}
 
-	Lambertian::Lambertian(const color& a) : m_albedo(createRef<SolidColor>(a))
+	Lambertian::Lambertian(const Color& a) : m_albedo(createRef<SolidColor>(a))
 	{
 	}
 

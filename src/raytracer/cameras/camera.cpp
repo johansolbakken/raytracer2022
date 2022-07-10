@@ -10,8 +10,8 @@ namespace raytracer
 {
 	Ray raytracer::Camera::getRay(float s, float t) const
 	{
-		vec3 rd = m_lensRadius * randomInUnitDisk();
-		vec3 offset = m_u * rd.x + m_v * rd.y;
+		Vector3 rd = m_lensRadius * randomInUnitDisk();
+		Vector3 offset = m_u * rd.x + m_v * rd.y;
 
 		auto origin = m_origin + offset;
 		auto direction = m_lowerLeftCorner + s * m_horizontal + t * m_vertical - m_origin - offset;

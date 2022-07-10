@@ -6,8 +6,8 @@ raytracer::ref<raytracer::Hittable> createWorld()
 
 	ref<HittableList> objects = createRef<HittableList>();
 
-	auto material = createRef<Lambertian>(color(1, 0, 0));
-	objects->add<Sphere>(point3(0, 0, 0), 0.5, material);
+	auto material = createRef<Lambertian>(Color(1, 0, 0));
+	objects->add<Sphere>(Point3(0, 0, 0), 0.5, material);
 
 	return objects;
 }

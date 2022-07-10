@@ -13,9 +13,9 @@ namespace raytracer
 		float aperture = 0.0;
 		float focusDistance = 10.0;
 
-		point3 lookFrom = { 0, 0, 0 };
-		point3 lookAt = { 0, 0, -1 };
-		vec3 vup = { 0, 1, 0 };
+		Point3 lookFrom = { 0, 0, 0 };
+		Point3 lookAt = { 0, 0, -1 };
+		Vector3 vup = { 0, 1, 0 };
 
 		float time0 = 0; // shutter opens
 		float time1 = 0; // shutter closes
@@ -45,12 +45,12 @@ namespace raytracer
 			return m_specification.focusDistance;
 		}
 
-		point3 lookFrom() const
+		Point3 lookFrom() const
 		{
 			return m_specification.lookFrom;
 		}
 
-		point3 lookAt() const
+		Point3 lookAt() const
 		{
 			return m_specification.lookAt;
 		}
@@ -73,11 +73,11 @@ namespace raytracer
 		void init(const CameraSpecification& spec);
 
 	private:
-		point3 m_origin{};
-		point3 m_lowerLeftCorner{};
-		vec3 m_horizontal{};
-		vec3 m_vertical{};
-		vec3 m_u{}, m_v{}, m_w{};
+		Point3 m_origin{};
+		Point3 m_lowerLeftCorner{};
+		Vector3 m_horizontal{};
+		Vector3 m_vertical{};
+		Vector3 m_u{}, m_v{}, m_w{};
 
 		float m_lensRadius;
 

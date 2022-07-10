@@ -15,12 +15,12 @@ namespace raytracer
 	{
 	}
 
-	CheckerTexture::CheckerTexture(color c1, color c2)
+	CheckerTexture::CheckerTexture(Color c1, Color c2)
 			: even(createRef<SolidColor>(c1)), odd(createRef<SolidColor>(c2))
 	{
 	}
 
-	color CheckerTexture::value(float u, float v, const point3& p) const
+	Color CheckerTexture::value(float u, float v, const Point3& p) const
 	{
 		auto sines = std::sin(10 * p.x) * std::sin(10 * p.y) * std::sin(10 * p.z);
 		if (sines < 0)

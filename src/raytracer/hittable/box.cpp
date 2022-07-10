@@ -13,7 +13,7 @@
 
 namespace raytracer
 {
-	Box::Box(const point3& p0, const point3& p1, const ref<Material>& ptr)
+	Box::Box(const Point3& p0, const Point3& p1, const ref<Material>& ptr)
 	{
 		box_min = p0;
 		box_max = p1;

@@ -42,7 +42,7 @@ namespace raytracer
 		m_finalImage->setData(m_imageData);
 	}
 
-	color Renderer::rayColor(const Ray& ray, const ref<Hittable>& world, int depth)
+	Color Renderer::rayColor(const Ray& ray, const ref<Hittable>& world, int depth)
 	{
 		hit_record rec{};
 
@@ -55,8 +55,8 @@ namespace raytracer
 			return m_Specification.backgroundColor;
 
 		Ray scattered;
-		color attenuation;
-		color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+		Color attenuation;
+		Color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
 
 		if (!rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
 			return emitted;
@@ -109,7 +109,7 @@ namespace raytracer
 
 		return 0xff000000;
 #else
-		color pixel_color(0, 0, 0);
+		Color pixel_color(0, 0, 0);
 		for (int s = 0; s < m_Specification.samplesPerPixel; ++s)
 		{
 			Ray r = m_camera->getRay(coord.x, coord.y);

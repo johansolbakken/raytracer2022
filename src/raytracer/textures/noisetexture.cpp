@@ -6,9 +6,9 @@
 
 namespace raytracer
 {
-	color NoiseTexture::value(float u, float v, const point3& p) const
+	Color NoiseTexture::value(float u, float v, const Point3& p) const
 	{
-		return color(1, 1, 1) * 0.5f * (1 + sin(m_scale * p.z + 10 * m_noise.turb(p)));
+		return Color(1, 1, 1) * 0.5f * (1 + sin(m_scale * p.z + 10 * m_noise.turb(p)));
 	}
 
 	NoiseTexture::NoiseTexture(float sc)

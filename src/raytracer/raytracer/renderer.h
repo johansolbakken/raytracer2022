@@ -21,7 +21,7 @@ namespace raytracer
 	{
 		int samplesPerPixel;
 		int recursionDepth;
-		color backgroundColor = { 0, 0, 0 };
+		Color backgroundColor = { 0, 0, 0 };
 
 	};
 
@@ -62,7 +62,7 @@ namespace raytracer
 		int scanlines();
 
 	private:
-		color rayColor(const Ray& ray, const ref<Hittable>& world, int depth);
+		Color rayColor(const Ray& ray, const ref<Hittable>& world, int depth);
 
 	private:
 		RendererSpecification m_Specification;

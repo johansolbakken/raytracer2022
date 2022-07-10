@@ -15,14 +15,14 @@ namespace raytracer
 	public:
 		SolidColor() = default;
 
-		explicit SolidColor(color c);
+		explicit SolidColor(Color c);
 
 		SolidColor(float red, float green, float blue);
 
-		[[nodiscard]] color value(float u, float v, const vec3& p) const override;
+		[[nodiscard]] Color value(float u, float v, const Vector3& p) const override;
 
 	private:
-		color m_colorValue{};
+		Color m_colorValue{};
 	};
 
 } // raytracer

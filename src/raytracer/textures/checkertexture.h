@@ -15,9 +15,9 @@ namespace raytracer
 
 		CheckerTexture(ref<Texture> _even, ref<Texture> _odd);
 
-		CheckerTexture(color c1, color c2);
+		CheckerTexture(Color c1, Color c2);
 
-		color value(float u, float v, const point3& p) const override;
+		Color value(float u, float v, const Point3& p) const override;
 
 	public:
 		ref<Texture> odd;

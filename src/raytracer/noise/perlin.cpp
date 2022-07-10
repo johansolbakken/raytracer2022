@@ -8,7 +8,7 @@ namespace raytracer
 {
 	Perlin::Perlin()
 	{
-		m_ranvec = new vec3[m_pointCount];
+		m_ranvec = new Vector3[m_pointCount];
 		for (int i = 0; i < m_pointCount; ++i)
 		{
 			m_ranvec[i] = glm::normalize(randomVec3(-1, 1));
@@ -27,7 +27,7 @@ namespace raytracer
 		delete[] m_permZ;
 	}
 
-	float Perlin::noise(const point3& p) const
+	float Perlin::noise(const Point3& p) const
 	{
 		auto u = p.x - std::floor(p.x);
 		auto v = p.y - std::floor(p.y);
@@ -36,7 +36,7 @@ namespace raytracer
 		auto i = static_cast<int>(std::floor(p.x));
 		auto j = static_cast<int>(std::floor(p.y));
 		auto k = static_cast<int>(std::floor(p.z));
-		vec3 c[2][2][2];
+		Vector3 c[2][2][2];
 
 		for (int di = 0; di < 2; di++)
 			for (int dj = 0; dj < 2; dj++)
@@ -86,7 +86,7 @@ namespace raytracer
 		return accum;
 	}
 
-	float Perlin::perlin_interp(vec3 (* c)[2][2], float u, float v, float w)
+	float Perlin::perlin_interp(Vector3 (* c)[2][2], float u, float v, float w)
 	{
 		auto uu = u * u * (3 - 2 * u);
 		auto vv = v * v * (3 - 2 * v);
@@ -97,7 +97,7 @@ namespace raytracer
 			for (int j = 0; j < 2; j++)
 				for (int k = 0; k < 2; k++)
 				{
-					vec3 weight_v(u - i, v - j, w - k);
+					Vector3 weight_v(u - i, v - j, w - k);
 					accum += (i * uu + (1 - i) * (1 - uu))
 							 * (j * vv + (1 - j) * (1 - vv))
 							 * (k * ww + (1 - k) * (1 - ww))
@@ -107,7 +107,7 @@ namespace raytracer
 		return accum;
 	}
 
-	float Perlin::turb(const point3& p, int depth) const
+	float Perlin::turb(const Point3& p, int depth) const
 	{
 		auto accum = 0.0;
 		auto temp_p = p;
