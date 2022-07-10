@@ -6,7 +6,7 @@
 
 #include "hittable/hittable.h"
 #include "hittable/hittablelist.h"
-#include "hittable/sphere.h"
+#include "shapes/sphere.h"
 #include "hittable/movingsphere.h"
 #include "hittable/aarect.h"
 #include "hittable/box.h"
