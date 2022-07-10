@@ -64,13 +64,13 @@ void Renderer::createWorld()
 
 	m_world = createRef<HittableList>();
 
-	auto texture = createRef<CheckerTexture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+	auto texture = createRef<CheckerTexture>(Color(0.2, 0.3, 0.1), Color(0.9, 0.9, 0.9));
 	auto material = createRef<Lambertian>(texture);
 
-	auto diffuseLight = createRef<DiffuseLight>(color(4, 4, 4));
+	auto diffuseLight = createRef<DiffuseLight>(Color(4, 4, 4));
 
-	m_world->add<Sphere>(point3(0, -10, 0), 10, diffuseLight);
-	m_world->add<Sphere>(point3(0, 10, 0), 10, material);
+	m_world->add<Sphere>(Point3(0, -10, 0), 10, diffuseLight);
+	m_world->add<Sphere>(Point3(0, 10, 0), 10, material);
 }
 
 
