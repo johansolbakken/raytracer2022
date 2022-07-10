@@ -17,3 +17,7 @@ cmake .. # configure generator
 ~~~
 
 Then, find and run one of the examples and open the image created.
+
+## Images
+
+![](images/img.png)
