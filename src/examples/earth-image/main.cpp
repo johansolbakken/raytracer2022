@@ -20,7 +20,7 @@ raytracer::ref<raytracer::Hittable> createWorld()
 
 	auto earth_texture = createRef<ImageTexture>(filepath);
 	auto earth_surface = createRef<Lambertian>(earth_texture);
-	auto globe = createRef<Sphere>(point3(0, 0, 0), 2, earth_surface);
+	auto globe = createRef<Sphere>(Point3(0, 0, 0), 2, earth_surface);
 
 	return createRef<HittableList>(globe);
 }
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	cameraSpec.vfov = 20.0f;
 	cameraSpec.aspect_ratio = aspect_ratio;
 	cameraSpec.lookFrom = { 13, 2, 3 };
-	cameraSpec.lookAt = { 0, 0, 0 };
+	cameraSpec.lookAt = { 1, 2, -3 };
 	cameraSpec.focusDistance = 10.0;
 	cameraSpec.aperture = 0.0;
 	cameraSpec.time0 = 0.0;
@@ -55,7 +55,10 @@ int main(int argc, char** argv)
 	raytracer::Renderer renderer(rendererSpecification);
 	renderer.onResize(image_width, image_width / aspect_ratio);
 	renderer.render(world, camera);
-	renderer.getFinalImage()->save();
+
+	auto image = renderer.getFinalImage();
+	image->flipHorizontal();
+	image->save();
 
 	return 0;
 }
