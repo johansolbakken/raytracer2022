@@ -3,14 +3,14 @@ add_subdirectory(3rdparty/glm)
 
 # raytracer
 add_subdirectory(raytracer)
-add_subdirectory(editor)
+#add_subdirectory(editor)
 
 # working area
 add_subdirectory(examples/sandbox)
 
 # examples
-option(BUILD_EXAMPLES "Build examples" NO)
-if (BUILD_EXAMPLES)
+option(BUILD_EXAMPLES "Build examples" YES)
+if (YES)
     add_subdirectory(examples/shiny-metal)
     add_subdirectory(examples/hollow-glass)
     add_subdirectory(examples/wide-angle-camera)
@@ -22,4 +22,4 @@ if (BUILD_EXAMPLES)
     add_subdirectory(examples/earth-image)
     add_subdirectory(examples/marble-light)
     add_subdirectory(examples/empry-cornell)
-endif (BUILD_EXAMPLES)
+endif ()
