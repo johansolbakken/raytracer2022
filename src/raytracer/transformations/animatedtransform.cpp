@@ -6,6 +6,8 @@
 
 #include "transformation.h"
 
+#include <cmath>
+
 namespace raytracer
 {
 
@@ -48,9 +50,9 @@ namespace raytracer
 			norm = 0.f;
 			for (int i = 0; i < 3; i++)
 			{
-				float n = std::fabsf(R[i][0] - Rnext[i][0]) +
-						  std::fabsf(R[i][1] - Rnext[i][1]) +
-						  std::fabsf(R[i][2] - Rnext[i][2]);
+				float n = fabsf(R[i][0] - Rnext[i][0]) +
+						  fabsf(R[i][1] - Rnext[i][1]) +
+						  fabsf(R[i][2] - Rnext[i][2]);
 				norm = std::max(norm, n);
 			}
 
