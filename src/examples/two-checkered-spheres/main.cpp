@@ -9,33 +9,20 @@ raytracer::ref<raytracer::Hittable> createWorld()
 
 	auto world = createRef<HittableList>();
 
-	auto texture = createRef<CheckerTexture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
+	auto texture = createRef<CheckerTexture>(Color(0.2, 0.3, 0.1), Color(0.9, 0.9, 0.9));
 	auto material = createRef<Lambertian>(texture);
 
-	world->add<Sphere>(point3(0, -10, 0), 10, material);
-	world->add<Sphere>(point3(0, 10, 0), 10, material);
+	world->add<Sphere>(Point3(0, -10, 0), 10, material);
+	world->add<Sphere>(Point3(0, 10, 0), 10, material);
 
 	return world;
 }
 
 int main(int argc, char** argv)
 {
-	std::string filename = "image.ppm";
+	constexpr int width = 400;
+	constexpr float aspect_ratio = 16.0/9.0;
 
-	if (argc != 1)
-	{
-		filename = argv[1];
-	}
-
-	std::ofstream file(filename, std::ios::out);
-	file.clear();
-
-	constexpr auto aspect_ratio = 16.0 / 9.0;
-
-	// Image
-	raytracer::Image image{};
-	image.aspect_ratio = aspect_ratio;
-	image.image_width = 400;
 
 	// World
 	auto world = createWorld();
@@ -54,15 +41,20 @@ int main(int argc, char** argv)
 	auto camera = raytracer::createRef<raytracer::Camera>(cameraSpec);
 
 	// render
-	raytracer::RendererSpecification rendererSpecification{ .buffer = file };
+	raytracer::RendererSpecification rendererSpecification;
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
 	rendererSpecification.backgroundColor = { 0.70, 0.80, 1.00 };
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.render(image, world, camera);
+	renderer.onResize(width, int(width * aspect_ratio));
+	renderer.render(world, camera);
 
-	file.close();
+	auto image = renderer.getFinalImage();
+	image->flipHorizontal();
+	image->save();
+
+
 
 	return 0;
 }

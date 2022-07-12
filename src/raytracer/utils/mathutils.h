@@ -13,6 +13,7 @@ namespace raytracer
 		return distribution(generator);
 	}
 
+	// todo: rename to randomFloat
 	inline float randomfloat(float min, float max)
 	{
 		// Returns a random real in [min,max).

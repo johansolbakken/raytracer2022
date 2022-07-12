@@ -10,10 +10,10 @@ raytracer::ref<raytracer::Hittable> createWorld()
 	ref<HittableList> objects = createRef<HittableList>();
 
 	auto noiseMaterial = createRef<Lambertian>(createRef<NoiseTexture>(4));
-	objects->add<Sphere>(point3(0, -1000, 0), 1000, noiseMaterial);
-	objects->add<Sphere>(point3(0, 2, 0), 2, noiseMaterial);
+	objects->add<Sphere>(Point3(0, -1000, 0), 1000, noiseMaterial);
+	objects->add<Sphere>(Point3(0, 2, 0), 2, noiseMaterial);
 
-	auto difflight = createRef<DiffuseLight>(color(4, 4, 4));
+	auto difflight = createRef<DiffuseLight>(Color(4, 4, 4));
 	objects->add<xy_rect>(3, 5, 1, 3, -2, difflight);
 
 	return objects;
@@ -21,22 +21,8 @@ raytracer::ref<raytracer::Hittable> createWorld()
 
 int main(int argc, char** argv)
 {
-	std::string filename = "image.ppm";
-
-	if (argc != 1)
-	{
-		filename = argv[1];
-	}
-
-	std::ofstream file(filename, std::ios::out);
-	file.clear();
-
-	constexpr auto aspect_ratio = 16.0 / 9.0;
-
-	// Image
-	raytracer::Image image{};
-	image.aspect_ratio = aspect_ratio;
-	image.image_width = 400;
+	constexpr int width = 400;
+	constexpr float aspect_ratio = 16.0/9.0;
 
 	// World
 	auto world = createWorld();
@@ -55,15 +41,18 @@ int main(int argc, char** argv)
 	auto camera = raytracer::createRef<raytracer::Camera>(cameraSpec);
 
 	// render
-	raytracer::RendererSpecification rendererSpecification{ .buffer = file };
+	raytracer::RendererSpecification rendererSpecification;
 	rendererSpecification.samplesPerPixel = 32;
 	rendererSpecification.recursionDepth = 50;
 	rendererSpecification.backgroundColor = { 0.0, 0.0, 0.0 };
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.render(image, world, camera);
+	renderer.onResize(width, int(width * aspect_ratio));
+	renderer.render(world, camera);
 
-	file.close();
+	auto image = renderer.getFinalImage();
+	image->flipHorizontal();
+	image->save();
 
 	return 0;
 }
