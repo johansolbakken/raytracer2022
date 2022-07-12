@@ -33,9 +33,9 @@ public:
 		return m_lineEdit->text().toStdString();
 	}
 
-	double valuedouble()
+    double valueDouble()
 	{
-		return m_lineEdit->text().todouble();
+        return m_lineEdit->text().toDouble();
 	}
 
 	int valueInt()

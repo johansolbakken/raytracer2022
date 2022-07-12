@@ -3,7 +3,7 @@ add_subdirectory(3rdparty/glm)
 
 # raytracer
 add_subdirectory(raytracer)
-#add_subdirectory(editor)
+add_subdirectory(editor)
 
 # working area
 add_subdirectory(examples/sandbox)

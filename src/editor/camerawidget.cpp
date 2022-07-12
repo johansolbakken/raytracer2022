@@ -83,11 +83,11 @@ void CameraWidget::returnPressedHandler()
 
 	spec.lookFrom = { m_lookFrom->getX(), m_lookFrom->getY(), m_lookFrom->getZ() };
 	spec.lookAt = { m_lookAt->getX(), m_lookAt->getY(), m_lookAt->getZ() };
-	spec.vfov = m_vfov->valuedouble();
-	spec.aperture = m_aperture->valuedouble();
-	spec.focusDistance = m_focusDist->valuedouble();
-	spec.time0 = t0->valuedouble();
-	spec.time1 = t1->valuedouble();
+    spec.vfov = m_vfov->valueDouble();
+    spec.aperture = m_aperture->valueDouble();
+    spec.focusDistance = m_focusDist->valueDouble();
+    spec.time0 = t0->valueDouble();
+    spec.time1 = t1->valueDouble();
 
 	m_cameraRef->init(spec);
 }

@@ -20,17 +20,17 @@ public:
 
 	double getX() const
 	{
-		return m_x->text().todouble();
+        return m_x->text().toDouble();
 	}
 
 	double getY() const
 	{
-		return m_y->text().todouble();
+        return m_y->text().toDouble();
 	}
 
 	double getZ() const
 	{
-		return m_z->text().todouble();
+        return m_z->text().toDouble();
 	}
 
 signals:

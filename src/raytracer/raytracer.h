@@ -11,6 +11,8 @@
 #include "hittable/aarect.h"
 #include "hittable/box.h"
 #include "hittable/constantmedium.h"
+#include "hittable/bvh.h"
+#include "hittable/hittable_transformations.h"
 
 #include "materials/lambertian.h"
 #include "materials/metal.h"
