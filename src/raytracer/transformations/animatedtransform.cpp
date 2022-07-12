@@ -50,9 +50,9 @@ namespace raytracer
 			norm = 0.f;
 			for (int i = 0; i < 3; i++)
 			{
-				double n = fabsf(R[i][0] - Rnext[i][0]) +
-						  fabsf(R[i][1] - Rnext[i][1]) +
-						  fabsf(R[i][2] - Rnext[i][2]);
+                double n = std::abs(R[i][0] - Rnext[i][0]) +
+                          std::abs(R[i][1] - Rnext[i][1]) +
+                          std::abs(R[i][2] - Rnext[i][2]);
 				norm = std::max(norm, n);
 			}
 
