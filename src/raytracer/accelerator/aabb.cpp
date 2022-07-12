@@ -69,4 +69,9 @@ namespace raytracer
 		m_minimum = pt;
 		m_maximum = pt;
 	}
+
+	Aabb::Aabb() : m_maximum({0.0, 0.0,0.0}), m_minimum({0.0, 0.0, 0.0})
+	{
+
+	}
 }

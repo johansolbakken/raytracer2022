@@ -9,7 +9,7 @@ namespace raytracer
 	class Aabb
 	{
 	public:
-		Aabb() = default;
+		Aabb();
 
 		Aabb(const Point3& p);
 
