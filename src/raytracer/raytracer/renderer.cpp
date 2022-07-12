@@ -21,6 +21,7 @@ namespace raytracer
 {
 	void Renderer::render(const ref<Hittable>& world, const ref<Camera>& camera)
 	{
+        std::cout << std::thread::hardware_concurrency() << std::endl;
 		m_camera = camera;
 		m_world = world;
 
@@ -28,30 +29,118 @@ namespace raytracer
 
 		if (!m_finalImage || !m_imageData) return;
 
-		for (int y = m_finalImage->height() - 1; y >= 0; y--)
-		{
-			for (int x = 0; x < m_finalImage->width(); x++)
-			{
-#if cherno
-				// Normalize coordinate
-				glm::vec2 coord = {
-						(double)x / (double)m_finalImage->width(),
-						(double)y / (double)m_finalImage->height()
-				};
-				coord = coord * 2.0f - 1.0f;
-#else
-				auto u = double(x) / (m_finalImage->width()-1);
-				auto v = double(y) / (m_finalImage->height()-1);
-				glm::vec2 coord = { u, v };
-#endif
-				m_imageData[x + y * m_finalImage->width()] = perPixel(coord);
-			}
-			incrementScanlines();
-			std::cout << scanlines() << std::endl;
-		}
+        if (m_multithread) renderMultithread();
+        else renderSinglethread();
+    }
 
-		m_finalImage->setData(m_imageData);
-	}
+    void Renderer::renderSinglethread()
+    {
+        for (int y = m_finalImage->height() - 1; y >= 0; y--)
+        {
+            for (int x = 0; x < m_finalImage->width(); x++)
+            {
+#if cherno
+                // Normalize coordinate
+                glm::vec2 coord = {
+                        (double)x / (double)m_finalImage->width(),
+                        (double)y / (double)m_finalImage->height()
+                };
+                coord = coord * 2.0f - 1.0f;
+#else   //cherno
+                auto u = double(x) / (m_finalImage->width()-1);
+                auto v = double(y) / (m_finalImage->height()-1);
+                glm::vec2 coord = { u, v };
+#endif  // cherno
+                auto color = perPixel(coord);
+                m_imageData[x + y * m_finalImage->width()] = color;
+                std::lock_guard(m_finalImage->mutex());
+                m_finalImage->data()[x + y * m_finalImage->width()] = color;
+            }
+            incrementScanlines();
+            if (m_callback) m_callback(scanlines());
+        }
+
+        m_finalImage->setData(m_imageData);
+    }
+
+    void Renderer::renderMultithread()
+    {
+        int numThreads = 2;
+        int sections = std::thread::hardware_concurrency() / numThreads;
+
+        std::vector<Color> buffer(m_finalImage->width() * m_finalImage->height());
+        for (int i = 0; i < m_finalImage->width() * m_finalImage->height(); i++) {
+            buffer[i] = Color{0};
+        }
+
+        auto perPixelDouble = [&](glm::vec2 coord){
+            Color pixel_color(0.0, 0.0, 0.0);
+            for (int s = 0; s < m_Specification.samplesPerPixel; ++s)
+            {
+                Ray r = m_camera->getRay(coord.x, coord.y);
+                pixel_color += rayColor(r, m_world, m_Specification.recursionDepth);
+            }
+
+            auto r = pixel_color.x;
+            auto g = pixel_color.y;
+            auto b = pixel_color.z;
+
+            return Color{r, g, b};
+        };
+
+        auto thread = [&](int y0, int y1, std::mutex *mutex){
+            for (int y = y0; y < y1; y++)
+            {
+                for (int x = 0; x < m_finalImage->width(); x++)
+                {
+                    auto u = double(x) / (m_finalImage->width()-1);
+                    auto v = double(y) / (m_finalImage->height()-1);
+                    glm::vec2 coord = { u, v };
+
+                    auto color = perPixelDouble(coord);
+                    std::unique_lock guard(*mutex);
+                    buffer[x + y * m_finalImage->width()] += color;
+                }
+            }
+        };
+
+        auto section = [&](int y0, int y1){
+            std::vector<std::future<void>> pool;
+
+            std::mutex m_bufferMutex;
+
+            for (int i = 0; i < numThreads; i++) {
+                 pool.push_back(std::async(std::launch::async, thread, y0, y1, &m_bufferMutex));
+            }
+
+            for (auto& t : pool) {
+                t.wait();
+            }
+        };
+
+        std::vector<std::future<void>> pool;
+
+        int delta = m_finalImage->height() / sections;
+        int yOld = 0;
+        int y = delta;
+        for (int i = 0; i < sections; i++) {
+               pool.push_back(std::async(std::launch::async, section, yOld, y));
+               yOld = y;
+               y+= delta;
+               if (y >= m_finalImage->height()) y = m_finalImage->height() ;
+         }
+
+        for (auto& t : pool) {
+            t.wait();
+        }
+
+        for (int i = 0; i < m_finalImage->width() * m_finalImage->height(); i++) {
+            auto color = buffer[i];
+            m_imageData[i] = gammaCorrectToUint(color.r, color.g, color.b);
+        }
+
+        m_finalImage->setData(m_imageData);
+    }
 
 	Color Renderer::rayColor(const Ray& ray, const ref<Hittable>& world, int depth)
 	{
@@ -72,8 +161,24 @@ namespace raytracer
 		if (!rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
 			return emitted;
 
-		return emitted + attenuation * rayColor(scattered, world, depth - 1);
-	}
+        return emitted + attenuation * rayColor(scattered, world, depth - 1);
+    }
+
+    uint32_t Renderer::gammaCorrectToUint(double r, double g, double b)
+    {
+        // Divide the color by the number of samples and gamma-correct for gamma=2.0.
+        auto scale = 1.0 / m_Specification.samplesPerPixel;
+        r = std::sqrt(scale * r);
+        g = std::sqrt(scale * g);
+        b = std::sqrt(scale * b);
+
+        // Write the translated [0,255] value of each color component.
+        auto ri = static_cast<uint32_t>(256 * clamp(r, 0.0, 0.999));
+        auto gi = static_cast<uint32_t>(256 * clamp(g, 0.0, 0.999));
+        auto bi = static_cast<uint32_t>(256 * clamp(b, 0.0, 0.999));
+
+        return 0xff000000 | (bi << 16) | (gi << 8) | ri;
+    }
 
 	Renderer::Renderer(const RendererSpecification& spec)
 	{
@@ -189,6 +294,11 @@ namespace raytracer
 	{
 		std::lock_guard<std::mutex> guard(m_scanline_mutex);
 		int scanline = m_scanlines;
-		return scanline;
-	}
+        return scanline;
+    }
+
+    void Renderer::registerCallback(const ScanlineCallback &callback)
+    {
+        m_callback = callback;
+    }
 }
