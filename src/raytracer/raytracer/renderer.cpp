@@ -14,6 +14,8 @@
 
 #include <iostream>
 
+#define cherno 0
+
 
 namespace raytracer
 {
@@ -24,16 +26,22 @@ namespace raytracer
 
 		resetScanlines();
 
-		for (int y = 0; y < m_finalImage->height(); y++)
+		for (int y = m_finalImage->height() - 1; y >= 0; y--)
 		{
 			for (int x = 0; x < m_finalImage->width(); x++)
 			{
+#if cherno
 				// Normalize coordinate
 				glm::vec2 coord = {
 						(float)x / (float)m_finalImage->width(),
 						(float)y / (float)m_finalImage->height()
 				};
 				coord = coord * 2.0f - 1.0f;
+#else
+				auto u = double(x) / (m_finalImage->width()-1);
+				auto v = double(y) / (m_finalImage->height()-1);
+				glm::vec2 coord = { u, v };
+#endif
 				m_imageData[x + y * m_finalImage->width()] = perPixel(coord);
 			}
 			incrementScanlines();
@@ -71,7 +79,7 @@ namespace raytracer
 
 	uint32_t Renderer::perPixel(glm::vec2 coord)
 	{
-#if 0 // Cherno tutorial
+#if cherno
 
 		//
 		//	TODO: solve rest of the quadratic formula to get hit distances
