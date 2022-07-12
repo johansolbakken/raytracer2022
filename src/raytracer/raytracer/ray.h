@@ -15,35 +15,35 @@ namespace raytracer
 	public:
 		Ray() = default;
 
-		Ray(const Point3& origin, const Vector3& direction, float start, float end = infinity, float t = 0.f,
+		Ray(const Point3& origin, const Vector3& direction, double start, double end = infinity, double t = 0.f,
 				int d = 0);
 
-		Ray(const Point3& origin, const Vector3& direction, const Ray& parent, float start, float end = infinity);
+		Ray(const Point3& origin, const Vector3& direction, const Ray& parent, double start, double end = infinity);
 
-		[[nodiscard]] Point3 at(float t) const;
+		[[nodiscard]] Point3 at(double t) const;
 
-		[[nodiscard]] Point3 operator()(float t) const;
+		[[nodiscard]] Point3 operator()(double t) const;
 
 		[[nodiscard]] Point3 origin() const;
 
 		[[nodiscard]] Vector3 direction() const;
 
-		[[nodiscard]] float time() const;
+		[[nodiscard]] double time() const;
 
-		[[nodiscard]] float mint() const;
+		[[nodiscard]] double mint() const;
 
-		[[nodiscard]] float maxt() const;
+		[[nodiscard]] double maxt() const;
 
 		[[nodiscard]] int depth() const;
 
-		void setTime(float t);
+		void setTime(double t);
 
 
 	private:
 		Point3 m_origin{};
 		Vector3 m_direction{};
-		float m_time{};
-		mutable float m_mint{}, m_maxt{};
+		double m_time{};
+		mutable double m_mint{}, m_maxt{};
 		int m_depth{};
 	};
 
@@ -52,15 +52,15 @@ namespace raytracer
 	public:
 		explicit RayDifferential();
 
-		explicit RayDifferential(const Point3& origin, const Vector3& direction, float start, float end = infinity,
-				float t = 0.f, int d = 0);
+		explicit RayDifferential(const Point3& origin, const Vector3& direction, double start, double end = infinity,
+				double t = 0.f, int d = 0);
 
-		explicit RayDifferential(const Point3& origin, const Vector3& direction, const Ray& parent, float start,
-				float end = infinity);
+		explicit RayDifferential(const Point3& origin, const Vector3& direction, const Ray& parent, double start,
+				double end = infinity);
 
 		explicit RayDifferential(const Ray& ray);
 
-		void scaleDifferentials(float s);
+		void scaleDifferentials(double s);
 
 		bool hasDifferential() const;
 

@@ -26,6 +26,8 @@ namespace raytracer
 
 		resetScanlines();
 
+		if (!m_finalImage || !m_imageData) return;
+
 		for (int y = m_finalImage->height() - 1; y >= 0; y--)
 		{
 			for (int x = 0; x < m_finalImage->width(); x++)
@@ -33,8 +35,8 @@ namespace raytracer
 #if cherno
 				// Normalize coordinate
 				glm::vec2 coord = {
-						(float)x / (float)m_finalImage->width(),
-						(float)y / (float)m_finalImage->height()
+						(double)x / (double)m_finalImage->width(),
+						(double)y / (double)m_finalImage->height()
 				};
 				coord = coord * 2.0f - 1.0f;
 #else
@@ -45,6 +47,7 @@ namespace raytracer
 				m_imageData[x + y * m_finalImage->width()] = perPixel(coord);
 			}
 			incrementScanlines();
+			std::cout << scanlines() << std::endl;
 		}
 
 		m_finalImage->setData(m_imageData);
@@ -92,18 +95,18 @@ namespace raytracer
 		glm::vec3 rayOrigin(0,0,2.0f);
 		glm::vec3 rayDirection(coord.x, coord.y, -1.0f);
 		rayDirection = glm::normalize(rayDirection);
-		float radius = 0.5f;
+		double radius = 0.5f;
 
-		float a = glm::dot(rayDirection, rayDirection);
-		float b = 2.0f * glm::dot(rayOrigin, rayDirection);
-		float c = glm::dot(rayOrigin, rayOrigin) - radius * radius;
+		double a = glm::dot(rayDirection, rayDirection);
+		double b = 2.0f * glm::dot(rayOrigin, rayDirection);
+		double c = glm::dot(rayOrigin, rayOrigin) - radius * radius;
 
-		float descriminant = b * b - 4.0f * a * c;
+		double descriminant = b * b - 4.0f * a * c;
 
 		if (descriminant >= 0) {
 
-			float t0 = -b - std::sqrt(descriminant) / (2.0f * a);
-			float t1 = -b + std::sqrt(descriminant) / (2.0f * a);
+			double t0 = -b - std::sqrt(descriminant) / (2.0f * a);
+			double t1 = -b + std::sqrt(descriminant) / (2.0f * a);
 
 			{
 				point3 hitPosition = rayOrigin + rayDirection * t0;
@@ -135,9 +138,9 @@ namespace raytracer
 		b = std::sqrt(scale * b);
 
 		// Write the translated [0,255] value of each color component.
-		auto ri = static_cast<uint32_t>(256 * clamp(r, 0.0f, 0.999f));
-		auto gi = static_cast<uint32_t>(256 * clamp(g, 0.0f, 0.999f));
-		auto bi = static_cast<uint32_t>(256 * clamp(b, 0.0f, 0.999f));
+		auto ri = static_cast<uint32_t>(256 * clamp(r, 0.0, 0.999));
+		auto gi = static_cast<uint32_t>(256 * clamp(g, 0.0, 0.999));
+		auto bi = static_cast<uint32_t>(256 * clamp(b, 0.0, 0.999));
 
 		return 0xff000000 | (bi << 16) | (gi << 8) | ri;
 #endif
