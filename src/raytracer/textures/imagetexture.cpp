@@ -29,15 +29,15 @@ namespace raytracer
 		m_bytesPerScanline = bytes_per_pixel * m_width;
 	}
 
-	Color ImageTexture::value(float u, float v, const Vector3& p) const
+	Color ImageTexture::value(double u, double v, const Vector3& p) const
 	{
 		// If we have no texture data, then return solid cyan as a debugging aid.
 		if (m_data == nullptr)
 			return { 0, 1, 1 };
 
 		// Clamp input texture coordinates to [0,1] x [1,0]
-		u = clamp(u, 0.0f, 1.0f);
-		v = 1.0f - clamp(v, 0.0f, 1.0f);  // Flip V to image coordinates
+		u = clamp(u, 0.0, 1.0);
+		v = 1.0f - clamp(v, 0.0, 1.0);  // Flip V to image coordinates
 
 		auto i = static_cast<int>(u * m_width);
 		auto j = static_cast<int>(v * m_height);

@@ -21,7 +21,7 @@ namespace raytracer
 		return false;
 	}
 
-	Color DiffuseLight::emitted(float u, float v, const Point3& p) const
+	Color DiffuseLight::emitted(double u, double v, const Point3& p) const
 	{
 		return m_emit->value(u, v, p);
 	}

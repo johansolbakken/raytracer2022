@@ -4,20 +4,20 @@
 
 namespace raytracer
 {
-	inline float infinity = std::numeric_limits<float>::infinity();
+	inline double infinity = std::numeric_limits<double>::infinity();
 
-	inline float randomfloat()
+	inline double randomdouble()
 	{
-		static std::uniform_real_distribution<float> distribution(0.0, 1.0);
+		static std::uniform_real_distribution<double> distribution(0.0, 1.0);
 		static std::mt19937 generator;
 		return distribution(generator);
 	}
 
-	// todo: rename to randomFloat
-	inline float randomfloat(float min, float max)
+	// todo: rename to randomdouble
+	inline double randomdouble(double min, double max)
 	{
 		// Returns a random real in [min,max).
-		return min + (max - min) * randomfloat();
+		return min + (max - min) * randomdouble();
 	}
 
 	template<typename T>
@@ -31,7 +31,7 @@ namespace raytracer
 	inline int randomInt(int min, int max)
 	{
 		// Returns a random integer in [min,max].
-		return static_cast<int>(randomfloat(min, max + 1));
+		return static_cast<int>(randomdouble(min, max + 1));
 	}
 
 }

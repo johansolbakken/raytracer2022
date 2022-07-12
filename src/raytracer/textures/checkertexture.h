@@ -17,7 +17,7 @@ namespace raytracer
 
 		CheckerTexture(Color c1, Color c2);
 
-		Color value(float u, float v, const Point3& p) const override;
+		Color value(double u, double v, const Point3& p) const override;
 
 	public:
 		ref<Texture> odd;

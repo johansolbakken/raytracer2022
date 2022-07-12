@@ -6,12 +6,12 @@
 
 namespace raytracer
 {
-	Color NoiseTexture::value(float u, float v, const Point3& p) const
+	Color NoiseTexture::value(double u, double v, const Point3& p) const
 	{
-		return Color(1, 1, 1) * 0.5f * (1 + std::sin(m_scale * p.z + 10 * m_noise.turb(p)));
+		return Color(1, 1, 1) * 0.5 * (1 + std::sin(m_scale * p.z + 10 * m_noise.turb(p)));
 	}
 
-	NoiseTexture::NoiseTexture(float sc)
+	NoiseTexture::NoiseTexture(double sc)
 			: m_scale(sc)
 	{
 

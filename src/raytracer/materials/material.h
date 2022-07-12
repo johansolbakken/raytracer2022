@@ -15,7 +15,7 @@ namespace raytracer
 
 		virtual bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const = 0;
 
-		[[nodiscard]] virtual Color emitted(float u, float v, const Point3& p) const
+		[[nodiscard]] virtual Color emitted(double u, double v, const Point3& p) const
 		{
 			return { 0, 0, 0 };
 		}

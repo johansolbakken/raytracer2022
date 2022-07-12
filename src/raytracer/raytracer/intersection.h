@@ -13,7 +13,7 @@ namespace raytracer
 		const Primitive* primitive{};
 		Transform worldToObject, objectToWorld;
 		uint32_t shapeId{}, primitiveId{};
-		float rayEpsilon{};
+		double rayEpsilon{};
 	};
 }
 

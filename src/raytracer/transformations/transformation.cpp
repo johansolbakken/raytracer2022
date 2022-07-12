@@ -36,35 +36,35 @@ namespace raytracer
 		return { m, m_inv };
 	}
 
-	Transform Transform::scale(float x, float y, float z)
+	Transform Transform::scale(double x, double y, double z)
 	{
 		auto m = glm::scale(Matrix4(1.0f), { x, y, z });
 		auto m_inv = glm::scale(Matrix4(1.0f), { 1.0 / x, 1.0 / y, 1.0 / z });
 		return { m, m_inv };
 	}
 
-	Transform Transform::rotateX(float angle)
+	Transform Transform::rotateX(double angle)
 	{
 		auto m = glm::rotate(Matrix4(1.0f), angle, Vector3(1, 0, 0));
 		auto inv = glm::transpose(m);
 		return { m, inv };
 	}
 
-	Transform Transform::rotateY(float angle)
+	Transform Transform::rotateY(double angle)
 	{
 		auto m = glm::rotate(Matrix4(1.0f), angle, Vector3(0, 1, 0));
 		auto inv = glm::transpose(m);
 		return { m, inv };
 	}
 
-	Transform Transform::rotateZ(float angle)
+	Transform Transform::rotateZ(double angle)
 	{
 		auto m = glm::rotate(Matrix4(1.0f), angle, Vector3(0, 0, 1));
 		auto inv = glm::transpose(m);
 		return { m, inv };
 	}
 
-	Transform Transform::rotate(float angle, const Vector3& axis)
+	Transform Transform::rotate(double angle, const Vector3& axis)
 	{
 		auto mat = glm::rotate(Matrix4(1.0f), angle, axis);
 		auto inv = glm::transpose(mat);
@@ -113,7 +113,7 @@ namespace raytracer
 
 	Vector3 Transform::operator()(const Vector3& point) const
 	{
-		float x = point.x, y = point.y, z = point.z;
+		double x = point.x, y = point.y, z = point.z;
 
 		return { m_matrix[0][0] * x + m_matrix[0][1] * y + m_matrix[0][2] * z,
 				 m_matrix[1][0] * x + m_matrix[1][1] * y + m_matrix[1][2] * z,

@@ -7,12 +7,12 @@
 namespace raytracer
 {
 
-	MovingSphere::MovingSphere(Point3 cen0, Point3 cen1, float _time0, float _time1, float r, const ref<Material>& m)
+	MovingSphere::MovingSphere(Point3 cen0, Point3 cen1, double _time0, double _time1, double r, const ref<Material>& m)
 			: m_center0(cen0), m_center1(cen1), m_time0(_time0), m_time1(_time1), m_radius(r), m_material(m)
 	{
 	}
 
-	bool MovingSphere::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
+	bool MovingSphere::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
 	{
 		Vector3 oc = r.origin() - center(r.time());
 		auto a = lengthSquared(r.direction());
@@ -41,13 +41,13 @@ namespace raytracer
 		return true;
 	}
 
-	Point3 MovingSphere::center(float time) const
+	Point3 MovingSphere::center(double time) const
 	{
 		// Linear interpolate?
 		return m_center0 + ((time - m_time0) / (m_time1 - m_time0)) * (m_center1 - m_center0);
 	}
 
-	bool MovingSphere::boundingBox(float time0, float time1, Aabb& output_box) const
+	bool MovingSphere::boundingBox(double time0, double time1, Aabb& output_box) const
 	{
 		Aabb box0(
 				center(time0) - Vector3(m_radius, m_radius, m_radius),

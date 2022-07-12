@@ -8,7 +8,7 @@ namespace raytracer
 	class Metal : public Material
 	{
 	public:
-		explicit Metal(const Color& a, float f = 0.0f);
+		explicit Metal(const Color& a, double f = 0.0f);
 
 		~Metal() override = default;
 
@@ -16,7 +16,7 @@ namespace raytracer
 
 	public:
 		Color m_albedo;
-		float m_fuzz;
+		double m_fuzz;
 	};
 
 } // raytracer

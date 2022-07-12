@@ -22,15 +22,15 @@ namespace raytracer
 
 		static Transform translate(const Vector3& delta);
 
-		static Transform scale(float x, float y, float z);
+		static Transform scale(double x, double y, double z);
 
-		static Transform rotateX(float angle);
+		static Transform rotateX(double angle);
 
-		static Transform rotateY(float angle);
+		static Transform rotateY(double angle);
 
-		static Transform rotateZ(float angle);
+		static Transform rotateZ(double angle);
 
-		static Transform rotate(float angle, const Vector3& axis);
+		static Transform rotate(double angle, const Vector3& axis);
 
 		static Transform LookAt(const Point3& pos, const Point3& look, const Vector3& up);
 

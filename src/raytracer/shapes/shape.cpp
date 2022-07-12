@@ -34,7 +34,7 @@ namespace raytracer
 		assert(0 && "Unimplemented Shape::Refine() method called");
 	}
 
-	bool Shape::intersect(const Ray& ray, float* tHit, float* rayEpsilon, ref<DifferentialGeometry>& dg) const
+	bool Shape::intersect(const Ray& ray, double* tHit, double* rayEpsilon, ref<DifferentialGeometry>& dg) const
 	{
 		assert(0 && "Unimplemented Shape::intersect() method called");
 		return false;
@@ -77,7 +77,7 @@ namespace raytracer
 		return m_shapeId;
 	}
 
-	float Shape::area() const
+	double Shape::area() const
 	{
 		assert(0 && "Not implemented Shape::area() called");
 		return 0;

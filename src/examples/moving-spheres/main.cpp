@@ -16,8 +16,8 @@ raytracer::ref<raytracer::Hittable> createWorld()
 	{
 		for (int b = -11; b < 11; b++)
 		{
-			auto choose_mat = randomfloat();
-			Point3 center(a + 0.9 * randomfloat(), 0.2, b + 0.9 * randomfloat());
+			auto choose_mat = randomdouble();
+			Point3 center(a + 0.9 * randomdouble(), 0.2, b + 0.9 * randomdouble());
 
 			if ((center - Point3(4, 0.2, 0)).length() > 0.9)
 			{
@@ -28,14 +28,14 @@ raytracer::ref<raytracer::Hittable> createWorld()
 					// diffuse
 					auto albedo = randomVec3() * randomVec3();
 					sphere_material = createRef<Lambertian>(albedo);
-					auto center2 = center + Vector3 (0, randomfloat(0, .5), 0);
+					auto center2 = center + Vector3 (0, randomdouble(0, .5), 0);
 					world->add<MovingSphere>(center, center2, 0.0, 1.0, 0.2, sphere_material);
 				}
 				else if (choose_mat < 0.95)
 				{
 					// metal
 					auto albedo = randomVec3(0.5, 1);
-					auto fuzz = randomfloat(0, 0.5);
+					auto fuzz = randomdouble(0, 0.5);
 					sphere_material = createRef<Metal>(albedo, fuzz);
 					world->add<Sphere>(center, 0.2, sphere_material);
 				}
@@ -64,7 +64,7 @@ raytracer::ref<raytracer::Hittable> createWorld()
 int main(int argc, char** argv)
 {
 	constexpr int width = 400;
-	constexpr float aspect_ratio = 16.0/9.0;
+	constexpr double aspect_ratio = 16.0/9.0;
 
 	// World
 	auto world = createWorld();

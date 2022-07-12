@@ -2,7 +2,7 @@
 
 #include <QDoubleValidator>
 
-TrippleFloatInputWidget::TrippleFloatInputWidget(QWidget* parent)
+TrippledoubleInputWidget::TrippledoubleInputWidget(QWidget* parent)
 		: QGroupBox{ parent },
 		  m_validator(-100.0, 100, 3),
 		  m_xLabel(this),
@@ -16,9 +16,9 @@ TrippleFloatInputWidget::TrippleFloatInputWidget(QWidget* parent)
 	m_z = new QLineEdit(this);
 	m_z->setValidator(&m_validator);
 
-	QObject::connect(m_x, &QLineEdit::returnPressed, this, &TrippleFloatInputWidget::returnPressedHandle);
-	QObject::connect(m_y, &QLineEdit::returnPressed, this, &TrippleFloatInputWidget::returnPressedHandle);
-	QObject::connect(m_z, &QLineEdit::returnPressed, this, &TrippleFloatInputWidget::returnPressedHandle);
+	QObject::connect(m_x, &QLineEdit::returnPressed, this, &TrippledoubleInputWidget::returnPressedHandle);
+	QObject::connect(m_y, &QLineEdit::returnPressed, this, &TrippledoubleInputWidget::returnPressedHandle);
+	QObject::connect(m_z, &QLineEdit::returnPressed, this, &TrippledoubleInputWidget::returnPressedHandle);
 
 	m_xLabel.setText("x:");
 	m_yLabel.setText("y:");
@@ -33,21 +33,21 @@ TrippleFloatInputWidget::TrippleFloatInputWidget(QWidget* parent)
 	m_layout.addWidget(m_z);
 }
 
-TrippleFloatInputWidget::~TrippleFloatInputWidget()
+TrippledoubleInputWidget::~TrippledoubleInputWidget()
 {
 	delete m_x;
 	delete m_y;
 	delete m_z;
 }
 
-void TrippleFloatInputWidget::setValues(float x, float y, float z)
+void TrippledoubleInputWidget::setValues(double x, double y, double z)
 {
 	m_x->setText(QString::number(x));
 	m_y->setText(QString::number(y));
 	m_z->setText(QString::number(z));
 }
 
-void TrippleFloatInputWidget::returnPressedHandle()
+void TrippledoubleInputWidget::returnPressedHandle()
 {
 	emit returnPressed();
 }

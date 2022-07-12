@@ -8,29 +8,29 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-class TrippleFloatInputWidget : public QGroupBox
+class TrippledoubleInputWidget : public QGroupBox
 {
 Q_OBJECT
 public:
-	explicit TrippleFloatInputWidget(QWidget* parent = nullptr);
+	explicit TrippledoubleInputWidget(QWidget* parent = nullptr);
 
-	~TrippleFloatInputWidget();
+	~TrippledoubleInputWidget();
 
-	void setValues(float x, float y, float z);
+	void setValues(double x, double y, double z);
 
-	float getX() const
+	double getX() const
 	{
-		return m_x->text().toFloat();
+		return m_x->text().todouble();
 	}
 
-	float getY() const
+	double getY() const
 	{
-		return m_y->text().toFloat();
+		return m_y->text().todouble();
 	}
 
-	float getZ() const
+	double getZ() const
 	{
-		return m_z->text().toFloat();
+		return m_z->text().todouble();
 	}
 
 signals:

@@ -30,12 +30,12 @@ namespace raytracer
 		sides->add<yz_rect>(p0.y, p1.y, p0.z, p1.z, p0.x, ptr);
 	}
 
-	bool Box::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
+	bool Box::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
 	{
 		return sides->hit(r, t_min, t_max, rec);
 	}
 
-	bool Box::boundingBox(float time0, float time1, Aabb& output_box) const
+	bool Box::boundingBox(double time0, double time1, Aabb& output_box) const
 	{
 		output_box = Aabb(box_min, box_max);
 		return true;

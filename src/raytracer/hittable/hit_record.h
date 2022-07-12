@@ -14,10 +14,10 @@ namespace raytracer
 	{
 		Point3 p;
 		Vector3 normal;
-		float t;
+		double t;
 		bool front_face;
 		ref<Material> mat_ptr;
-		float u, v;
+		double u, v;
 
 		void setFaceNormal(const Ray& r, const Vector3& outward_normal);
 

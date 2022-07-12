@@ -11,8 +11,8 @@
 namespace raytracer
 {
 
-	AnimatedTransform::AnimatedTransform(const ref<Transform>& transform1, float time1,
-			const ref<Transform>& transform2, float time2)
+	AnimatedTransform::AnimatedTransform(const ref<Transform>& transform1, double time1,
+			const ref<Transform>& transform2, double time2)
 			: m_startTime(time1), m_endTime(time2), m_startTransform(transform1), m_endTransform(transform2),
 			  m_actuallyAnimated(static_cast<Transform>(*transform1) != static_cast<Transform>(*transform2))
 	{
@@ -34,7 +34,7 @@ namespace raytracer
 		M[3][3] = 1.f;
 
 		// Extract rotation R form translation matrix
-		float norm;
+		double norm;
 		int count = 0;
 		Matrix4 R = M;
 		do
@@ -50,7 +50,7 @@ namespace raytracer
 			norm = 0.f;
 			for (int i = 0; i < 3; i++)
 			{
-				float n = fabsf(R[i][0] - Rnext[i][0]) +
+				double n = fabsf(R[i][0] - Rnext[i][0]) +
 						  fabsf(R[i][1] - Rnext[i][1]) +
 						  fabsf(R[i][2] - Rnext[i][2]);
 				norm = std::max(norm, n);
@@ -64,7 +64,7 @@ namespace raytracer
 		*S = glm::inverse(R) * M;
 	}
 
-	void AnimatedTransform::interpolate(float time, ref<Transform>& t) const
+	void AnimatedTransform::interpolate(double time, ref<Transform>& t) const
 	{
 		// Handle boundry conditions for matrix interpolation
 		if (!m_actuallyAnimated || time <= m_startTime) {
@@ -77,7 +77,7 @@ namespace raytracer
 			return;
 		}
 
-		float dt = (time - m_startTime) / (m_endTime - m_startTime);
+		double dt = (time - m_startTime) / (m_endTime - m_startTime);
 
 		// Interpolate translation at dt
 		Vector3 trans = (1.f - dt) * T[0] + dt * T[1];
@@ -90,7 +90,7 @@ namespace raytracer
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 			{
-				// TODO: Implement an linear interpolation between floats
+				// TODO: Implement an linear interpolation between doubles
 				//scale[i][j] = lerp(S[0][i][j], S[1][i][j], dt);
 			}
 

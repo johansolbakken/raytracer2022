@@ -8,13 +8,13 @@
 
 namespace raytracer
 {
-	Translate::Translate(raytracer::ref<raytracer::Hittable> p,
+	Translate::Translate(const ref<Hittable>& p,
 			const raytracer::Vector3& displacement)
-			: m_object(std::move(p)), m_offset(displacement)
+			: m_object(p), m_offset(displacement)
 	{
 	}
 
-	bool Translate::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
+	bool Translate::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
 	{
 		Ray moved_r(r.origin() - m_offset, r.direction(), r.time());
 		if (!m_object->hit(moved_r, t_min, t_max, rec))
@@ -26,7 +26,7 @@ namespace raytracer
 		return true;
 	}
 
-	bool Translate::boundingBox(float time0, float time1, Aabb& output_box) const
+	bool Translate::boundingBox(double time0, double time1, Aabb& output_box) const
 	{
 		if (!m_object->boundingBox(time0, time1, output_box))
 			return false;
@@ -38,7 +38,7 @@ namespace raytracer
 		return true;
 	}
 
-	RotateY::RotateY(const ref<Hittable>& p, float angle)
+	RotateY::RotateY(const ref<Hittable>& p, double angle)
 	: m_object(p)
 	{
 		m_bbox = Aabb();
@@ -53,9 +53,9 @@ namespace raytracer
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {
 				for (int k = 0; k < 2; k++) {
-					auto x = float(i)*m_bbox.maximum().x + (1.0f-float(i)) * m_bbox.minimum().x;
-					auto y = float(j)*m_bbox.maximum().y + (1.0f-float(j)) * m_bbox.minimum().y;
-					auto z = float(k)*m_bbox.maximum().z + (1.0f-float(k)) * m_bbox.minimum().z;
+					auto x = double(i)*m_bbox.maximum().x + (1.0f-double(i)) * m_bbox.minimum().x;
+					auto y = double(j)*m_bbox.maximum().y + (1.0f-double(j)) * m_bbox.minimum().y;
+					auto z = double(k)*m_bbox.maximum().z + (1.0f-double(k)) * m_bbox.minimum().z;
 
 					auto newx =  m_cosTheta*x + m_sinTheta*z;
 					auto newz = -m_sinTheta*x + m_cosTheta*z;
@@ -73,7 +73,7 @@ namespace raytracer
 		m_bbox = Aabb(min, max);
 	}
 
-	bool RotateY::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
+	bool RotateY::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
 	{
 		auto origin = r.origin();
 		auto direction = r.direction();
@@ -104,7 +104,7 @@ namespace raytracer
 		return true;
 	}
 
-	bool RotateY::boundingBox(float time0, float time1, Aabb& output_box) const
+	bool RotateY::boundingBox(double time0, double time1, Aabb& output_box) const
 	{
 		output_box = m_bbox;
 		return m_hasbox;

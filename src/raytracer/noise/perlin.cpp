@@ -27,7 +27,7 @@ namespace raytracer
 		delete[] m_permZ;
 	}
 
-	float Perlin::noise(const Point3& p) const
+	double Perlin::noise(const Point3& p) const
 	{
 		auto u = p.x - std::floor(p.x);
 		auto v = p.y - std::floor(p.y);
@@ -73,7 +73,7 @@ namespace raytracer
 		}
 	}
 
-	float Perlin::trilinear_interp(float (* c)[2][2], float u, float v, float w)
+	double Perlin::trilinear_interp(double (* c)[2][2], double u, double v, double w)
 	{
 		auto accum = 0.0;
 		for (int i = 0; i < 2; i++)
@@ -86,7 +86,7 @@ namespace raytracer
 		return accum;
 	}
 
-	float Perlin::perlin_interp(Vector3 (* c)[2][2], float u, float v, float w)
+	double Perlin::perlin_interp(Vector3 (* c)[2][2], double u, double v, double w)
 	{
 		auto uu = u * u * (3 - 2 * u);
 		auto vv = v * v * (3 - 2 * v);
@@ -107,7 +107,7 @@ namespace raytracer
 		return accum;
 	}
 
-	float Perlin::turb(const Point3& p, int depth) const
+	double Perlin::turb(const Point3& p, int depth) const
 	{
 		auto accum = 0.0;
 		auto temp_p = p;

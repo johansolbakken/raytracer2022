@@ -25,13 +25,13 @@ namespace raytracer
 			m_start = std::chrono::high_resolution_clock::now();
 		}
 
-		float elapsed()
+		double elapsed()
 		{
-			return (float)std::chrono::duration_cast<std::chrono::nanoseconds>(
+			return (double)std::chrono::duration_cast<std::chrono::nanoseconds>(
 					std::chrono::high_resolution_clock::now() - m_start).count() * 0.001f * 0.001f * 0.001f;
 		}
 
-		float elapsedMillis()
+		double elapsedMillis()
 		{
 			return elapsed() * 1000.0f;
 		}
@@ -43,7 +43,7 @@ namespace raytracer
 	struct ScopedTimerResult
 	{
 		std::string name;
-		float time;
+		double time;
 	};
 
 	class ScopedTimer
@@ -58,7 +58,7 @@ namespace raytracer
 
 		~ScopedTimer()
 		{
-			float time = m_timer.elapsedMillis();
+			double time = m_timer.elapsedMillis();
 			m_callback({ m_name, time });
 		}
 

@@ -31,14 +31,14 @@ namespace raytracer
 
 		virtual void refine(std::vector<ref<Shape>>& refinement) const;
 
-		virtual bool intersect(const Ray& ray, float *tHit, float *rayEpsilon, ref<DifferentialGeometry>& dg) const;
+		virtual bool intersect(const Ray& ray, double *tHit, double *rayEpsilon, ref<DifferentialGeometry>& dg) const;
 
 		[[nodiscard]] virtual bool intersectP(const Ray& ray) const;
 
 		virtual void getShadingGeometry(const Transform& obj2world, const DifferentialGeometry& dg,
 				ref<DifferentialGeometry>& dgShading) const;
 
-		[[nodiscard]] virtual float area() const;
+		[[nodiscard]] virtual double area() const;
 
 	public:
 		[[nodiscard]] ref<Transform> objectToWorld() const;

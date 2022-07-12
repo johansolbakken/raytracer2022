@@ -34,7 +34,7 @@ void TitledTextEdit::setValue(const std::string& text)
 	m_lineEdit->setText(QString::fromStdString(text));
 }
 
-void TitledTextEdit::setValue(float f)
+void TitledTextEdit::setValue(double f)
 {
 	m_lineEdit->setText(QString::number(f));
 }

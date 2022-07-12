@@ -14,7 +14,7 @@ namespace raytracer
 	}
 
 	DifferentialGeometry::DifferentialGeometry(const Point3& point, const Vector3& dpdu, const Vector3& dpdv,
-			const Vector3& dndu, const Vector3& dndv, float uu, float vv, const Shape* s)
+			const Vector3& dndu, const Vector3& dndv, double uu, double vv, const Shape* s)
 			: point(point), dPointdu(dpdu), dPointdv(dpdv), dNormaldu(dndu), dNormaldv(dndv)
 	{
 		// Initialize DifferentialGeometry from parameters

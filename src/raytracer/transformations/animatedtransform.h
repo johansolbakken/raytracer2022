@@ -10,16 +10,16 @@ namespace raytracer
 	class AnimatedTransform
 	{
 	public:
-		AnimatedTransform(const ref<Transform>& transform1, float time1,
-				const ref<Transform>& transform2, float time2);
+		AnimatedTransform(const ref<Transform>& transform1, double time1,
+				const ref<Transform>& transform2, double time2);
 
-		void interpolate(float time, ref<Transform>& t) const;
+		void interpolate(double time, ref<Transform>& t) const;
 
 	private:
 		static void decompose(const Matrix4& matrix, Vector3* T, Quaternion* Rquat, Matrix4* S);
 
 	private:
-		const float m_startTime{}, m_endTime{};
+		const double m_startTime{}, m_endTime{};
 		const ref<Transform> m_startTransform{}, m_endTransform{};
 		const bool m_actuallyAnimated;
 		Vector3 T[2]{};

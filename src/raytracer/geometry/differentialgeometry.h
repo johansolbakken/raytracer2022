@@ -9,11 +9,11 @@ namespace raytracer
 	{
 		DifferentialGeometry();
 		DifferentialGeometry(const Point3& point, const Vector3& dpdu, const Vector3& dpdv,
-				const Vector3& dndu, const Vector3& dndv, float uu, float vv, const Shape* s);
+				const Vector3& dndu, const Vector3& dndv, double uu, double vv, const Shape* s);
 
 		Point3 point{};
 		Vector3 normalNormalized{};
-		float u, v;
+		double u, v;
 		const Shape* shape;
 
 		Vector3 dPointdu{}, dPointdv{}; // leibniz notation

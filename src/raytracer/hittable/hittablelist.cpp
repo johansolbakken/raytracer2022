@@ -9,7 +9,7 @@
 namespace raytracer
 {
 
-	bool HittableList::hit(const Ray& r, float t_min, float t_max, hit_record& rec) const
+	bool HittableList::hit(const Ray& r, double t_min, double t_max, hit_record& rec) const
 	{
 		hit_record temp_rec{};
 		bool hit_anything = false;
@@ -43,7 +43,7 @@ namespace raytracer
 		add(object);
 	}
 
-	bool HittableList::boundingBox(float time0, float time1, Aabb& output_box) const
+	bool HittableList::boundingBox(double time0, double time1, Aabb& output_box) const
 	{
 		if (m_objects.empty()) return false;
 

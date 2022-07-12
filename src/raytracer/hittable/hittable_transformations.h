@@ -8,12 +8,12 @@ namespace raytracer {
 
 	class Translate : public Hittable {
 	public:
-		Translate(ref<Hittable>  p, const Vector3 & displacement);
+		Translate(const ref<Hittable>&  p, const Vector3 & displacement);
 		~Translate() override = default;
 
-		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
-		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
+		bool boundingBox(double time0, double time1, Aabb& output_box) const override;
 
 	public:
 		ref<Hittable> m_object;
@@ -22,16 +22,16 @@ namespace raytracer {
 
 	class RotateY : public Hittable {
 	public:
-		RotateY(const ref<Hittable>& p, float angle);
+		RotateY(const ref<Hittable>& p, double angle);
 
-		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
-		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
+		bool boundingBox(double time0, double time1, Aabb& output_box) const override;
 
 	public:
 		ref<Hittable> m_object;
-		float m_sinTheta;
-		float m_cosTheta;
+		double m_sinTheta;
+		double m_cosTheta;
 		bool m_hasbox;
 		Aabb m_bbox;
 	};

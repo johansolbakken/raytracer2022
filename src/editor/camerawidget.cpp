@@ -6,9 +6,9 @@ CameraWidget::CameraWidget(QWidget* parent)
 		: QGroupBox{ parent }, m_validator(-100.0, 100, 3)
 {
 	setTitle("Camera");
-	m_lookFrom = new TrippleFloatInputWidget(this);
+	m_lookFrom = new TrippledoubleInputWidget(this);
 	m_lookFrom->setTitle("Look from");
-	m_lookAt = new TrippleFloatInputWidget(this);
+	m_lookAt = new TrippledoubleInputWidget(this);
 	m_lookAt->setTitle("Look at");
 
 	m_vfov = new TitledTextEdit(this);
@@ -31,8 +31,8 @@ CameraWidget::CameraWidget(QWidget* parent)
 	QObject::connect(m_focusDist, &TitledTextEdit::returnPressed, this, &CameraWidget::returnPressedHandler);
 	QObject::connect(t0, &TitledTextEdit::returnPressed, this, &CameraWidget::returnPressedHandler);
 	QObject::connect(t1, &TitledTextEdit::returnPressed, this, &CameraWidget::returnPressedHandler);
-	QObject::connect(m_lookAt, &TrippleFloatInputWidget::returnPressed, this, &CameraWidget::returnPressedHandler);
-	QObject::connect(m_lookFrom, &TrippleFloatInputWidget::returnPressed, this, &CameraWidget::returnPressedHandler);
+	QObject::connect(m_lookAt, &TrippledoubleInputWidget::returnPressed, this, &CameraWidget::returnPressedHandler);
+	QObject::connect(m_lookFrom, &TrippledoubleInputWidget::returnPressed, this, &CameraWidget::returnPressedHandler);
 
 	m_layout = new QVBoxLayout();
 	m_layout->addWidget(m_vfov);
@@ -83,11 +83,11 @@ void CameraWidget::returnPressedHandler()
 
 	spec.lookFrom = { m_lookFrom->getX(), m_lookFrom->getY(), m_lookFrom->getZ() };
 	spec.lookAt = { m_lookAt->getX(), m_lookAt->getY(), m_lookAt->getZ() };
-	spec.vfov = m_vfov->valueFloat();
-	spec.aperture = m_aperture->valueFloat();
-	spec.focusDistance = m_focusDist->valueFloat();
-	spec.time0 = t0->valueFloat();
-	spec.time1 = t1->valueFloat();
+	spec.vfov = m_vfov->valuedouble();
+	spec.aperture = m_aperture->valuedouble();
+	spec.focusDistance = m_focusDist->valuedouble();
+	spec.time0 = t0->valuedouble();
+	spec.time1 = t1->valuedouble();
 
 	m_cameraRef->init(spec);
 }

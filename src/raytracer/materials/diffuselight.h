@@ -21,7 +21,7 @@ namespace raytracer
 				const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered
 		) const override;
 
-		[[nodiscard]] Color emitted(float u, float v, const Point3& p) const override;
+		[[nodiscard]] Color emitted(double u, double v, const Point3& p) const override;
 
 	public:
 		ref<Texture> m_emit;

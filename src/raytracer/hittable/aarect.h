@@ -1,7 +1,5 @@
 #pragma once
 
-#include <utility>
-
 #include "hittable.h"
 
 namespace raytracer
@@ -12,16 +10,16 @@ namespace raytracer
 	public:
 		xy_rect() = default;
 
-		xy_rect(float _x0, float _x1, float _y0, float _y1, float _k,
-				ref<Material> mat);;
+		xy_rect(double _x0, double _x1, double _y0, double _y1, double _k,
+				const ref<Material>& mat);;
 
-		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
-		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
+		bool boundingBox(double time0, double time1, Aabb& output_box) const override;
 
 	public:
 		ref<Material> mp;
-		float x0{}, x1{}, y0{}, y1{}, k{};
+		double x0{}, x1{}, y0{}, y1{}, k{};
 	};
 
 	class xz_rect : public Hittable
@@ -29,16 +27,16 @@ namespace raytracer
 	public:
 		xz_rect() = default;
 
-		xz_rect(float _x0, float _x1, float _z0, float _z1, float _k,
+		xz_rect(double _x0, double _x1, double _z0, double _z1, double _k,
 				const ref<Material>& mat);;
 
-		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
-		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
+		bool boundingBox(double time0, double time1, Aabb& output_box) const override;
 
 	public:
 		ref<Material> mp;
-		float x0{}, x1{}, z0{}, z1{}, k{};
+		double x0{}, x1{}, z0{}, z1{}, k{};
 	};
 
 	class yz_rect : public Hittable
@@ -46,16 +44,16 @@ namespace raytracer
 	public:
 		yz_rect() = default;
 
-		yz_rect(float _y0, float _y1, float _z0, float _z1, float _k,
+		yz_rect(double _y0, double _y1, double _z0, double _z1, double _k,
 				const ref<Material>& mat);
 
-		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
-		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
+		bool boundingBox(double time0, double time1, Aabb& output_box) const override;
 
 	public:
 		ref<Material> mp;
-		float y0{}, y1{}, z0{}, z1{}, k{};
+		double y0{}, y1{}, z0{}, z1{}, k{};
 	};
 
 }

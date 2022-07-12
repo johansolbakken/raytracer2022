@@ -24,7 +24,7 @@ public:
 
 	void setValue(const std::string& text);
 
-	void setValue(float f);
+	void setValue(double f);
 
 	void setValue(int n);
 
@@ -33,9 +33,9 @@ public:
 		return m_lineEdit->text().toStdString();
 	}
 
-	float valueFloat()
+	double valuedouble()
 	{
-		return m_lineEdit->text().toFloat();
+		return m_lineEdit->text().todouble();
 	}
 
 	int valueInt()

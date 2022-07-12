@@ -16,7 +16,7 @@
 
 namespace raytracer
 {
-	Sphere::Sphere(raytracer::Point3 cen, float r, raytracer::ref<raytracer::Material> material)
+	Sphere::Sphere(raytracer::Point3 cen, double r, raytracer::ref<raytracer::Material> material)
             :
           #if pbrt
               Shape(nullptr, nullptr, false),
@@ -26,7 +26,7 @@ namespace raytracer
 	{
 	}
 
-	bool Sphere::hit(const raytracer::Ray& r, float t_min, float t_max, raytracer::hit_record& rec) const
+	bool Sphere::hit(const raytracer::Ray& r, double t_min, double t_max, raytracer::hit_record& rec) const
 	{
 		Vector3 oc = r.origin() - m_center;
 		auto a = lengthSquared(r.direction());
@@ -62,7 +62,7 @@ namespace raytracer
 
 
 	// Old way to compute bounding box
-	bool Sphere::boundingBox(float time0, float time1, Aabb& output_box) const
+	bool Sphere::boundingBox(double time0, double time1, Aabb& output_box) const
 	{
 		output_box = Aabb(
 				m_center - Vector3(m_radius, m_radius, m_radius),
@@ -71,7 +71,7 @@ namespace raytracer
 		return true;
 	}
 
-	std::pair<float, float> Sphere::getSphereUv(const Point3& p)
+	std::pair<double, double> Sphere::getSphereUv(const Point3& p)
 	{
 		// p: a given point on the sphere of radius one, centered at the origin.
 		// u: returned value [0,1] of angle around the Y axis from X=-1.
@@ -89,8 +89,14 @@ namespace raytracer
 	}
 
 #if pbrt
-	Sphere::Sphere(const ref<Transform>& o2w, const ref<Transform>& w2o, bool ro, float rad, float z0, float z1,
-			float pm) : Shape(o2w, w2o, ro)
+	Sphere::Sphere(const ref<Transform>& o2w, const ref<Transform>& w2o, bool ro, double rad, double z0, double z1,
+			double pm)
+	{
+
+	}
+
+	Sphere::Sphere(const ref<Transform>& o2w, const ref<Transform>& w2o, bool ro, double rad, double z0, double z1,
+			double pm) : Shape(o2w, w2o, ro)
 	{
 		m_radius = rad;
 		m_zmin = clamp(std::min(z0, z1), -m_radius, m_radius);
@@ -106,37 +112,37 @@ namespace raytracer
 				 { Point3{ m_radius, m_radius, m_zmax }}};
 	}
 
-	bool Sphere::intersect(const Ray& r, float* tHit, float* rayEpsilon, ref<DifferentialGeometry>& dg) const
+	bool Sphere::intersect(const Ray& r, double* tHit, double* rayEpsilon, ref<DifferentialGeometry>& dg) const
 	{
-		float phi;
+		double phi;
 		Point3 phit;
 
 		// Transform ray to object space
 		Ray ray = (*worldToObject())(r);
 
 		// Compute quadratic sphere coefficients
-		float a = glm::dot(ray.direction(), ray.direction());
-		float b = 2.0f * glm::dot(ray.direction(), ray.origin());
-		float c = glm::dot(ray.origin(), ray.origin()) - m_radius * m_radius;
+		double a = glm::dot(ray.direction(), ray.direction());
+		double b = 2.0f * glm::dot(ray.direction(), ray.origin());
+		double c = glm::dot(ray.origin(), ray.origin()) - m_radius * m_radius;
 
 		// Solve quadratic equation for t values
-		float descriminant = b * b - 4.0f * a * c;
+		double descriminant = b * b - 4.0f * a * c;
 		if (descriminant < 0.0f)
 			return false;
 
-		float q;
+		double q;
 		if (b < 0) q = -.5f * (b - std::sqrt(descriminant));
 		else q = -.5f * (b + std::sqrt(descriminant));
 
-		float t0 = q / a;
-		float t1 = c / q;
+		double t0 = q / a;
+		double t1 = c / q;
 		if (t0 > t1) std::swap(t0, t1);
 
 		// Compute intersection distance along ray
 		if (t0 > ray.maxt() || t1 < ray.mint())
 			return false;
 
-		float thit = t0;
+		double thit = t0;
 		if (t0 < ray.mint())
 		{
 			thit = t1;
@@ -175,15 +181,15 @@ namespace raytracer
 		}
 
 		// Find parametric representation of sphere hit
-		float u = phi / m_phiMax;
-		float theta = std::acosf(clamp(phit.z / m_radius, -1.f, 1.f));
-		float v = (theta - m_thetaMin) / (m_thetaMax - m_thetaMin);
+		double u = phi / m_phiMax;
+		double theta = std::acosf(clamp(phit.z / m_radius, -1.f, 1.f));
+		double v = (theta - m_thetaMin) / (m_thetaMax - m_thetaMin);
 
 		// Compare dpdu and dpdv
-		float zradius = std::sqrtf(phit.x * phit.x + phit.y * phit.y);
-		float invzradius = 1.f / zradius;
-		float cosphi = phit.x * invzradius;
-		float sinphi = phit.y * invzradius;
+		double zradius = std::sqrtf(phit.x * phit.x + phit.y * phit.y);
+		double invzradius = 1.f / zradius;
+		double cosphi = phit.x * invzradius;
+		double sinphi = phit.y * invzradius;
 		Vector3 dpdu(-m_phiMax * phit.y, m_phiMax * phit.x, 0);
 		Vector3 dpdv =
 				(m_thetaMax - m_thetaMin) * Vector3(phit.z * cosphi, phit.z * sinphi, -m_radius * std::sinf(theta));
@@ -194,16 +200,16 @@ namespace raytracer
 		Vector3 d2Pdvv = -(m_thetaMax - m_thetaMin) * (m_thetaMax - m_thetaMin) * Vector3(phit.x, phit.y, phit.z);
 
 		// Compute coefficients for fundemental forms
-		float E = glm::dot(dpdu, dpdu);
-		float F = glm::dot(dpdu, dpdv);
-		float G = glm::dot(dpdv, dpdv);
+		double E = glm::dot(dpdu, dpdu);
+		double F = glm::dot(dpdu, dpdv);
+		double G = glm::dot(dpdv, dpdv);
 		Vector3 n = glm::normalize(glm::cross(dpdu, dpdv));
-		float e = glm::dot(n, d2Pduu);
-		float f = glm::dot(n, d2Pduv);
-		float g = glm::dot(n, d2Pdvv);
+		double e = glm::dot(n, d2Pduu);
+		double f = glm::dot(n, d2Pduv);
+		double g = glm::dot(n, d2Pdvv);
 
 		// Compute dndu and dndv from fundemental form coefficients
-		float invEGF2 = 1.f / (E * G - F * F);
+		double invEGF2 = 1.f / (E * G - F * F);
 		Vector3 dndu = (f * F - e * G) * invEGF2 * dpdu + (e * F - f * E) * invEGF2 * dpdv;
 		Vector3 dndv = (g * F - f * G) * invEGF2 * dpdu + (f * F - g * E) * invEGF2 * dpdv;
 
@@ -222,35 +228,35 @@ namespace raytracer
 
 	bool Sphere::intersectP(const Ray& r) const
 	{
-		float phi;
+		double phi;
 		Point3 phit;
 
 		// Transform ray to object space
 		Ray ray = (*worldToObject())(r);
 
 		// Compute quadratic sphere coefficients
-		float a = glm::dot(ray.direction(), ray.direction());
-		float b = 2.0f * glm::dot(ray.direction(), ray.origin());
-		float c = glm::dot(ray.origin(), ray.origin()) - m_radius * m_radius;
+		double a = glm::dot(ray.direction(), ray.direction());
+		double b = 2.0f * glm::dot(ray.direction(), ray.origin());
+		double c = glm::dot(ray.origin(), ray.origin()) - m_radius * m_radius;
 
 		// Solve quadratic equation for t values
-		float descriminant = b * b - 4.0f * a * c;
+		double descriminant = b * b - 4.0f * a * c;
 		if (descriminant < 0.0f)
 			return false;
 
-		float q;
+		double q;
 		if (b < 0) q = -.5f * (b - std::sqrt(descriminant));
 		else q = -.5f * (b + std::sqrt(descriminant));
 
-		float t0 = q / a;
-		float t1 = c / q;
+		double t0 = q / a;
+		double t1 = c / q;
 		if (t0 > t1) std::swap(t0, t1);
 
 		// Compute intersection distance along ray
 		if (t0 > ray.maxt() || t1 < ray.mint())
 			return false;
 
-		float thit = t0;
+		double thit = t0;
 		if (t0 < ray.mint())
 		{
 			thit = t1;
@@ -291,7 +297,7 @@ namespace raytracer
 		return true;
 	}
 
-	float Sphere::area() const
+	double Sphere::area() const
 	{
 		return m_phiMax * m_radius * (m_zmax - m_zmin);
 	}

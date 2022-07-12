@@ -32,7 +32,7 @@ private:
 	raytracer::ref<raytracer::Camera> m_cameraRef = nullptr;
 
 	TitledTextEdit* m_vfov, * m_aperture, * m_focusDist, * t0, * t1;
-	TrippleFloatInputWidget* m_lookFrom, * m_lookAt;
+	TrippledoubleInputWidget* m_lookFrom, * m_lookAt;
 
 	QDoubleValidator m_validator;
 };

@@ -34,9 +34,9 @@ namespace raytracer
 			add(createRef<T>(std::forward<Args>(args)...));
 		}
 
-		bool hit(const Ray& r, float t_min, float t_max, hit_record& rec) const override;
+		bool hit(const Ray& r, double t_min, double t_max, hit_record& rec) const override;
 
-		bool boundingBox(float time0, float time1, Aabb& output_box) const override;
+		bool boundingBox(double time0, double time1, Aabb& output_box) const override;
 
 		[[nodiscard]] std::vector<ref<Hittable>> objects() const
 		{

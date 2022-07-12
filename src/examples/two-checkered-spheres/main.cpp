@@ -21,7 +21,7 @@ raytracer::ref<raytracer::Hittable> createWorld()
 int main(int argc, char** argv)
 {
 	constexpr int width = 400;
-	constexpr float aspect_ratio = 16.0/9.0;
+	constexpr double aspect_ratio = 16.0/9.0;
 
 
 	// World

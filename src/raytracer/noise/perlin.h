@@ -12,9 +12,9 @@ namespace raytracer
 
 		~Perlin();
 
-		[[nodiscard]] float noise(const Point3& p) const;
+		[[nodiscard]] double noise(const Point3& p) const;
 
-		float turb(const Point3& p, int depth = 7) const;
+		double turb(const Point3& p, int depth = 7) const;
 
 
 	private:
@@ -22,9 +22,9 @@ namespace raytracer
 
 		static void permute(int* p, int n);
 
-		static float trilinear_interp(float c[2][2][2], float u, float v, float w);
+		static double trilinear_interp(double c[2][2][2], double u, double v, double w);
 
-		static float perlin_interp(Vector3 c[2][2][2], float u, float v, float w);
+		static double perlin_interp(Vector3 c[2][2][2], double u, double v, double w);
 
 	private:
 		static const int m_pointCount = 256;

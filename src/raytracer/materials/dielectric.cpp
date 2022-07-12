@@ -10,23 +10,23 @@
 
 namespace raytracer
 {
-	Dielectric::Dielectric(float index_of_refraction) : m_ir(index_of_refraction)
+	Dielectric::Dielectric(double index_of_refraction) : m_ir(index_of_refraction)
 	{
 	}
 
 	bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
 	{
 		attenuation = Color(1.0, 1.0, 1.0);
-		float refraction_ratio = rec.front_face ? (1.0 / m_ir) : m_ir;
+		double refraction_ratio = rec.front_face ? (1.0 / m_ir) : m_ir;
 
 		Vector3 unit_direction = glm::normalize(r_in.direction());
-		float cos_theta = std::fmin(glm::dot(-unit_direction, rec.normal), 1.0);
-		float sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
+		double cos_theta = std::fmin(glm::dot(-unit_direction, rec.normal), 1.0);
+		double sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
 
 		bool cannot_refract = refraction_ratio * sin_theta > 1.0;
 		Vector3 direction;
 
-		if (cannot_refract || reflectance(cos_theta, refraction_ratio) > randomfloat())
+		if (cannot_refract || reflectance(cos_theta, refraction_ratio) > randomdouble())
 			direction = reflect(unit_direction, rec.normal);
 		else
 			direction = refract(unit_direction, rec.normal, refraction_ratio);
@@ -35,7 +35,7 @@ namespace raytracer
 		return true;
 	}
 
-	float Dielectric::reflectance(float cosine, float ref_idx)
+	double Dielectric::reflectance(double cosine, double ref_idx)
 	{
 		// Use Schlick's approximation for reflectance.
 		auto r0 = (1 - ref_idx) / (1 + ref_idx);
