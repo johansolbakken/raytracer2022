@@ -17,7 +17,7 @@ namespace raytracer
 
 	Isotropic::Isotropic(ref<Texture> a) : m_albedo(std::move(a)) {}
 
-	bool Isotropic::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
+    bool Isotropic::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const
 	{
 		scattered = Ray(rec.p, randomInUnitSpace(), r_in.time());
 		attenuation = m_albedo->value(rec.u, rec.v, rec.p);

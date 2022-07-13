@@ -18,7 +18,7 @@ namespace raytracer
 
 		explicit Isotropic(ref<Texture> a);
 
-		bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override;
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const override;
 
 	public:
 		ref<Texture> m_albedo;

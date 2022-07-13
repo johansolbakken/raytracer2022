@@ -47,8 +47,8 @@ namespace raytracer
 		m_cosTheta = std::cos(radians);
 		m_hasbox = m_object->boundingBox(0, 1, m_bbox);
 
-		Point3 min( infinity,  infinity,  infinity);
-		Point3 max(-infinity, -infinity, -infinity);
+        Point3 min( math::infinity,  math::infinity,  math::infinity);
+        Point3 max(-math::infinity, -math::infinity, -math::infinity);
 
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 2; j++) {

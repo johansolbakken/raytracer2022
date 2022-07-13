@@ -12,7 +12,7 @@ namespace raytracer
 
 		~Dielectric() override = default;
 
-		bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override;
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const override;
 
 	private:
 		static double reflectance(double cosine, double ref_idx);

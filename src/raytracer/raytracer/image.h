@@ -46,8 +46,7 @@ namespace raytracer
 		}
 
 		uint32_t* data()
-		{
-			std::lock_guard<std::mutex> guard(m_image_mutex);
+        {
 			return m_data;
 		}
 

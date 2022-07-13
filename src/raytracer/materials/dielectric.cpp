@@ -14,7 +14,7 @@ namespace raytracer
 	{
 	}
 
-	bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
+    bool Dielectric::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const
 	{
 		attenuation = Color(1.0, 1.0, 1.0);
 		double refraction_ratio = rec.front_face ? (1.0 / m_ir) : m_ir;

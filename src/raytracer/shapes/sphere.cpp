@@ -5,6 +5,7 @@
 #include "sphere.h"
 
 #include <utility>
+#include <cmath>
 
 #include "raytracer/ray.h"
 
@@ -81,10 +82,10 @@ namespace raytracer
 		//     <0 0 1> yields <0.25 0.50>       < 0  0 -1> yields <0.75 0.50>
 
 		auto theta = std::acos(-p.y);
-		auto phi = atan2(-p.z, p.x) + M_PI;
+        auto phi = atan2(-p.z, p.x) + math::pi;
 
-		auto u = phi / (2 * M_PI);
-		auto v = theta / M_PI;
+        auto u = phi / (2 * math::pi);
+        auto v = theta / math::pi;
 		return { u, v };
 	}
 

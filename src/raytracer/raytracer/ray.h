@@ -15,10 +15,10 @@ namespace raytracer
 	public:
 		Ray() = default;
 
-		Ray(const Point3& origin, const Vector3& direction, double start, double end = infinity, double t = 0.f,
+        Ray(const Point3& origin, const Vector3& direction, double start, double end = math::infinity, double t = 0.f,
 				int d = 0);
 
-		Ray(const Point3& origin, const Vector3& direction, const Ray& parent, double start, double end = infinity);
+        Ray(const Point3& origin, const Vector3& direction, const Ray& parent, double start, double end = math::infinity);
 
 		[[nodiscard]] Point3 at(double t) const;
 
@@ -52,11 +52,11 @@ namespace raytracer
 	public:
 		explicit RayDifferential();
 
-		explicit RayDifferential(const Point3& origin, const Vector3& direction, double start, double end = infinity,
+        explicit RayDifferential(const Point3& origin, const Vector3& direction, double start, double end = math::infinity,
 				double t = 0.f, int d = 0);
 
 		explicit RayDifferential(const Point3& origin, const Vector3& direction, const Ray& parent, double start,
-				double end = infinity);
+                double end = math::infinity);
 
 		explicit RayDifferential(const Ray& ray);
 

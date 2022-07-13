@@ -90,7 +90,7 @@ namespace raytracer
 		std::mutex m_scanline_mutex;
 		int m_scanlines = 0;
 
-        bool m_multithread = true;
+        bool m_multithread = false;
 
         ScanlineCallback m_callback = nullptr;
 	};

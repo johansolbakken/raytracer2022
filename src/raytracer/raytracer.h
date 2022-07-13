@@ -13,6 +13,7 @@
 #include "hittable/constantmedium.h"
 #include "hittable/bvh.h"
 #include "hittable/hittable_transformations.h"
+#include "hittable/flipface.h"
 
 #include "materials/lambertian.h"
 #include "materials/metal.h"
@@ -21,6 +22,8 @@
 #include "materials/isotropic.h"
 
 #include "cameras/camera.h"
+
+#include "pdf/cosinepdf.h"
 
 #include "textures/checkertexture.h"
 #include "textures/solidcolor.h"

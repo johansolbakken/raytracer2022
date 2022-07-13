@@ -12,13 +12,13 @@ namespace raytracer
 {
 	ConstantMedium::ConstantMedium(ref<Hittable> b, double d, ref<Texture> a)
 			: m_boundary(std::move(b)),
-			  m_negInvDensity(-1 / d),
+              m_negInvDensity(-1.0 / d),
 			  m_phaseFunction(createRef<Isotropic>(a))
 	{}
 
 	ConstantMedium::ConstantMedium(ref<Hittable> b, double d, Color c)
 			: m_boundary(std::move(b)),
-			  m_negInvDensity(-1.0f / d),
+              m_negInvDensity(-1.0 / d),
 			  m_phaseFunction(createRef<Isotropic>(c))
 	{}
 
@@ -30,10 +30,10 @@ namespace raytracer
 
 		hit_record rec1, rec2;
 
-		if (!m_boundary->hit(r, -infinity, infinity, rec1))
+        if (!m_boundary->hit(r, -math::infinity, math::infinity, rec1))
 			return false;
 
-		if (!m_boundary->hit(r, rec1.t+0.0001, infinity, rec2))
+        if (!m_boundary->hit(r, rec1.t+0.0001, math::infinity, rec2))
 			return false;
 
 		if (debugging) std::cerr << "\nt_min=" << rec1.t << ", t_max=" << rec2.t << '\n';

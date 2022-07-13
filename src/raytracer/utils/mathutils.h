@@ -4,8 +4,11 @@
 
 namespace raytracer
 {
-	inline double infinity = std::numeric_limits<double>::infinity();
+namespace math {
+    constexpr double pi = 3.14159265358979323846;
 
+	inline double infinity = std::numeric_limits<double>::infinity();
+}
 	inline double randomdouble()
 	{
 		static std::uniform_real_distribution<double> distribution(0.0, 1.0);

@@ -14,7 +14,7 @@ namespace raytracer
 	{
 	}
 
-	bool Metal::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
+    bool Metal::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const
 	{
 		Vector3 reflected = reflect(glm::normalize(r_in.direction()), rec.normal);
 		scattered = Ray(rec.p, reflected + m_fuzz * randomInUnitSpace(), r_in.time());

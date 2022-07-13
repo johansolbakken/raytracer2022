@@ -89,4 +89,16 @@ namespace raytracer
 			return p;
 		}
 	}
+
+    inline Vector3 randomCosineDirection() {
+        auto r1 = randomdouble();
+        auto r2 = randomdouble();
+        auto z = std::sqrt(1.0-r2);
+
+        auto phi = 2.0*math::pi*r1;
+        auto x = std::cos(phi)*std::sqrt(r2);
+        auto y = std::sin(phi)*std::sqrt(r2);
+
+        return Vector3(x, y, z);
+    }
 }

@@ -12,7 +12,7 @@ namespace raytracer
 
 		~Metal() override = default;
 
-		bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override;
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const override;
 
 	public:
 		Color m_albedo;

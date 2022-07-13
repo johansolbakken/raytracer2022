@@ -14,6 +14,8 @@
 
 #include <iostream>
 
+#include <pdf/cosinepdf.h>
+
 #define cherno 0
 
 
@@ -37,7 +39,7 @@ namespace raytracer
     {
         for (int y = m_finalImage->height() - 1; y >= 0; y--)
         {
-            for (int x = 0; x < m_finalImage->width(); x++)
+            for (int x = 0; x < int(m_finalImage->width()); x++)
             {
 #if cherno
                 // Normalize coordinate
@@ -52,9 +54,10 @@ namespace raytracer
                 glm::vec2 coord = { u, v };
 #endif  // cherno
                 auto color = perPixel(coord);
-                m_imageData[x + y * m_finalImage->width()] = color;
-                std::lock_guard(m_finalImage->mutex());
-                m_finalImage->data()[x + y * m_finalImage->width()] = color;
+                int pos = x + (m_finalImage->height() - y - 1) * m_finalImage->width();
+                m_imageData[pos] = color;
+                std::lock_guard guard(m_finalImage->mutex());
+                m_finalImage->data()[pos] = m_imageData[pos];
             }
             incrementScanlines();
             if (m_callback) m_callback(scanlines());
@@ -69,7 +72,7 @@ namespace raytracer
         int sections = std::thread::hardware_concurrency() / numThreads;
 
         std::vector<Color> buffer(m_finalImage->width() * m_finalImage->height());
-        for (int i = 0; i < m_finalImage->width() * m_finalImage->height(); i++) {
+        for (int i = 0; i < int(m_finalImage->width() * m_finalImage->height()); i++) {
             buffer[i] = Color{0};
         }
 
@@ -91,7 +94,7 @@ namespace raytracer
         auto thread = [&](int y0, int y1, std::mutex *mutex){
             for (int y = y0; y < y1; y++)
             {
-                for (int x = 0; x < m_finalImage->width(); x++)
+                for (int x = 0; x < int(m_finalImage->width()); x++)
                 {
                     auto u = double(x) / (m_finalImage->width()-1);
                     auto v = double(y) / (m_finalImage->height()-1);
@@ -127,14 +130,14 @@ namespace raytracer
                pool.push_back(std::async(std::launch::async, section, yOld, y));
                yOld = y;
                y+= delta;
-               if (y >= m_finalImage->height()) y = m_finalImage->height() ;
+               if (y >= int(m_finalImage->height())) y = m_finalImage->height() ;
          }
 
         for (auto& t : pool) {
             t.wait();
         }
 
-        for (int i = 0; i < m_finalImage->width() * m_finalImage->height(); i++) {
+        for (int i = 0; i < int(m_finalImage->width() * m_finalImage->height()); i++) {
             auto color = buffer[i];
             m_imageData[i] = gammaCorrectToUint(color.r, color.g, color.b);
         }
@@ -151,17 +154,23 @@ namespace raytracer
 			return { 0, 0, 0 };
 
 		// If the ray hits nothing, return the background color.
-		if (!world->hit(ray, 0.001, infinity, rec))
+        if (!world->hit(ray, 0.001, math::infinity, rec))
 			return m_Specification.backgroundColor;
 
 		Ray scattered;
-		Color attenuation;
-		Color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
+        Color albedo;
+        double pdf_val;
+        Color emitted = rec.mat_ptr->emitted(ray, rec, rec.u, rec.v, rec.p);
 
-		if (!rec.mat_ptr->scatter(ray, rec, attenuation, scattered))
+        if (!rec.mat_ptr->scatter(ray, rec, albedo, scattered, pdf_val))
 			return emitted;
 
-        return emitted + attenuation * rayColor(scattered, world, depth - 1);
+        CosinePdf p(rec.normal);
+        scattered = Ray(rec.p, p.generate(), ray.time());
+        pdf_val = p.value(scattered.direction());
+
+        return emitted + albedo * rec.mat_ptr->scatteringPdf(ray, rec, scattered)
+        * rayColor(scattered, world, depth - 1) / pdf_val;
     }
 
     uint32_t Renderer::gammaCorrectToUint(double r, double g, double b)

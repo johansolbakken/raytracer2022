@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 	rendererSpecification.backgroundColor = { 0.70, 0.80, 1.00 };
 
 	raytracer::Renderer renderer(rendererSpecification);
-	renderer.onResize(viewport_width, viewport_width / aspect_ratio);
+    renderer.onResize(viewport_width, uint32_t(viewport_width / aspect_ratio));
 	renderer.render(world, camera);
 
 	raytracer::ref<raytracer::Image> image = renderer.getFinalImage();

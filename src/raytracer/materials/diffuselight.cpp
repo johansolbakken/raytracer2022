@@ -16,13 +16,15 @@ namespace raytracer
 	{
 	}
 
-	bool DiffuseLight::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
+    bool DiffuseLight::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered, double& pdf) const
 	{
 		return false;
 	}
 
-	Color DiffuseLight::emitted(double u, double v, const Point3& p) const
+    Color DiffuseLight::emitted(const Ray& r_in, const hit_record& rec, double u, double v, const Point3& p) const
 	{
-		return m_emit->value(u, v, p);
+        if (rec.front_face)
+                return m_emit->value(u,v,p);
+        return {0,0,0};
 	}
 } // raytracer

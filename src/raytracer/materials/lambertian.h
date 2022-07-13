@@ -18,7 +18,9 @@ namespace raytracer
 
 		~Lambertian() override = default;
 
-		bool scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const override;
+        bool scatter(const Ray& r_in, const hit_record& rec, Color& albedo, Ray& scattered, double& pdf) const override;
+
+        double scatteringPdf(const Ray& r_in, const hit_record& rec, const Ray&scattered) const override;
 
 	private:
 		ref<Texture> m_albedo;

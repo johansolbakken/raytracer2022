@@ -9,20 +9,27 @@
 #include "hittable/hit_record.h"
 #include "textures/solidcolor.h"
 
+#include "utils/orthonormalbasis.h"
+
 namespace raytracer
 {
-	bool Lambertian::scatter(const Ray& r_in, const hit_record& rec, Color& attenuation, Ray& scattered) const
+    bool Lambertian::scatter(const Ray& r_in, const hit_record& rec, Color& alb, Ray& scattered, double& pdf) const
 	{
-		auto scatter_direction = rec.normal + randomUnitVector();
+        OrthonormalBasis uvw;
+        uvw.build_from_w(rec.normal);
+        auto direction = uvw.local(randomCosineDirection());
 
-		// Catch degenerate scatter direction
-		if (nearZero(scatter_direction))
-			scatter_direction = rec.normal;
+        scattered = Ray(rec.p, glm::normalize(direction), r_in.time());
+        alb = m_albedo->value(rec.u, rec.v, rec.p);
+        pdf = glm::dot(uvw.w(), scattered.direction()) / math::pi;
+        return true;
+    }
 
-		scattered = Ray(rec.p, scatter_direction, r_in.time());
-		attenuation = m_albedo->value(rec.u, rec.v, rec.p);
-		return true;
-	}
+    double Lambertian::scatteringPdf(const Ray &r_in, const hit_record &rec, const Ray &scattered) const
+    {
+        auto cosine = glm::dot(rec.normal,glm::normalize(scattered.direction()));
+        return cosine < 0 ? 0 : cosine / math::pi;
+    }
 
 	Lambertian::Lambertian(const Color& a) : m_albedo(createRef<SolidColor>(a))
 	{

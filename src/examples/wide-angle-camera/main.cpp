@@ -2,6 +2,7 @@
 #include <fstream>
 
 #include <raytracer.h>
+#include <cmath>
 
 raytracer::ref<raytracer::Hittable> createWorld()
 {
@@ -10,7 +11,7 @@ raytracer::ref<raytracer::Hittable> createWorld()
 	auto material_left = createRef<Lambertian>(Color(1, 0, 0));
 	auto material_right = createRef<Lambertian>(Color(0, 0, 1));
 
-	auto R = std::cos(M_PI / 4.0);
+    auto R = std::cos(math::pi / 4.0);
 
 	auto world = createRef<HittableList>();
 	world->add<Sphere>(Point3(-R, 0, -1), R, material_left);
