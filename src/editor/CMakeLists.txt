@@ -4,7 +4,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /Users/johansolbakken/qt/6.2.4/macos)
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} /Users/johansolbakken/qt/6.2.4/macos C:/Qt/6.3.1/msvc2019_64)
 
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)

@@ -1,5 +1,9 @@
 # 3rd party
 add_subdirectory(3rdparty/glm)
+add_subdirectory(3rdparty/spdlog)
+
+# game engine
+# add_subdirectory(engine)
 
 # raytracer
 add_subdirectory(raytracer)
@@ -25,4 +29,5 @@ if (YES)
     add_subdirectory(examples/empry-cornell)
     add_subdirectory(examples/cornell-smoke)
     add_subdirectory(examples/all-features-1)
+    #add_subdirectory(examples/engine-testbed)
 endif ()
