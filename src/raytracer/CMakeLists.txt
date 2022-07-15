@@ -53,7 +53,7 @@ add_library(raytracer
         primitives/primitive.cpp primitives/primitive.h
 
         raytracer/intersection.cpp raytracer/intersection.h
-        )
+         "scene/scene.h" "scene/scene.cpp" "lights/light.h")
 
 
 target_include_directories(raytracer
