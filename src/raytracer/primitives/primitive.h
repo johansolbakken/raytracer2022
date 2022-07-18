@@ -17,10 +17,10 @@ namespace raytracer
 
 	public:
 		// Interface
-		virtual Aabb worldBound() const = 0;
+		[[nodiscard]] virtual Aabb worldBound() const = 0;
 		[[nodiscard]] virtual bool canIntersect() const;
 		virtual bool intersect(const Ray& r, Intersection* in) const = 0;
-		virtual bool intersectP(const Ray& r) const = 0;
+		[[nodiscard]] virtual bool intersectP(const Ray& r) const = 0;
 		virtual void refine(std::vector<ref<Primitive>>& refined) const;
 		void fullyRefine(std::vector<ref<Primitive>>& refined) const;
 
