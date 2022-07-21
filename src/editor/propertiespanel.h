@@ -19,13 +19,11 @@ public:
 	void setRenderer(const raytracer::ref<raytracer::Renderer>&);
 
 signals:
-
 	void onRender();
 
 	void autoRenderChanged(bool enabled);
 
 public slots:
-
 	void displayScanlines(int scanlines);
 
 private slots:

@@ -14,7 +14,7 @@ signals:
 
 public slots:
 
-	void clearRows();
+    void clearRows();
 
 	void addRow(const std::string& text);
 };

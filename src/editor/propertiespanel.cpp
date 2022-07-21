@@ -19,7 +19,7 @@ PropertiesPanel::PropertiesPanel(QWidget* parent)
 
 	m_performanceList = new PerformanceList(this);
 	m_performanceList->clear();
-	QObject::connect(this, &PropertiesPanel::onRender, m_performanceList, &PerformanceList::clearRows);
+
 
 	m_cameraWidget = new CameraWidget(this);
 
@@ -49,7 +49,7 @@ void PropertiesPanel::setRenderer(const raytracer::ref<raytracer::Renderer>& ren
 
 void PropertiesPanel::displayScanlines(int scanlines)
 {
-	m_scanlines.setText("Scanlines: " + QString::number(scanlines));
+    m_scanlines.setText("Scanlines: " + QString::number(scanlines));
 }
 
 void PropertiesPanel::renderButtonClicked()

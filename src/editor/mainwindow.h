@@ -22,11 +22,25 @@ public:
 
 	~MainWindow();
 
+    void createActions();
+    void createMenu();
+
+
+private slots:
+    void renderTriggered(bool enabled);
+    void saveImage();
+    void copyImage();
+
+private:
+    QAction* m_actionRender;
+    QAction* m_actionStopRender;
+    QAction* m_actionCopy;
+    QAction* m_actionSave;
+
 private:
 	Ui::MainWindow* ui;
 	Renderer* m_renderer;
 	PropertiesPanel* m_properties;
-
 };
 
 #endif // MAINWINDOW_H
