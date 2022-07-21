@@ -24,6 +24,7 @@ public:
 	}
 
 signals:
+    void renderingHasBegun();
 
 	void hasRenderResult(const std::string& result);
 
@@ -32,6 +33,8 @@ signals:
 public slots:
 
 	void onRender();
+
+    void onAbort();
 
 	void setAutoRender(bool enabled);
 
