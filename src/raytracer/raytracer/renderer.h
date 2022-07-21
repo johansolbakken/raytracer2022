@@ -69,6 +69,8 @@ namespace raytracer
 
         void registerCallback(const ScanlineCallback& callback);
 
+        void abort();
+
 
 	private:
 		Color rayColor(const Ray& ray, const ref<Hittable>& world, int depth);
@@ -90,7 +92,10 @@ namespace raytracer
 		std::mutex m_scanline_mutex;
 		int m_scanlines = 0;
 
-        bool m_multithread = false;
+        std::mutex m_abort_mutex;
+        bool m_shouldAbort = false;
+
+        bool m_multithread = true;
 
         ScanlineCallback m_callback = nullptr;
 	};
