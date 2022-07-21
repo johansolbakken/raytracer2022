@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         tripplefloatinputwidget.h tripplefloatinputwidget.cpp
         titledfloattextedit.cpp titledfloattextedit.h
         rendererpropertieswidget.h rendererpropertieswidget.cpp
+        res.qrc
         )
 
 if (${QT_VERSION_MAJOR} GREATER_EQUAL 6)
