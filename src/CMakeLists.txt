@@ -13,6 +13,10 @@ add_subdirectory(montecarlo)
 # working area
 add_subdirectory(examples/sandbox)
 
+if(WIN32) 
+    add_subdirectory(runtime-quant)
+endif()
+
 # examples
 option(BUILD_EXAMPLES "Build examples" YES)
 if (YES)
@@ -30,4 +34,5 @@ if (YES)
     add_subdirectory(examples/cornell-smoke)
     add_subdirectory(examples/all-features-1)
     #add_subdirectory(examples/engine-testbed)
+    add_subdirectory(examples/pbrt)
 endif ()

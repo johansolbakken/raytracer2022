@@ -14,6 +14,7 @@ namespace raytracer
 	{
 	public:
 		Primitive();
+        virtual ~Primitive();
 
 	public:
 		// Interface
