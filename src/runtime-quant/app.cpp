@@ -1,11 +1,15 @@
 #include "app.h"
 
+#include <iostream>
+#include <iomanip>
+
 CApp::CApp()
 {
     m_running = true;
     m_window = nullptr;
     m_renderer = nullptr;
     m_image = nullptr;
+    m_scene = nullptr;
 }
 
 bool CApp::onInit()
@@ -24,16 +28,22 @@ bool CApp::onInit()
 
     m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 
-    m_image = new qbImage();
+    m_image = new qb::Image();
     m_image->initialize(1280, 720, m_renderer);
 
-    for (int x = 0; x < 1280; x++) {
-        for (int y = 0; y < 720; y++) {
-            double red = (static_cast<double>(x)/1280.0) * 255;
-            double green = (static_cast<double>(y)/720.0) * 255;
-            m_image->setPixel(x, y, red, green, 0.0);
-        }
-    }
+    m_scene = new Scene();
+
+    m_camera = new qb::Camera();
+    m_camera->setPosition({0, 0, 0});
+    m_camera->setLookAt({0, 2, 0});
+    m_camera->setUp({0, 0, 1});
+    m_camera->updateGeometry();
+
+    printVector(m_camera->screenCenter());
+    printVector(m_camera->u());
+    printVector(m_camera->v());
+
+    return true;
 }
 
 int CApp::onExecute()
@@ -56,19 +66,23 @@ int CApp::onExecute()
     }
 
     onExit();
+    return 0;
 }
 
 void CApp::onEvent(SDL_Event *event)
 {
-    if (event->type == SDL_QUIT) {
+    if (event->type == SDL_QUIT)
+    {
         m_running = false;
     }
 }
 
-void CApp::onRender()  {
+void CApp::onRender()
+{
     SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
     SDL_RenderClear(m_renderer);
 
+    m_scene->render(m_image);
     m_image->display();
 
     SDL_RenderPresent(m_renderer);
@@ -84,4 +98,12 @@ void CApp::onExit()
     SDL_DestroyWindow(m_window);
     m_window = nullptr;
     SDL_Quit();
+}
+
+void CApp::printVector(const qb::Vector3 &vec) const
+{
+    std::cout << "(" << std::fixed << std::setprecision(3);
+    std::cout << vec[0] << ", ";
+    std::cout << vec[1] << ", ";
+    std::cout << vec[2] << ")";
 }

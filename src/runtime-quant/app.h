@@ -3,6 +3,8 @@
 #include <SDL.h>
 
 #include "image.h"
+#include "scene.h"
+#include "camera.h"
 
 class CApp {
 public:
@@ -16,10 +18,15 @@ public:
     void onExit();
 
 private:
+    void printVector(const qb::Vector3& vec) const;
+
+private:
     // SDL2
     bool m_running;
     SDL_Window* m_window;
     SDL_Renderer* m_renderer;
 
-    qbImage* m_image;
+    qb::Image* m_image;
+    Scene* m_scene;
+    qb::Camera* m_camera;
 };
