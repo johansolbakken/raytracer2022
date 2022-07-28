@@ -33,15 +33,13 @@ bool CApp::onInit()
 
     m_scene = new Scene();
 
-    m_camera = new qb::Camera();
-    m_camera->setPosition({0, 0, 0});
-    m_camera->setLookAt({0, 2, 0});
-    m_camera->setUp({0, 0, 1});
-    m_camera->updateGeometry();
+    SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
+    SDL_RenderClear(m_renderer);
 
-    printVector(m_camera->screenCenter());
-    printVector(m_camera->u());
-    printVector(m_camera->v());
+    m_scene->render(m_image);
+    m_image->display();
+
+    SDL_RenderPresent(m_renderer);
 
     return true;
 }
@@ -79,13 +77,14 @@ void CApp::onEvent(SDL_Event *event)
 
 void CApp::onRender()
 {
+    /*
     SDL_SetRenderDrawColor(m_renderer, 255, 255, 255, 255);
     SDL_RenderClear(m_renderer);
 
     m_scene->render(m_image);
     m_image->display();
 
-    SDL_RenderPresent(m_renderer);
+    SDL_RenderPresent(m_renderer);*/
 }
 
 void CApp::onLoop()

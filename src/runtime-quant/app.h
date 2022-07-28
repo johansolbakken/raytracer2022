@@ -4,7 +4,6 @@
 
 #include "image.h"
 #include "scene.h"
-#include "camera.h"
 
 class CApp {
 public:
@@ -28,5 +27,4 @@ private:
 
     qb::Image* m_image;
     Scene* m_scene;
-    qb::Camera* m_camera;
 };
