@@ -38,31 +38,31 @@ namespace raytracer
         m_backardMatrix = glm::inverse(m_forwardMatrix);
     }
 
-    Matrix4 GeometricTransform::getForward()
+    Matrix4 GeometricTransform::forwardMatrix() const
     {
         return m_forwardMatrix;
     }
-    Matrix4 GeometricTransform::getBackward()
+    Matrix4 GeometricTransform::backwardMatrix() const
     {
         return m_backardMatrix;
     }
 
-    Ray GeometricTransform::apply(const Ray &inputRay, bool dirFlag)
+    Ray GeometricTransform::apply(const Ray &inputRay, TransformFlag dirFlag)
     {
         Ray ray;
         Point3 endPoint = inputRay.origin() + inputRay.direction();
 
-        if (dirFlag)
+        if (dirFlag == TransformFlag::Forward)
         {
             // Apply forward transform
-            ray.setOrigin(this->apply(inputRay.origin(), TransformFlag::Forward));
-            endPoint = this->apply(endPoint, TransformFlag::Forward);
+            ray.setOrigin(this->apply(inputRay.origin(), dirFlag));
+            endPoint = this->apply(endPoint, dirFlag);
         }
         else
         {
             // Apply backward transform
-            ray.setOrigin(this->apply(inputRay.origin(), TransformFlag::Backward));
-            endPoint = this->apply(endPoint, TransformFlag::Backward);
+            ray.setOrigin(this->apply(inputRay.origin(), dirFlag));
+            endPoint = this->apply(endPoint, dirFlag);
         }
 
         // Point ray to new endpoint
@@ -91,7 +91,7 @@ namespace raytracer
     {
         auto fwdResult = lhs.m_forwardMatrix * rhs.m_forwardMatrix;
         auto bckResult = glm::inverse(fwdResult);
-        return {fwdResult, bckResult};
+        return GeometricTransform{fwdResult, bckResult};
     }
 
     GeometricTransform GeometricTransform::operator=(const GeometricTransform &rhs)
@@ -101,7 +101,7 @@ namespace raytracer
             m_forwardMatrix = rhs.m_forwardMatrix;
             m_backardMatrix = rhs.m_backardMatrix;
         }
-        
+
         return *this;
     }
 
