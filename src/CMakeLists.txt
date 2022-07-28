@@ -19,7 +19,7 @@ endif()
 
 # examples
 option(BUILD_EXAMPLES "Build examples" YES)
-if (YES)
+if (NO)
     add_subdirectory(examples/shiny-metal)
     add_subdirectory(examples/hollow-glass)
     add_subdirectory(examples/wide-angle-camera)

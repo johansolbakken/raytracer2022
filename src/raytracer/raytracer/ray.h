@@ -1,24 +1,26 @@
-//
-// Created by Johan Solbakken on 7/7/2022.
-//
-
-#ifndef RAY_RAY_H
-#define RAY_RAY_H
+#pragma once
 
 #include "utils/glmutils.h"
 
 namespace raytracer
 {
-
 	class Ray
 	{
 	public:
 		Ray() = default;
 
-        Ray(const Point3& origin, const Vector3& direction, double start, double end = math::infinity, double t = 0.f,
-				int d = 0);
+		Ray(const Point3 &origin,
+			const Vector3 &direction,
+			double start,
+			double end = math::infinity,
+			double t = 0.f,
+			int d = 0);
 
-        Ray(const Point3& origin, const Vector3& direction, const Ray& parent, double start, double end = math::infinity);
+		Ray(const Point3 &origin,
+			const Vector3 &direction,
+			const Ray &parent,
+			double start,
+			double end = math::infinity);
 
 		[[nodiscard]] Point3 at(double t) const;
 
@@ -38,7 +40,6 @@ namespace raytracer
 
 		void setTime(double t);
 
-
 	private:
 		Point3 m_origin{};
 		Vector3 m_direction{};
@@ -52,13 +53,13 @@ namespace raytracer
 	public:
 		explicit RayDifferential();
 
-        explicit RayDifferential(const Point3& origin, const Vector3& direction, double start, double end = math::infinity,
-				double t = 0.f, int d = 0);
+		explicit RayDifferential(const Point3 &origin, const Vector3 &direction, double start, double end = math::infinity,
+								 double t = 0.f, int d = 0);
 
-		explicit RayDifferential(const Point3& origin, const Vector3& direction, const Ray& parent, double start,
-                double end = math::infinity);
+		explicit RayDifferential(const Point3 &origin, const Vector3 &direction, const Ray &parent, double start,
+								 double end = math::infinity);
 
-		explicit RayDifferential(const Ray& ray);
+		explicit RayDifferential(const Ray &ray);
 
 		void scaleDifferentials(double s);
 
@@ -71,6 +72,3 @@ namespace raytracer
 	};
 
 }
-
-
-#endif //RAY_RAY_H
