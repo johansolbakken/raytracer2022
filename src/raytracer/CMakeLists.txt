@@ -52,6 +52,12 @@ add_library(raytracer
 
         primitives/primitive.cpp primitives/primitive.h
 
+        objects/objectbase.h objects/objectbase.cpp
+        objects/objsphere.h objects/objsphere.cpp
+
+        lights/lightbase.h lights/lightbase.cpp
+        lights/pointlight.h lights/pointlight.cpp
+
         raytracer/intersection.cpp raytracer/intersection.h
          "scene/scene.h" "scene/scene.cpp" "lights/light.h" "samplers/sampler.h" "samplers/sampler.cpp" "integrators/integrator.h" "integrators/integrators.cpp" "samplers/stratifiedsampler.h" "samplers/stratifiedsampler.cpp" "spd/spectrum.h" "spd/spectrum.cpp" "spd/coefficientspectrum.h")
 
