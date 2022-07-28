@@ -32,7 +32,7 @@ namespace qb
         double aspect() const { return m_aspect; }
         Point3 screenCenter() const { return m_screenCenter; }
 
-        raytracer::Ray generateRay(double projScreenX, double projScreenY);
+        bool generateRay(double projScreenX, double projScreenY, raytracer::Ray* cameraRay);
 
         void updateGeometry();
 

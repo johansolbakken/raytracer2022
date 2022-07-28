@@ -14,17 +14,21 @@ namespace qb
         m_aspect = 1;
     }
 
-    raytracer::Ray Camera::generateRay(double projScreenX, double projScreenY)
+    bool Camera::generateRay(double projScreenX, double projScreenY, raytracer::Ray *cameraRay)
     {
         // projScreenX = u, projScreenY = v
 
         // Compute the location of the screen in world coordinates
         auto screenWorldCoordinate = m_screenCenter + (m_u * projScreenX) + (m_v * projScreenY);
-        auto ray = raytracer::Ray(
-            raytracer::Point3(m_position),
-            raytracer::Vector3(screenWorldCoordinate),
-            0);
-        return ray;
+
+        if (!cameraRay)
+            return false;
+
+        *cameraRay = raytracer::Ray(raytracer::Point3(m_position),
+                                    raytracer::Vector3(screenWorldCoordinate - m_position),
+                                    0);
+
+        return true;
     }
 
     void Camera::updateGeometry()
