@@ -37,4 +37,8 @@ namespace math {
 		return static_cast<int>(randomdouble(min, max + 1));
 	}
 
+	inline bool equalsDouble(double a, double b) {
+		return std::abs(a - b) < std::numeric_limits<double>::epsilon();
+	}
+
 }
