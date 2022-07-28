@@ -43,5 +43,3 @@ namespace raytracer
         return false;
     }
 }
-
-// TODO: Neste episode: https://www.youtube.com/watch?v=-Apu2BNp3t8

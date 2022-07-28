@@ -49,6 +49,7 @@ add_library(raytracer
 
         transformations/transformation.cpp transformations/transformation.h
         transformations/animatedtransform.cpp transformations/animatedtransform.h
+        transformations/geometrictransform.cpp
 
         primitives/primitive.cpp primitives/primitive.h
 
