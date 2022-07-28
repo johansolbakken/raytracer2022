@@ -9,6 +9,8 @@
 namespace raytracer
 {
 	using Vector3 = glm::dvec3;
+	using Vector4 = glm::dvec4;
+	using Matrix2 = glm::dmat2;
 	using Matrix4 = glm::dmat4;
 	using Point3 = glm::dvec3;
 	using Color = glm::dvec3;
