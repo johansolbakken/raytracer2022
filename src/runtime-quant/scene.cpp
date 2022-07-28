@@ -20,7 +20,32 @@ Scene::Scene()
         using namespace raytracer;
 
         // Objects
-        m_objectList.push_back(createRef<ObjSphere>());
+        auto sphere1 = createRef<ObjSphere>();
+        GeometricTransform trans1;
+        trans1.setTransform({-1.5, 0, 0},
+                            {0, 0, 0},
+                            {0.5, 0.5, 0.75});
+        sphere1->setTransform(trans1);
+        sphere1->setColor({64.0, 128.0,200.0});
+        m_objectList.push_back(sphere1);
+
+        auto sphere2 = createRef<ObjSphere>();
+        GeometricTransform trans2;
+        trans2.setTransform({0, 0, 0},
+                            {0, 0, 0},
+                            {255.0, 128.0, 0.0});
+        sphere2->setTransform(trans2);
+        sphere2->setColor({0,1,0});
+        m_objectList.push_back(sphere2);
+
+        auto sphere3 = createRef<ObjSphere>();
+        GeometricTransform trans3;
+        trans3.setTransform({0, 1.5, 0},
+                            {0, 0, 0},
+                            {255.0, 200.0, 0.0});
+        sphere3->setTransform(trans3);
+        sphere3->setColor({0,0,1});
+        m_objectList.push_back(sphere3);
 
         // Lights
         auto pointLight = createRef<PointLight>();
@@ -28,6 +53,8 @@ Scene::Scene()
         pointLight->setColor({255, 255, 255});
 
         m_lightList.push_back(pointLight);
+
+        // TODO: Fix bug: from this video https://www.youtube.com/watch?v=-Apu2BNp3t8
     }
 }
 
@@ -71,7 +98,7 @@ bool Scene::render(qb::Image *outputImage)
 
                 if (!validIntersection)
                 {
-                    outputImage->setPixel(x, y, 0.0, 0.0, 0.0);
+                    //outputImage->setPixel(x, y, 0.0, 0.0, 0.0);
                     continue;
                 }
 
@@ -93,11 +120,13 @@ bool Scene::render(qb::Image *outputImage)
 
                 if (!validIllumination)
                 {
-                    outputImage->setPixel(x, y, 0.0, 0.0, 0.0);
+                    //outputImage->setPixel(x, y, 0.0, 0.0, 0.0);
                     continue;
                 }
 
-                outputImage->setPixel(x, y, 255.0 * intensity, 0.0, 0.0);
+                auto outputColor = (localColor)*intensity;
+
+                outputImage->setPixel(x, y, outputColor.r, outputColor.g, outputColor.b);
             }
         }
     }
