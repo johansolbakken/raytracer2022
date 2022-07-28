@@ -13,9 +13,9 @@ namespace raytracer
 		double aperture = 0.0;
 		double focusDistance = 10.0;
 
-		Point3 lookFrom = { 0, 0, 0 };
-		Point3 lookAt = { 0, 0, -1 };
-		Vector3 vup = { 0, 1, 0 };
+		Point3 lookFrom = {0, 0, 0};
+		Point3 lookAt = {0, 0, -1};
+		Vector3 vup = {0, 1, 0};
 
 		double time0 = 0; // shutter opens
 		double time1 = 0; // shutter closes
@@ -24,7 +24,9 @@ namespace raytracer
 	class Camera
 	{
 	public:
-		explicit Camera(const CameraSpecification& spec);
+		Camera() = default;
+		explicit Camera(const CameraSpecification &spec);
+		virtual ~Camera() = default;
 
 		[[nodiscard]] Ray getRay(double u, double v) const;
 
@@ -70,7 +72,15 @@ namespace raytracer
 			return m_specification;
 		}
 
-		void init(const CameraSpecification& spec);
+		void init(const CameraSpecification &spec);
+		void update();
+
+		void setPosition(const Vector3& pos);
+		void setLookAt(const Vector3& lookAt);
+		void setUp(const Vector3& up);
+		void setAspectRatio(double aspect);
+
+		Point3 origin() const { return m_origin; }
 
 	private:
 		Point3 m_origin{};
@@ -83,6 +93,4 @@ namespace raytracer
 
 		CameraSpecification m_specification;
 	};
-
 }
-
