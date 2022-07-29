@@ -8,4 +8,8 @@
 **.user
 **.vscode
 **CMakeSettings.json
+<<<<<<< HEAD
 runtime-quant.code-workspace
+=======
+**.DS_Store
+>>>>>>> b0d04ee (Update .gitignore)
