@@ -12,7 +12,7 @@ Scene::Scene()
     m_camera->setLookAt({0, 0, 0});
     m_camera->setUp({0, 0, 1});
     m_camera->setAspect(16.0 / 9.0);
-    m_camera->setHorizontalSize(1);
+    m_camera->setHorizontalSize(0.25);
     m_camera->updateGeometry();
 
     // Create Objects & lights
@@ -33,18 +33,18 @@ Scene::Scene()
         GeometricTransform trans2;
         trans2.setTransform({0, 0, 0},
                             {0, 0, 0},
-                            {255.0, 128.0, 0.0});
+                            {0.75, 0.5, 0.5});
         sphere2->setTransform(trans2);
-        sphere2->setColor({0,1,0});
+        sphere2->setColor({255,128,0.0});
         m_objectList.push_back(sphere2);
 
         auto sphere3 = createRef<ObjSphere>();
         GeometricTransform trans3;
-        trans3.setTransform({0, 1.5, 0},
+        trans3.setTransform({1.5, 0.0, 0},
                             {0, 0, 0},
-                            {255.0, 200.0, 0.0});
+                            {.75, .75, .75});
         sphere3->setTransform(trans3);
-        sphere3->setColor({0,0,1});
+        sphere3->setColor({255,200,0});
         m_objectList.push_back(sphere3);
 
         // Lights
@@ -87,8 +87,8 @@ bool Scene::render(qb::Image *outputImage)
     {
         for (int y = 0; y < height; y++)
         {
-            double normX = static_cast<double>(x) * xScaleFact - 1.0;
-            double normY = static_cast<double>(y) * yScaleFact - 1.0;
+            double normX = (static_cast<double>(x) * xScaleFact) - 1.0;
+            double normY = (static_cast<double>(y) * yScaleFact) - 1.0;
 
             m_camera->generateRay(normX, normY, &cameraRay);
 
