@@ -55,6 +55,7 @@ add_library(raytracer
 
         objects/objectbase.h objects/objectbase.cpp
         objects/objsphere.h objects/objsphere.cpp
+        objects/objplane.h objects/objplane.cpp
 
         lights/lightbase.h lights/lightbase.cpp
         lights/pointlight.h lights/pointlight.cpp
