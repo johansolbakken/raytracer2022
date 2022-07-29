@@ -8,7 +8,7 @@ namespace qb
     {
         m_position = {0, -10, 0};
         m_lookAt = {0, 0, 0};
-        m_up = {0, 1, 0};
+        m_up = {0, 0, 1};
         m_length = 1;
         m_horizontalSize = 1;
         m_aspect = 1;
@@ -16,17 +16,14 @@ namespace qb
 
     bool Camera::generateRay(double projScreenX, double projScreenY, raytracer::Ray *cameraRay)
     {
-        // projScreenX = u, projScreenY = v
+        if (!cameraRay)
+            return false;
 
         // Compute the location of the screen in world coordinates
         auto screenWorldCoordinate = m_screenCenter + (m_u * projScreenX) + (m_v * projScreenY);
 
-        if (!cameraRay)
-            return false;
-
-        *cameraRay = raytracer::Ray(raytracer::Point3(m_position),
-                                    raytracer::Vector3(screenWorldCoordinate - m_position),
-                                    0);
+        cameraRay->setOrigin(m_position);
+        cameraRay->setDirection(screenWorldCoordinate - m_position);
 
         return true;
     }
