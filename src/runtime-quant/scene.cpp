@@ -3,12 +3,16 @@
 #include <iostream>
 
 #include <raytracer/ray.h>
+
 #include <lights/pointlight.h>
+
+#include <objects/objsphere.h>
+#include <objects/objplane.h>
 
 Scene::Scene()
 {
     m_camera = new qb::Camera();
-    m_camera->setPosition({0, -10, 0});
+    m_camera->setPosition({0, -10.0, -2.0});
     m_camera->setLookAt({0, 0, 0});
     m_camera->setUp({0, 0, 1});
     m_camera->setAspect(16.0 / 9.0);
@@ -20,41 +24,70 @@ Scene::Scene()
         using namespace raytracer;
 
         // Objects
-        auto sphere1 = createRef<ObjSphere>();
-        GeometricTransform trans1;
-        trans1.setTransform({-1.5, 0, 0},
-                            {0, 0, 0},
-                            {0.5, 0.5, 0.75});
-        sphere1->setTransform(trans1);
-        sphere1->setColor({64.0, 128.0,200.0});
-        m_objectList.push_back(sphere1);
+        {
+            auto sphere1 = createRef<ObjSphere>();
+            GeometricTransform trans1;
+            trans1.setTransform({-1.5, 0, 0},
+                                {0, 0, 0},
+                                {0.5, 0.5, 0.75});
+            sphere1->setTransform(trans1);
+            sphere1->setColor({0.25, 0.5, .8});
+            m_objectList.push_back(sphere1);
+        }
 
-        auto sphere2 = createRef<ObjSphere>();
-        GeometricTransform trans2;
-        trans2.setTransform({0, 0, 0},
-                            {0, 0, 0},
-                            {0.75, 0.5, 0.5});
-        sphere2->setTransform(trans2);
-        sphere2->setColor({255,128,0.0});
-        m_objectList.push_back(sphere2);
+        {
+            auto sphere2 = createRef<ObjSphere>();
+            GeometricTransform trans2;
+            trans2.setTransform({0, 0, 0},
+                                {0, 0, 0},
+                                {0.75, 0.5, 0.5});
+            sphere2->setTransform(trans2);
+            sphere2->setColor({1.0, 0.5, 0.0});
+            m_objectList.push_back(sphere2);
+        }
 
-        auto sphere3 = createRef<ObjSphere>();
-        GeometricTransform trans3;
-        trans3.setTransform({1.5, 0.0, 0},
-                            {0, 0, 0},
-                            {.75, .75, .75});
-        sphere3->setTransform(trans3);
-        sphere3->setColor({255,200,0});
-        m_objectList.push_back(sphere3);
+        {
+            auto sphere3 = createRef<ObjSphere>();
+            GeometricTransform trans3;
+            trans3.setTransform({1.5, 0.0, 0},
+                                {0, 0, 0},
+                                {.75, .75, .75});
+            sphere3->setTransform(trans3);
+            sphere3->setColor({1.0, 0.8, 0});
+            m_objectList.push_back(sphere3);
+        }
+
+        {
+            auto plane = createRef<ObjPlane>();
+            GeometricTransform trans4;
+            trans4.setTransform({0, 0, 0.75},
+                                {0, 0, 0},
+                                {4, 4, 1});
+            plane->setTransform(trans4);
+            plane->setColor({0.5, 0.5, 0.5});
+            m_objectList.push_back(plane);
+        }
 
         // Lights
-        auto pointLight = createRef<PointLight>();
-        pointLight->setPosition({5, -10, -5.0});
-        pointLight->setColor({255, 255, 255});
+        {
+            auto pointLight = createRef<PointLight>();
+            pointLight->setPosition({5, -10, -5.0});
+            pointLight->setColor({0, 0, 1});
+            pointLight->setIntensity(1.0);
+            m_lightList.push_back(pointLight);
 
-        m_lightList.push_back(pointLight);
+            auto redLight = createRef<PointLight>();
+            redLight->setPosition({-5, -10, -5.0});
+            redLight->setColor({1, 0, 0});
+            redLight->setIntensity(1.0);
+            m_lightList.push_back(redLight);
 
-        // TODO: Fix bug: from this video https://www.youtube.com/watch?v=-Apu2BNp3t8
+            auto greenLight = createRef<PointLight>();
+            greenLight->setPosition({0, -10, -5.0});
+            greenLight->setColor({0, 1, 0});
+            greenLight->setIntensity(1.0);
+            m_lightList.push_back(greenLight);
+        }
     }
 }
 
@@ -92,42 +125,71 @@ bool Scene::render(qb::Image *outputImage)
 
             m_camera->generateRay(normX, normY, &cameraRay);
 
+            // Find the closest object
+            raytracer::ObjectRef closesObject;
+            raytracer::Point3 closestIntPoint(0.0);
+            raytracer::Vector3 closestNormal(0.0);
+            raytracer::Vector3 closestObjectColor(0.0);
+
+            double minDist = 1e6;
+            bool intersectionFound = false;
+
             for (const auto &currentObject : m_objectList)
             {
                 bool validIntersection = currentObject->testIntersections(cameraRay, intPoint, localNormal, localColor);
 
                 if (!validIntersection)
-                {
-                    //outputImage->setPixel(x, y, 0.0, 0.0, 0.0);
                     continue;
-                }
 
-                double intensity = 0.0;
-                raytracer::Color color;
-                bool validIllumination = false;
-                for (const auto &light : m_lightList)
-                {
-                    validIllumination = light->computeIllumination(intPoint, localNormal, m_objectList, currentObject, color, intensity);
-                }
+                intersectionFound = true;
 
-                double dist = glm::distance(intPoint, cameraRay.origin());
+                // Compute the distance between the camera and the point of intersection
+                double dist = glm::distance(intPoint, cameraRay.origin()); // TODO: Check if source of error
 
-                if (dist > maxDist)
-                    maxDist = dist;
+                if (dist >= minDist)
+                    continue;
 
-                if (dist < minDist)
-                    minDist = dist;
+                minDist = dist;
+                closesObject = currentObject;
+                closestIntPoint = intPoint;
+                closestNormal = localNormal;
+                closestObjectColor = localColor;
+            }
+
+            if (!intersectionFound)
+                continue;
+
+            // Compute the illumination of the object
+            double red = 0.0;
+            double green = 0.0;
+            double blue = 0.0;
+            bool illumFound = false;
+
+            double intensity = 0.0;
+            raytracer::Color lightColor{0.0};
+            bool validIllumination = false;
+            for (const auto &currentLight : m_lightList)
+            {
+                validIllumination = currentLight->computeIllumination(closestIntPoint, closestNormal, m_objectList, closesObject, lightColor, intensity);
 
                 if (!validIllumination)
-                {
-                    //outputImage->setPixel(x, y, 0.0, 0.0, 0.0);
                     continue;
-                }
 
-                auto outputColor = (localColor)*intensity;
-
-                outputImage->setPixel(x, y, outputColor.r, outputColor.g, outputColor.b);
+                illumFound = true;
+                red += lightColor.r * intensity;
+                green += lightColor.g * intensity;
+                blue += lightColor.b * intensity;
             }
+
+            if (!illumFound)
+                continue;
+
+            // Add object color
+            red *= closestObjectColor.r;
+            green *= closestObjectColor.g;
+            blue *= closestObjectColor.b;
+
+            outputImage->setPixel(x, y, red, green, blue);
         }
     }
 

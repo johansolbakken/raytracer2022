@@ -5,7 +5,8 @@
 #include <SDL.h>
 #include "image.h"
 #include "camera.h"
-#include <objects/objsphere.h>
+
+#include <objects/objectbase.h>
 #include <lights/lightbase.h>
 
 class Scene
@@ -19,7 +20,7 @@ public:
 private:
 private:
     qb::Camera *m_camera;
-    
+
     // List of objects in the scene
     std::vector<raytracer::ObjectRef> m_objectList;
     std::vector<raytracer::LightRef> m_lightList;
