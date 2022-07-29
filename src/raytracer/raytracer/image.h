@@ -4,6 +4,8 @@
 #include <string>
 #include <future>
 
+// TODO: Move into image?
+
 namespace raytracer
 {
 	class Image
@@ -16,6 +18,8 @@ namespace raytracer
 		void setFilename(const std::string& filename);
 
 		void setData(const uint32_t* data);
+
+		void setPixel(uint32_t x, uint32_t y, uint32_t color);
 
 		void flipHorizontal();
 
