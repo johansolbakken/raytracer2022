@@ -13,9 +13,7 @@ add_subdirectory(montecarlo)
 # working area
 add_subdirectory(examples/sandbox)
 
-if(WIN32) 
-    add_subdirectory(runtime-quant)
-endif()
+add_subdirectory(runtime-quant)
 
 # examples
 option(BUILD_EXAMPLES "Build examples" YES)

@@ -137,7 +137,7 @@ namespace raytracer
         CoefficientSpectrum clamp(double low = 0, double high = math::infinity) const {
             CoefficientSpectrum ret;
             for (int i = 0; i < nSpectrumSamples; ++i)
-                ret.c[i] = math::clamp(low, high, c[i]);
+                ret.c[i] = clamp(low, high, c[i]);
             return ret;
         }
 
