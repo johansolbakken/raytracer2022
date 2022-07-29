@@ -35,8 +35,34 @@ namespace qb
         m_bChannel[x][y] = blue;
     }
 
+    void Image::computeMaxValues()
+    {
+        m_maxRed = 0.0;
+        m_maxGreen = 0.0;
+        m_maxBlue = 0.0;
+        m_overallMax = 0.0;
+
+        for (int x = 0; x < m_width; x++)
+        {
+            for (int y = 0; y < m_height; y++)
+            {
+                double redValue = m_rChannel[x][y];
+                double greenValue = m_gChannel[x][y];
+                double blueValue = m_bChannel[x][y];
+
+                m_maxRed = std::max(m_maxRed, redValue);
+                m_maxBlue = std::max(m_maxBlue, blueValue);
+                m_maxGreen = std::max(m_maxGreen, greenValue);
+            }
+        }
+
+        m_overallMax = std::max(m_maxRed, std::max(m_maxBlue, m_maxGreen));
+    }
+
     void Image::display()
     {
+        computeMaxValues();
+
         uint32_t *tempPixels = new uint32_t[m_width * m_height];
         memset(tempPixels, 0, m_width * m_height * sizeof(uint32_t));
 
@@ -63,14 +89,15 @@ namespace qb
 
     uint32_t Image::convertColor(double red, double green, double blue)
     {
-        auto r = static_cast<uint8_t>(red);
-        auto g = static_cast<uint8_t>(green);
-        auto b = static_cast<uint8_t>(blue);
+        // Convert the colors to unsiged ints
+        auto r = static_cast<uint8_t>(red / m_overallMax * 255.0);
+        auto g = static_cast<uint8_t>(green / m_overallMax * 255.0);
+        auto b = static_cast<uint8_t>(blue / m_overallMax * 255.0);
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
         uint32_t pixelColor = (r << 24) + (g << 16) + (b << 8) + 255;
 #else
-        uint32_t pixelColor = (255 << 24) + (r << 16) + (g << 8) + b;
+        uint32_t pixelColor = (255 << 24) + (b << 16) + (g << 8) + r;
 #endif
 
         return pixelColor;
@@ -86,10 +113,10 @@ namespace qb
         bmask = 0x0000ff00;
         amask = 0x000000ff;
 #else
-        amask = 0xff000000;
-        bmask = 0x00ff0000;
-        gmask = 0x0000ff00;
         rmask = 0x000000ff;
+        gmask = 0x0000ff00;
+        bmask = 0x00ff0000;
+        amask = 0xff000000;
 #endif
 
         if (m_texture)
