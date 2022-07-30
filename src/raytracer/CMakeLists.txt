@@ -1,64 +1,60 @@
 add_library(raytracer
-        raytracer.h
-        raytracer/ray.cpp raytracer/ray.h
-        raytracer/base.h
-        raytracer/renderer.cpp raytracer/renderer.h
-        raytracer/image.cpp raytracer/image.h
+        raytracer/ray.cpp 
+        raytracer/renderer.cpp 
+        raytracer/image.cpp 
 
-        utils/glmutils.h
-        utils/mathutils.h
-        utils/timer.cpp utils/timer.h
-        utils/orthonormalbasis.cpp utils/orthonormalbasis.h
+        utils/timer.cpp 
+        utils/orthonormalbasis.cpp 
 
-        cameras/camera.cpp cameras/camera.h
+        cameras/camera.cpp
 
-        hittable/hittable.h
-        hittable/hittablelist.cpp hittable/hittablelist.h
-        hittable/hit_record.h hittable/hit_record.cpp
-        hittable/aarect.h hittable/aarect.cpp
-        hittable/box.cpp hittable/box.h
-        hittable/bvh.cpp hittable/bvh.h
-        hittable/movingsphere.cpp hittable/movingsphere.h
-        hittable/hittable_transformations.h hittable/hittable_transformations.cpp
-        hittable/constantmedium.cpp hittable/constantmedium.h
-        hittable/flipface.h hittable/flipface.cpp
+        hittable/hittablelist.cpp
+        hittable/hit_record.cpp
+        hittable/aarect.cpp
+        hittable/box.cpp
+        hittable/bvh.cpp
+        hittable/movingsphere.cpp
+        hittable/hittable_transformations.cpp
+        hittable/constantmedium.cpp
+        hittable/flipface.cpp
 
-        materials/material.h
-        materials/lambertian.cpp materials/lambertian.h
-        materials/metal.cpp materials/metal.h
-        materials/dielectric.cpp materials/dielectric.h
-        materials/diffuselight.cpp materials/diffuselight.h
-        materials/isotropic.cpp materials/isotropic.h
+        materials/lambertian.cpp 
+        materials/metal.cpp
+        materials/dielectric.cpp 
+        materials/diffuselight.cpp
+        materials/isotropic.cpp 
 
-        accelerator/aabb.cpp accelerator/aabb.h
-        pdf/pdf.h pdf/pdf.cpp
-        pdf/cosinepdf.h pdf/cosinepdf.cpp
+        accelerator/aabb.cpp 
+         pdf/pdf.cpp
+         pdf/cosinepdf.cpp
 
-        textures/texture.h textures/solidcolor.cpp
-        textures/solidcolor.h textures/checkertexture.cpp
-        textures/checkertexture.h noise/perlin.cpp noise/perlin.h
-        textures/noisetexture.cpp textures/noisetexture.h
-        textures/imagetexture.cpp textures/imagetexture.h
+         textures/solidcolor.cpp
+        textures/checkertexture.cpp
+         noise/perlin.cpp 
+        textures/noisetexture.cpp
+        textures/imagetexture.cpp 
 
-        shapes/shape.h shapes/shape.cpp
-        shapes/sphere.cpp shapes/sphere.h
+       shapes/shape.cpp
+        shapes/sphere.cpp 
 
         image/stb_image.cpp
 
-        geometry/differentialgeometry.cpp geometry/differentialgeometry.h
+        geometry/differentialgeometry.cpp
 
-        transformations/transformation.cpp transformations/transformation.h
-        transformations/animatedtransform.cpp transformations/animatedtransform.h
+        transformations/transformation.cpp 
+        transformations/animatedtransform.cpp
         transformations/geometrictransform.cpp
 
-        primitives/primitive.cpp primitives/primitive.h
+        primitives/primitive.cpp 
 
-        objects/objectbase.h objects/objectbase.cpp
-        objects/objsphere.h objects/objsphere.cpp
-        objects/objplane.h objects/objplane.cpp
+         objects/objectbase.cpp
+        objects/objsphere.cpp
+      objects/objplane.cpp
 
-        lights/lightbase.h lights/lightbase.cpp
-        lights/pointlight.h lights/pointlight.cpp
+        materials/qb/materialbase.cpp materials/qb/simplematerial.cpp
+
+       lights/lightbase.cpp
+      lights/pointlight.cpp
 
         raytracer/intersection.cpp raytracer/intersection.h
          "scene/scene.h" "scene/scene.cpp" "lights/light.h" "samplers/sampler.h" "samplers/sampler.cpp" "integrators/integrator.h" "integrators/integrators.cpp" "samplers/stratifiedsampler.h" "samplers/stratifiedsampler.cpp" "spd/spectrum.h" "spd/spectrum.cpp" "spd/coefficientspectrum.h")
