@@ -9,7 +9,6 @@ namespace raytracer
 
 namespace qb
 {
-
     class Camera
     {
     public:
@@ -28,11 +27,11 @@ namespace qb
         Vector3 u() const { return m_u; }
         Vector3 v() const { return m_v; }
         double length() const { return m_length; }
-        double horizontalSize() const { m_horizontalSize; }
+        double horizontalSize() const { return m_horizontalSize; }
         double aspect() const { return m_aspect; }
         Point3 screenCenter() const { return m_screenCenter; }
 
-        bool generateRay(double projScreenX, double projScreenY, raytracer::Ray* cameraRay);
+        bool generateRay(double projScreenX, double projScreenY, raytracer::Ray *cameraRay);
 
         void updateGeometry();
 
