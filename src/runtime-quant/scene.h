@@ -18,6 +18,12 @@ public:
     bool render(qb::Image *outputImage);
 
 private:
+    bool castRay(raytracer::Ray &castRay,
+                 raytracer::ObjectRef &closestObject,
+                 raytracer::Point3 &closestIntPoint,
+                 raytracer::Vector3 &closestNormal,
+                 raytracer::Vector3 &closestColor);
+
 private:
     qb::Camera *m_camera;
 
