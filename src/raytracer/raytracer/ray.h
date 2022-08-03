@@ -41,7 +41,7 @@ namespace raytracer
 		void setTime(double t);
 
 		void setOrigin(const Point3 &origin) { m_origin = origin; }
-		void setDirection(const Vector3 &direction) { m_direction = glm::normalize(direction); }
+		void setDirection(const Vector3 &direction) { m_direction = direction; }
 
 	private:
 		Point3 m_origin{};
