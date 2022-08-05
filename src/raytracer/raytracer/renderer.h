@@ -40,7 +40,7 @@ namespace raytracer
 
 		void onResize(uint32_t width, uint32_t height);
 
-		uint32_t perPixel(glm::vec2 coord);
+        Vector4 perPixel(glm::vec2 coord);
 
 		raytracer::ref<raytracer::Image> getFinalImage();
 
@@ -95,7 +95,7 @@ namespace raytracer
         std::mutex m_abort_mutex;
         bool m_shouldAbort = false;
 
-        bool m_multithread = true;
+        bool m_multithread = false;
 
         ScanlineCallback m_callback = nullptr;
 	};

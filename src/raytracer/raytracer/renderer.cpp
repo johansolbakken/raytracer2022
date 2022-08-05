@@ -16,8 +16,19 @@
 
 #include <pdf/cosinepdf.h>
 
-#define cherno 0
+#define cherno 1
 
+namespace utils {
+static uint32_t convertToRGBA(const raytracer::Vector4& color) {
+    uint8_t r = (uint8_t)(color.r * 255.0);
+    uint8_t g = (uint8_t)(color.g * 255.0);
+    uint8_t b = (uint8_t)(color.b * 255.0);
+    uint8_t a = (uint8_t)(color.a * 255.0);
+
+    uint32_t result = (a << 24) | (b << 16) | (g << 8) | r;
+    return result;
+}
+}
 
 namespace raytracer
 {
@@ -64,7 +75,8 @@ void Renderer::renderSinglethread()
 #endif  // cherno
             auto color = perPixel(coord);
             int pos = x + (m_finalImage->height() - y - 1) * m_finalImage->width();
-            m_imageData[pos] = color;
+            color = glm::clamp(color, Vector4(0.0), Vector4(1.0));
+            m_imageData[pos] = utils::convertToRGBA(color);
             std::lock_guard guard(m_finalImage->mutex());
             m_finalImage->data()[pos] = m_imageData[pos];
         }
@@ -206,45 +218,42 @@ Renderer::Renderer(const RendererSpecification& spec)
     init(spec);
 }
 
-uint32_t Renderer::perPixel(glm::vec2 coord)
+Vector4 Renderer::perPixel(glm::vec2 coord)
 {
 #if cherno
+    auto r = (uint8_t)(coord.x*255.0);
+    auto g = (uint8_t(coord.y * 255.0));
 
-    //
-    //	TODO: solve rest of the quadratic formula to get hit distances
-    //	TODO: get coordinate of each hit
-    // 	TODO: figure out the normal of each hit
-
-    auto r = (uint8_t)(coord.x*255.0f);
-    auto g = (uint8_t(coord.y * 255.0f));
-
-    glm::vec3 rayOrigin(0,0,2.0f);
-    glm::vec3 rayDirection(coord.x, coord.y, -1.0f);
+    Point3 rayOrigin(0,0,1.0);
+    Vector3 rayDirection(coord.x, coord.y, -1.0);
     rayDirection = glm::normalize(rayDirection);
-    double radius = 0.5f;
+    double radius = 0.5;
 
     double a = glm::dot(rayDirection, rayDirection);
-    double b = 2.0f * glm::dot(rayOrigin, rayDirection);
+    double b = 2.0 * glm::dot(rayOrigin, rayDirection);
     double c = glm::dot(rayOrigin, rayOrigin) - radius * radius;
 
-    double descriminant = b * b - 4.0f * a * c;
+    double descriminant = b * b - 4.0 * a * c;
 
-    if (descriminant >= 0) {
+    if (descriminant < 0.0)
+        return Color4(0,0,0,1);
 
-        double t0 = -b - std::sqrt(descriminant) / (2.0f * a);
-        double t1 = -b + std::sqrt(descriminant) / (2.0f * a);
+    Color sphereColor(1,0,1);
 
-        {
-            point3 hitPosition = rayOrigin + rayDirection * t0;
-        }
-        {
-            point3 hitPosition = rayOrigin + rayDirection * t1;
-        }
+    double t0 = -b + std::sqrt(descriminant) / (2.0 * a);
+    double t1 = -b - std::sqrt(descriminant) / (2.0 * a);
 
-        return 0xffff00ff;
-    }
+    Point3 hitPosition0 = rayOrigin + rayDirection * t0;
+    Point3 hitPosition1 = rayOrigin + rayDirection * t1;
 
-    return 0xff000000;
+    Vector3 normal1 = glm::normalize(hitPosition1); /* - sphere origin */
+
+    Vector3 lightDirection = glm::normalize(Vector3(-1, -1, -1));
+    float d = std::max(0.0, glm::dot(normal1, -lightDirection));
+
+    sphereColor *= d;
+
+    return Color4(sphereColor, 1.0);
 #else
     Color pixel_color(0, 0, 0);
     for (int s = 0; s < m_Specification.samplesPerPixel; ++s)
