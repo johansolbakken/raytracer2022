@@ -14,6 +14,7 @@ namespace raytracer
 	using Matrix4 = glm::dmat4;
 	using Point3 = glm::dvec3;
 	using Color = glm::dvec3;
+    using Color4 = glm::dvec4;
 	using Quaternion = glm::dquat;
 
 	inline std::ostream& operator<<(std::ostream& out, const Vector3& v)
