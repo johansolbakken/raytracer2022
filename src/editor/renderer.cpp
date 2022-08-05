@@ -44,8 +44,9 @@ void Renderer::paintEvent(QPaintEvent* event)
     {
         std::lock_guard guard(image->mutex());
         qImage = QImage((uchar*)image->data(), image->width(), image->height(), QImage::Format_RGBA8888);
-        qImage = qImage.mirrored();
     }
+
+    qImage = qImage.mirrored();
 
     QPoint point(0, 0);
 
